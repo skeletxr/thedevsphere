@@ -2,11 +2,16 @@ import { Menu, X } from "lucide-react";
 import { useContext, useState } from "react";
 // import logo from "../assets/logo.png";
 import { navItems } from "../constants";
- 
+import {logout} from "../constants/logic"
 import { GlobalContext } from "../context/GlobalContext";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 
-const Navbar = ({ setShowAuth, showAuth, scrollToPrice, scrollToRequestCallBack }) => {
+const Navbar = ({
+  setShowAuth,
+  showAuth,
+  scrollToPrice,
+  scrollToRequestCallBack,
+}) => {
   const params = useLocation();
   console.log(params);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
@@ -21,7 +26,6 @@ const Navbar = ({ setShowAuth, showAuth, scrollToPrice, scrollToRequestCallBack 
         <div className="container px-4 mx-auto relative lg:text-sm">
           <div className="flex justify-between items-center">
             <div className="flex items-center flex-shrink-0">
-              
               <span className="text-xl tracking-tight">The Dev Sphere</span>
             </div>
             <ul className="hidden lg:flex ml-14 space-x-12">
@@ -42,42 +46,48 @@ const Navbar = ({ setShowAuth, showAuth, scrollToPrice, scrollToRequestCallBack 
                   }}
                 >
                   {item.label}
-              
                 </li>
               ))}
             </ul>
             <div className="hidden lg:flex justify-center space-x-12 items-center">
-             {!isAuthorized  ? (
-              <>
-              <a
-                onClick={() =>
-                  showAuth ? setShowAuth("") : setShowAuth("Login")
-                }
-                className="py-2 px-3 border rounded-md"
-              >
-                Log In
-              </a>
-              <a
-                onClick={() => showAuth ? setShowAuth("") : setShowAuth("Signup")}
-                className="bg-gradient-to-r from-purple-500 to-purple-800 py-2 px-3 rounded-md"
-              >
-                Create an account
-              </a>
-              </>
-             ): params.pathname === "/Refer" ? (
-              <>
-               <NavLink to="/" className="py-2 px-3 border rounded-md">
-              Home
-              </NavLink>              
-              </>
-             ) : (
-              <>
-               <NavLink to="/Refer" className="py-2 px-3 border rounded-md">
-                Referrals
-              </NavLink>
-              </>
-             )
-              }
+              {!isAuthorized ? (
+                <>
+                  <a
+                    onClick={() =>
+                      showAuth ? setShowAuth("") : setShowAuth("Login")
+                    }
+                    className="py-2 px-3 border rounded-md"
+                  >
+                    Log In
+                  </a>
+                  <a
+                    onClick={() =>
+                      showAuth ? setShowAuth("") : setShowAuth("Signup")
+                    }
+                    className="bg-gradient-to-r from-purple-500 to-purple-800 py-2 px-3 text-white rounded-md"
+                  >
+                    Create an account
+                  </a>
+                </>
+              ) : params.pathname === "/Refer" ? (
+                <>
+                  <NavLink to="/" className="py-2 px-3 border rounded-md">
+                    Home
+                  </NavLink>
+                </>
+              ) : (
+                <>
+                  <NavLink to="/Refer" className="py-2 px-3 border rounded-md">
+                    Referrals
+                  </NavLink>
+                </>
+              )}
+
+              {isAuthorized && (
+                <Button  onClick={() => logout()} className="py-2 px-3 border rounded-md">
+                  LogOut
+                </Button>
+              )}
             </div>
             <div className="lg:hidden md:flex flex-col justify-end">
               <button onClick={toggleNavbar}>

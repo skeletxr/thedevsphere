@@ -123,36 +123,38 @@ export const checklistItems = [
 export const pricingOptions = [
   {
     title: "Web Development",
-    price: "INR 10,000",
+    price: "INR 9,990",
     features: [
       "MERN Stack",
       "Live Training sessions",
       "Internship Assistance",
       "Industry Relevant Projects",
-      "Master both Frontend and Backend",
+      "Learn Frontend and Backend",
       "Learn Database management",
     ],
   },
   {
-    title: "Learn DevOps",
-    price: "XYZ",
+    title: "Development Operations", 
+    price: "INR 9,990",
     features: [
       "Automate development workflows",
       "Docker, Kubernetes, and CI/CD",
       "Learn scalable deployment",
       "Learn cloud platforms like AWS",
-      "Learn Monitoring and Logging"
+      "Learn Monitoring and Logging",
+      "Earn a Certificate of Completion"
     ],
   },
   {
     title: "Mobile App Development",
-    price: "INR 0000",
+    price: "INR 9,990",
     features: [
       "Build apps with ReactNative",
       "Apps on both Android and iOS",
       "Optimization for mobile interfaces",
-      "Implement engaging UI/UX designs",
-      "Lern to deploy on app stores"
+      "Learn engaging UI/UX designs",
+      "Lern to deploy on app stores",
+      "Earn a Certificate of Completion"
     ],
   },
 ];

@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import { pricingOptions } from "../constants";
+import { features, pricingOptions } from "../constants";
 
 const Pricing = ({scrollToPrice}) => {
   return (
@@ -33,9 +33,9 @@ const Pricing = ({scrollToPrice}) => {
               </ul>
               <a
                 href="#"
-                className="inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl hover:bg-purple-900 border border-purple-900 rounded-lg transition duration-200"
+                className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 " : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-green-400`}
               >
-                Subscribe
+               {option.title === "Web Development" ? "Subscribe" : "Coming soon"} 
               </a>
             </div>
           </div>
