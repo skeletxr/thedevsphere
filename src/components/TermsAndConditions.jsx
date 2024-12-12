@@ -78,9 +78,9 @@ const termsSections = [
   {
     title: "4. Fees, Payments, and Refunds",
     content: [
-      "4.1 Fees: A non-refundable fee of ₹1,000 (Indian Rupees) is applicable for the Course.",
-      "4.2 Payment Methods: Payments must be made through the specified channels, including UPI, bank transfers, or other methods communicated via WhatsApp.",
-      "4.3 Referral Bonus: Participants referring new enrollees will receive ₹200 per successful referral, contingent upon the referred individual completing their payment and enrollment.",
+      "4.1 Fees: A non-refundable fee of ₹9,990 (Indian Rupees) is applicable for the Course.",
+      "4.2 Payment Methods: Payments must be made through the specified channels, including UPI, bank transfers, or other methods communicated via WhatsApp or this website.",
+      "4.3 Referral Bonus: Participants referring new enrollees will receive ₹2000 per successful referral, contingent upon the referred individual completing their payment and enrollment.",
       "4.4 Refund Policy: Full refunds are only available within 3 calendar days of enrollment.",
     ],
   },
@@ -159,7 +159,7 @@ const termsSections = [
     title: "15. Contact Information",
     content: [
       "For queries, clarifications, or complaints, you may contact us at:",
-      "**Email**: [Insert Email]",
+      "**Email**: [info.thedevsphere.com]",
       "**WhatsApp**: [Insert Number]",
     ],
   },

@@ -75,7 +75,7 @@ export const features = [
     icon: <ShieldHalf />,
     text: "Internship Assistance",
     description:
-      "Jumpstart your VR projects with a variety of built-in templates for different types of applications and environments.",
+      "We will guide you for the way by which you can get the internship in the top companies and also provide you the resume building and preparation.",
   },
   {
     icon: <BatteryCharging />,
@@ -87,13 +87,13 @@ export const features = [
     icon: <PlugZap />,
     text: "Collaborative Learning",
     description:
-      "Work together with your team in real-timen VR projects, enabling seamless collaboration and idea sharing.",
+      "Work together with other batchmates in real-time online meets, enabling seamless collaboration and idea sharing.",
   },
   {
     icon: <GlobeLock />,
     text: "Referral Rewards Program",
     description:
-      "Refer a friend and earn ₹200 for each successful enrollment, making learning rewarding and affordable for you and your peers.",
+      "Refer a friend and earn ₹2000 for each successful enrollment, making learning rewarding and affordable for you and your peers.",
   },
 ];
 

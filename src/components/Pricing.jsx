@@ -1,7 +1,9 @@
 import { CheckCircle2 } from "lucide-react";
 import { features, pricingOptions } from "../constants";
-
+import { useNavigate, NavLink } from "react-router-dom";
+ 
 const Pricing = ({scrollToPrice}) => {
+  const navigate = useNavigate();
   return (
     <div className="mt-20" ref={scrollToPrice}>
       <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center my-8 tracking-wide">
@@ -31,12 +33,12 @@ const Pricing = ({scrollToPrice}) => {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#"
-                className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 " : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-green-400`}
+              <NavLink
+                to="/Courses"
+                className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400  text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-green-400`}
               >
                {option.title === "Web Development" ? "Subscribe" : "Coming soon"} 
-              </a>
+              </NavLink>
             </div>
           </div>
         ))}

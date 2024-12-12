@@ -35,6 +35,10 @@ const Navbar = ({
                   key={index}
                   className="hover:text-purple-500 cursor-pointer"
                   onClick={() => {
+                    
+                    if(params.pathname !== "/") {
+                      navigate("/");
+                    }else
                     if (item.label === "Internship Program") {
                       scrollToPrice.current.scrollIntoView({
                         behavior: "smooth",

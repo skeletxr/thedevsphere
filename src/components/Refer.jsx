@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect,  useRef } from "react";
 import Navbar from "./Navbar";
 import loginuniquecode from "../assets/login-unique-code.png";
 import getrewarded from "../assets/get-rewarded.png";
@@ -10,18 +10,18 @@ import { referLogic } from "../constants/logic";
 import { GlobalContext } from "../context/GlobalContext";
 
 const Refer = () => {
-const {user , userDetails} = useContext(GlobalContext);
-console.log(user)
-const [isReferralCodeAvailable, setIsReferralCodeAvailable] = useState('pending');
+  const { user, userDetails } = useContext(GlobalContext);
+  const scroll = useRef(null)
+  const [isReferralCodeAvailable, setIsReferralCodeAvailable] =
+    useState("pending");
 
-useEffect(() => {
-   if (user && userDetails && userDetails.referId) {
-     setIsReferralCodeAvailable(userDetails.referId);
-   }else{
-     setIsReferralCodeAvailable(false);
-   }
-}, [user, userDetails]);
-
+  useEffect(() => {
+    if (user && userDetails && userDetails.referId) {
+      setIsReferralCodeAvailable(userDetails.referId);
+    } else {
+      setIsReferralCodeAvailable(false);
+    }
+  }, [user, userDetails]);
 
   console.log(isReferralCodeAvailable);
   const handleClick = async () => {
@@ -39,17 +39,17 @@ useEffect(() => {
         className="flex min-h-[65vh] flex-col items-center justify-center mt-6  max-w-[75vw] mx-auto lg:mt-20"
       >
         <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide">
-          JITU SEXY
+          Refer To Your Friends And Earn{" "}
           <span className="bg-gradient-to-r from-purple-500 to-purple-800 text-transparent bg-clip-text">
             {" "}
-            Hands-On Projects
+            Upto INR 2000
           </span>
         </h1>
         <p className="mt-10 text-lg text-center text-neutral-500 max-w-4xl">
           Join a community of learners, tackle exciting projects, and earn your
           certificate of completion!
         </p>
-        <div className="flex justify-center my-10">
+        <div className="flex justify-center my-10" onClick={() => scroll.current.scrollIntoView({ behavior: "smooth" })}>
           <a
             href="#"
             className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md max-w-[75vw] mx-auto text-white"
@@ -154,49 +154,62 @@ useEffect(() => {
           <p className="text-lg md:text-xl text-purple-300 mb-6 text-center">
             Invite your friends now and get upto INR 2000!
           </p>
-          <div className="flex  flex-col md:flex-row w-full max-w-lg">
-            {isReferralCodeAvailable === 'pending' || isReferralCodeAvailable ? (
+          <div className="flex  flex-col md:flex-row w-full max-w-lg " ref={scroll}>
+            {isReferralCodeAvailable === "pending" ||
+            isReferralCodeAvailable ? (
               <>
-                
-                  <input
-                    disabled
-                    value={`http://localhost:5173/course?referralCode=${isReferralCodeAvailable}`}
-                    type="text"
-                    placeholder="your link will appear here"
-                    className="flex-grow px-4 py-3 rounded-t-lg md:rounded-l-lg md:rounded-t-none text-gray-900 bg-gray-200 placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-                    // value={emails}
-                    // onChange={(e) => setEmails(e.target.value)}
-                  />
-                  <button
-                    onClick={() => navigator.clipboard.writeText(`http://localhost:5173/course?referralCode=${isReferralCodeAvailable}`)}
-                    className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-b-lg md:rounded-r-lg md:rounded-b-none transition duration-300"
-                  >
-                    Copy link
-                  </button>
-                         
-                  <input
-                    value={isReferralCodeAvailable}
-                    disabled
-                    type="text"
-                    placeholder="your code will appear here"
-                    className="flex-grow px-4 py-3 rounded-t-lg md:rounded-l-lg md:rounded-t-none text-gray-900 bg-gray-200 placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
-                    // value={emails}
-                    // onChange={(e) => setEmails(e.target.value)}
-                  />
-                  <button
-                    onClick={() => navigator.clipboard.writeText(isReferralCodeAvailable)}
-                    className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-b-lg md:rounded-r-lg md:rounded-b-none transition duration-300"
-                  >
-                    Copy Code
-                  </button>
-                
+                <div className="flex flex-col gap-4 m-auto">
+                  <div className="flex">  
+                    <input
+                      disabled
+                      value={`http://localhost:5173/course?referralCode=${isReferralCodeAvailable}`}
+                      type="text"
+                      placeholder="your link will appear here"
+                      className="flex-grow px-4 py-3  md:rounded-l-lg  text-gray-900 bg-gray-200 placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
+                      // value={emails}
+                      // onChange={(e) => setEmails(e.target.value)}
+                    />
+                    <button
+                      onClick={() =>
+                        navigator.clipboard.writeText(
+                          `http://localhost:5173/course?referralCode=${isReferralCodeAvailable}`
+                        )
+                      }
+                      className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-b-lg md:rounded-r-lg md:rounded-b-none transition duration-300"
+                    >
+                      Copy link
+                    </button>
+                  </div>
+                  <div className="flex">
+                    <input
+                      value={isReferralCodeAvailable}
+                      disabled
+                      type="text"
+                      placeholder="your code will appear here"
+                      className="flex-grow px-4 py-3  md:rounded-l-lg  text-gray-900 bg-gray-200 placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
+                      // value={emails}
+                      // onChange={(e) => setEmails(e.target.value)}
+                    />
+                    <button
+                      onClick={() =>
+                        navigator.clipboard.writeText(isReferralCodeAvailable)
+                      }
+                      className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-b-lg md:rounded-r-lg md:rounded-b-none transition duration-300"
+                    >
+                      Copy Code
+                    </button>
+                  </div>
+                </div>
               </>
             ) : (
               <>
                 <div>
-                  <div class="flex items-center justify-center m-auto"    >
+                  <div class="flex items-center justify-center m-auto">
                     <div class="relative group">
-                      <button  onClick={handleClick} class="relative inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95">
+                      <button
+                        onClick={handleClick}
+                        class="relative inline-block p-px font-semibold leading-6 text-white bg-gray-800 shadow-2xl cursor-pointer rounded-xl shadow-zinc-900 transition-transform duration-300 ease-in-out hover:scale-105 active:scale-95"
+                      >
                         <span class="absolute inset-0 rounded-xl bg-gradient-to-r from-teal-400 via-blue-500 to-purple-500 p-[2px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"></span>
 
                         <span class="relative z-10 block px-6 py-3 rounded-xl bg-gray-950">

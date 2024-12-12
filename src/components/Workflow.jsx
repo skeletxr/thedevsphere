@@ -9,11 +9,11 @@ const Workflow = () => {
     <>
 
     <section>
-    <div className="mt-20">
+    <div className="mt-1">
       <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center mt-6 tracking-wide">
-        Accelerate your{" "}
+        Get your first{" "}
         <span className="bg-gradient-to-r from-purple-500 to-purple-800 text-transparent bg-clip-text">
-          coding workflow.
+          internship.
         </span>
       </h2>
       <div className="flex flex-wrap justify-center">
