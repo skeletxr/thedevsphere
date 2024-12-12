@@ -8,10 +8,9 @@ import { GlobalContext } from "../context/GlobalContext";
 
 
 
-export const referLogic = async () => {
-const {user} = useContext(GlobalContext);
+export const referLogic = async (user) => {
 
-  const userDoc = doc(db, "users", user.user.uid);
+  const userDoc = doc(db, "users", user.uid);
   const userSnapshot = await getDoc(userDoc);
 
   if (userSnapshot.exists()) {

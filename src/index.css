@@ -9,3 +9,32 @@
   color-scheme: dark;
   /* background-color: hsl(211, 74%, 59%); */
 }
+@keyframes spin-text {
+  10% {
+    transform: translateY(-102%);
+  }
+  25% {
+    transform: translateY(-100%);
+  }
+  35% {
+    transform: translateY(-202%);
+  }
+  50% {
+    transform: translateY(-200%);
+  }
+  60% {
+    transform: translateY(-302%);
+  }
+  75% {
+    transform: translateY(-300%);
+  }
+  85% {
+    transform: translateY(-402%);
+  }
+  100% {
+    transform: translateY(-400%);
+  }
+}
+.animate-spin-text {
+  animation: spin-text 44s infinite;
+}

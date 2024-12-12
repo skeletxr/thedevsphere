@@ -10,42 +10,36 @@ const GlobalContext = createContext();
 const GlobalProvider = ({ children }) => {
 
   const [isAuthorized, setIsAuthorized] = useState(false)
-const [user, setUser] = useState('');
+const [user, setUser] = useState(null);
 const [userDetails, setUserDetails] = useState(null)
+
+
+
+const getUserInfo = async(userD) =>{
+  setUser(userD);
+
+  const userDoc = doc(db, "users",userD.uid);
+  const userSnapshot = await getDoc(userDoc);
+  if (userSnapshot.exists()) {
+    const userData = await userSnapshot.data();
+console.log(userData)
+    setUserDetails(userData);
+  } else {
+    console.log("No such document!");
+  }
+}
+
   useEffect(() => {
-    const unsubscribeAuth = auth.onAuthStateChanged((user) => {
-      if (user) {
-        
+    const unsubscribeAuth = auth.onAuthStateChanged((userD) => {
+      if (userD) {
+        getUserInfo(userD); // Call getUserInfo when user is signed in
         setIsAuthorized(true);
-        setUser(user);
-         
       } 
     });
 
     return () => unsubscribeAuth();
   }, []);
 
-  const getUserInfo = async() =>{
-    const userDoc = doc(db, "users", user?.user.uid);
-    const userSnapshot = await getDoc(userDoc);
-
-    if (userSnapshot.exists()) {
-      const userData = await userSnapshot.data();
-      console.log("Document data:", userData);
-
-      setUserDetails(userData);
-    } else {
-      console.log("No such document!");
-    }
-  }
-
-  useEffect(() => {
-    getUserInfo();
-  
-    return () => {
-      getUserInfo();
-    }
-  }, [])
   
 
   return <GlobalContext.Provider value={{

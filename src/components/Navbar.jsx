@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import { navItems } from "../constants";
 import {logout} from "../constants/logic"
 import { GlobalContext } from "../context/GlobalContext";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const Navbar = ({
   setShowAuth,
@@ -16,6 +16,7 @@ const Navbar = ({
   console.log(params);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const { isAuthorized } = useContext(GlobalContext);
+  const navigate = useNavigate();
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   };
@@ -83,10 +84,15 @@ const Navbar = ({
                 </>
               )}
 
-              {isAuthorized && (
-                <Button  onClick={() => logout()} className="py-2 px-3 border rounded-md">
+              {params.pathname !== "/Refer" && isAuthorized && (
+                <button  onClick={() => {
+                  logout();
+                  setShowAuth(false);
+                  window.location.reload();
+                  navigate("/");
+                }} className="py-2 px-3 border rounded-md">
                   LogOut
-                </Button>
+                </button>
               )}
             </div>
             <div className="lg:hidden md:flex flex-col justify-end">
