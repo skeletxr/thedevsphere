@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="*" element={<App />} />
               <Route path='/Refer' element={<Refer/>} />
               <Route path='/Courses' element={<Course/>} />
-              
+ 
               {/* <Route path="/User/:id" element={<User />}>
                 <Route path="FriendsLobby" element={<DirectConversation/>} />
                 <Route path="Friend_List" element={<FindFriends />} />

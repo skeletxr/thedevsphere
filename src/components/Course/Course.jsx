@@ -1,270 +1,149 @@
-import * as React from 'react';
-import { extendTheme, styled } from '@mui/material/styles';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
-import { AppProvider } from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
-import { PageContainer } from '@toolpad/core/PageContainer';
-import Grid from '@mui/material/Grid2';
-import HomeIcon from '@mui/icons-material/Home';
-import DetailsIcon from '@mui/icons-material/Details';
-import CourseDetails from './CourseDetails';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import Navbar from '../Navbar';
+const Courses = () => {
+  const [isOpen, setIsOpen] = useState(true);
 
+  const toggleDrawer = () => {
+    setIsOpen(!isOpen);
+  };
 
-const NAVIGATION = [
- 
-  {
-    segment: 'Home',
-    title: 'Home',
-    icon: <HomeIcon />,
-  },
-  {
-    segment: 'Course Details',
-    title: 'Course Details',
-    icon: <DetailsIcon />,
-  },
- 
-];
-
-const demoTheme = extendTheme({
-  colorSchemes: { light: true, dark: true },
-  colorSchemeSelector: 'class',
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 600,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
-
-function useDemoRouter(initialPath) {
-  const [pathname, setPathname] = React.useState(initialPath);
-
-  const router = React.useMemo(() => {
-    return {
-      pathname,
-      searchParams: new URLSearchParams(),
-      navigate: (path) => setPathname(String(path)),
-    };
-  }, [pathname]);
-
-  return router;
-}
-
-const Skeleton = styled('div')(({ theme, height }) => ({
-  backgroundColor: theme.palette.action.hover,
-  borderRadius: theme.shape.borderRadius,
-  height,
-  content: '" "',
-}));
-
-export default function Course(props) {
-  
-  const navigate = useNavigate();
-
-  const { window } = props;
-
-  const router = useDemoRouter('/Course Details');
-
-  // Remove this const when copying and pasting into your project.
-  const demoWindow = window ? window() : undefined;
+  const closeDrawer = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <AppProvider
-      navigation={NAVIGATION}
-      router={router}
-      theme={demoTheme}
-      window={demoWindow}
-    >
-      <DashboardLayout>
-        <PageContainer>
-      {
-        router.pathname === '/Home' ? (
-          navigate('/')
-        ) : (
-           <CourseDetails/>
-        )
-      }
-         
-        </PageContainer>
-      </DashboardLayout>
-    </AppProvider>
+    <div>
+    <Navbar />
+      <div className="text-center">
+        <button
+          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          type="button"
+          onClick={toggleDrawer}
+        >
+          Show navigation
+        </button>
+      </div>
+
+      {/* Drawer component */}
+      <div
+        className={`fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform bg-white w-64 dark:bg-gray-800 ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        tabIndex="-1"
+        aria-labelledby="drawer-navigation-label"
+      >
+        <h5
+          id="drawer-navigation-label"
+          className="text-base font-semibold text-gray-500 uppercase dark:text-gray-400"
+        >
+          Menu
+        </h5>
+        <button
+          type="button"
+          onClick={closeDrawer}
+          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          <svg
+            className="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+          <span className="sr-only">Close menu</span>
+        </button>
+
+        {/* Drawer menu items */}
+        <div className="py-4 overflow-y-auto">
+          <ul className="space-y-2 font-medium">
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <svg
+                  className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 22 21"
+                >
+                  <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                  <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                </svg>
+                <span className="ms-3">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <button
+                type="button"
+                className="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                aria-controls="dropdown-example"
+              >
+                <svg
+                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 18 21"
+                >
+                  <path d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                </svg>
+                <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                  E-commerce
+                </span>
+                <svg
+                  className="w-3 h-3"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 10 6"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m1 1 4 4 4-4"
+                  />
+                </svg>
+              </button>
+            </li>
+            <li>
+              <a
+                href="#"
+                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+              >
+                <svg
+                  className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 18 18"
+                >
+                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                </svg>
+                <span className="flex-1 ms-3 whitespace-nowrap">Kanban</span>
+                <span className="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                  Pro
+                </span>
+              </a>
+            </li>
+            {/* Add other menu items here */}
+          </ul>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const NAVIGATION = [
-//   // {
-//   //   kind: 'header',
-//   //   title: 'Main items',
-//   // },
-//   {
-//     segment: 'Home',
-//     title: 'Home',
-//     icon: <HomeIcon />,
-//   },
-//   {
-//     segment: 'Course Details',
-//     title: 'Course Details',
-//     icon: <DetailsIcon />,
-//   },
-//   // {
-//   //   kind: 'divider',
-//   // },
-//   // {
-//   //   kind: 'header',
-//   //   title: 'Analytics',
-//   // },
-//   // {
-//   //   segment: 'reports',
-//   //   title: 'Reports',
-//   //   icon: <BarChartIcon />,
-//   //   children: [
-//   //     {
-//   //       segment: 'sales',
-//   //       title: 'Sales',
-//   //       icon: <DescriptionIcon />,
-//   //     },
-//   //     {
-//   //       segment: 'traffic',
-//   //       title: 'Traffic',
-//   //       icon: <DescriptionIcon />,
-//   //     },
-//   //   ],
-//   // },
-//   // {
-//   //   segment: 'integrations',
-//   //   title: 'Integrations',
-//   //   icon: <LayersIcon />,
-//   // },
-// ];
-
-// const demoTheme = extendTheme({
-//   colorSchemes: { light: true, dark: true },
-//   colorSchemeSelector: 'class',
-//   breakpoints: {
-//     values: {
-//       xs: 0,
-//       sm: 600,
-//       md: 600,
-//       lg: 1200,
-//       xl: 1536,
-//     },
-//   },
-// });
-
-// function useDemoRouter(initialPath) {
-//   const [pathname, setPathname] = React.useState(initialPath);
-
-//   const router = React.useMemo(() => {
-//     return {
-//       pathname,
-//       searchParams: new URLSearchParams(),
-//       navigate: (path) => setPathname(String(path)),
-//     };
-//   }, [pathname]);
-
-//   return router;
-// }
-
-// const Skeleton = styled('div')(({ theme, height }) => ({
-//   backgroundColor: theme.palette.action.hover,
-//   borderRadius: theme.shape.borderRadius,
-//   height,
-//   content: '" "',
-// }));
-
-// export default function Course(props) {
-//   const { window } = props;
-
-//   const router = useDemoRouter('/Course Details');
-
-//   // Remove this const when copying and pasting into your project.
-//   const demoWindow = window ? window() : undefined;
-
-//   return (
-//     <AppProvider
-//       navigation={NAVIGATION}
-//       router={router}
-//       theme={demoTheme}
-//       window={demoWindow}
-//     >
-//       <DashboardLayout>
-//         <PageContainer>
-//         <div className="card bg-base-100 w-96 shadow-xl">
-//   <figure>
-//     <img
-//       src="https://d502jbuhuh9wk.cloudfront.net/courses/64eebdb8e4b0a14befedc15d/64eebdb8e4b0a14befedc15d_scaled_cover.jpg?v=6"
-//       alt="Shoes" />
-//   </figure>
-//   <div className="card-body">
-//     <h2 className="card-title">Shoes!</h2>
-//     <p>If a dog chews shoes whose shoes does he choose?</p>
-//     <div className="card-actions justify-end">
-//       <button className="btn btn-primary">Buy Now</button>
-//     </div>
-//   </div>
-// </div>
-//           {/* <Grid container spacing={1}>
-//             <Grid size={5} />
-//             <Grid size={12}>
-//               <Skeleton height={14} />
-//             </Grid>
-//             <Grid size={12}>
-//               <Skeleton height={14} />
-//             </Grid>
-//             <Grid size={4}>
-//               <Skeleton height={100} />
-//             </Grid>
-//             <Grid size={8}>
-//               <Skeleton height={100} />
-//             </Grid>
-
-//             <Grid size={12}>
-//               <Skeleton height={150} />
-//             </Grid>
-//             <Grid size={12}>
-//               <Skeleton height={14} />
-//             </Grid>
-
-//             <Grid size={3}>
-//               <Skeleton height={100} />
-//             </Grid>
-//             <Grid size={3}>
-//               <Skeleton height={100} />
-//             </Grid>
-//             <Grid size={3}>
-//               <Skeleton height={100} />
-//             </Grid>
-//             <Grid size={3}>
-//               <Skeleton height={100} />
-//             </Grid>
-//           </Grid> */}
-//         </PageContainer>
-//       </DashboardLayout>
-//     </AppProvider>
-//   );
-// }
+export default Courses;
+``
