@@ -5,8 +5,9 @@ import React, { useState, useContext } from 'react';
 import { SidebarDemo } from './CoursesSideBar';
 import { GlobalContext } from '@/context/GlobalContext';
 import SignUp from '@/components/Auth/signUp';
+import Image from 'next/image';
 
-const Courses = () => {
+  const Courses = () => {
   const [isOpen, setIsOpen] = useState(true);
   const {showAuth, setShowAuth} = useContext(GlobalContext)
   const [showScanner, setShowScanner] = useState(false)
@@ -33,7 +34,7 @@ const Courses = () => {
         )}
       {
         <div>
-               <Image src="/qrcode.png" alt="QR Code" width={200} height={200} />>
+               {/* <Image src="/qrcode.png" alt="QR Code" width={200} height={200} /> */}
         </div>
       }
     </div>
