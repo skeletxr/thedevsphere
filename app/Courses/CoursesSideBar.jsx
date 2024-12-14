@@ -51,7 +51,7 @@ export function SidebarDemo({ setShowScanner }) {
     >
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody
-          className="justify-between gap-10"
+          className="justify-between gap-10 bg-black  dark:bg-black"
           style={{ background: "black" }}
         >
           <div

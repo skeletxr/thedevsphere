@@ -12,7 +12,7 @@ import toast from 'react-hot-toast';
 import { Toaster } from 'react-hot-toast';
 const Courses = () => {
   const notify = () =>{
-    console.log('notify')
+    
     toast.success('Here is your toast.');
   }
   const {showAuth, setShowAuth} = useContext(GlobalContext)
@@ -41,7 +41,7 @@ const Courses = () => {
 
   return (
     <div className='h-screen overflow-hidden'>
-  <Toaster/>
+  {/* <Toaster/> */}
    
       <div className="hidden md:block overflow-hidden">
       <Navbar />
@@ -56,7 +56,7 @@ const Courses = () => {
       {showScanner && showScanner === "not done" ? (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="image-container">
-            <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
+            <Image src="/payQR.jpg" alt="QR Code" width={400} height={400}  />
         
           </div>
           <div className="absolute bottom-16" onClick={() =>{
