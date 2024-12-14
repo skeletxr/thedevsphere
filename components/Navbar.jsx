@@ -36,7 +36,7 @@ const path = usePathname();
             </div>
            {
             path == "/" && (
-              <ul className="hidden lg:flex ml-14 space-x-12">
+              <ul className="hidden lg:flex ml-14 space-x-12 cursor-pointer">
               {navItems.map((item, index) => (
            
                 <li

@@ -24,7 +24,7 @@ const scrollToFeatures = useRef(null)
         scrollToRequestCallBack={scrollToRequestCallBack}
         />
 
-        <div className="max-w-7xl mx-auto pt-20 px-6">
+        <div className="max-w-7xl mx-auto pt-19 px-6">
           <HeroSection />
           <FeatureSection scrollToFeatures={scrollToFeatures}/>
           <ReqCall  scrollToRequestCallBack={scrollToRequestCallBack}/>
