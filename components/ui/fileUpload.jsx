@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { IconUpload } from "@tabler/icons-react";
 import { useDropzone } from "react-dropzone";
-
+import  Button  from "./button";
 const mainVariant = {
   initial: {
     x: 0,
@@ -32,15 +32,13 @@ export const FileUpload = ({
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-     console.log("file uploaded",newFiles);
+    console.log(newFiles);
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     onChange && onChange(newFiles);
   };
 
   const handleClick = () => {
-   
     fileInputRef.current?.click();
-    
   };
 
   const { getRootProps, isDragActive } = useDropzone({
@@ -62,9 +60,7 @@ export const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          onChange={(e) => {handleFileChange(Array.from(e.target.files || []))
-            console.log("file uploaded",e);
-          }}
+          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden" />
         <div
           className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
@@ -158,6 +154,9 @@ export const FileUpload = ({
           </div>
         </div>
       </motion.div>
+<div className="flex justify-center mt-4">
+<Button name="Done" />
+  </div>
     </div>)
   );
 };

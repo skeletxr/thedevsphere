@@ -12,6 +12,7 @@ import Testimonials from '@/components/Testimonials';
 import Workflow from '@/components/Workflow';
 import React, { useRef, useState, useContext } from 'react'
 import Loader from '@/components/ui/loading';
+ 
 
 function page() {
  const { showAuth ,setShowAuth} = useContext(GlobalContext)
@@ -19,6 +20,9 @@ function page() {
 const scrollToFeatures = useRef(null)
   const scrollToRequestCallBack = useRef(null)
   const scrollToTestimonials = useRef(null)
+
+
+ 
   return (
     <>
         <Navbar scrollToFeatures={scrollToFeatures} scrollToTestimonials={scrollToTestimonials} setShowAuth={setShowAuth} showAuth={showAuth} scrollToPrice={scrollToPrice}
@@ -34,7 +38,7 @@ const scrollToFeatures = useRef(null)
           <Pricing scrollToPrice={scrollToPrice}/>
           <Testimonials scrollToTestimonials={scrollToTestimonials}/>
           <Footer />
-           
+  
         </div>
         {showAuth && (
           <div className="flex fixed top-0 right-20">
