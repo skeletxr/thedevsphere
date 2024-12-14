@@ -1,13 +1,10 @@
-
-
-
 import React from 'react';
 
 const ReqCall = ({scrollToRequestCallBack}) => {
   return (
-    <div className="min-h-screen  flex flex-row justify-between items-center gap-8" ref={scrollToRequestCallBack}>
+    <div className="min-h-screen flex flex-col lg:flex-row justify-between items-center gap-8" ref={scrollToRequestCallBack}>
    
-<div className="flex  flex-col items-center ml-6 justify-center h-screen dark p-4">
+<div className="flex flex-col items-center ml-6 justify-center h-screen dark p-4">
   <div className="w-full min-w-[38vw] max-w-md bg-[rgba(54,29,151,0.5)] rounded-lg shadow-md p-6">
     <h2 className="text-2xl flex pb-2 font-bold text-gray-200 mb-4 justify-center">Request Callback</h2>
     <form className="flex flex-col">
@@ -78,16 +75,11 @@ const ReqCall = ({scrollToRequestCallBack}) => {
     </form>
   </div>
 </div>
-<div className="flex  w-[500] h-[506px] mr-6">
-      <img  src="/images/contact-us.png" alt="Picture of the author" />
+<div className="flex w-full max-w-[500px] h-auto mr-6 lg:mr-0 lg:ml-6">
+      <img  src="/images/contact-us.png" alt="Picture of the author" className="w-full h-auto" />
     </div>
   </div>
 
   );
 }
 export default ReqCall;
-
-
-
-
- 

@@ -11,7 +11,7 @@ import { GlobalContext } from '@/context/GlobalContext';
 import Testimonials from '@/components/Testimonials';
 import Workflow from '@/components/Workflow';
 import React, { useRef, useState, useContext } from 'react'
-
+import Loader from '@/components/ui/loading';
 
 function page() {
  const { showAuth ,setShowAuth} = useContext(GlobalContext)
@@ -29,7 +29,7 @@ const scrollToFeatures = useRef(null)
           <HeroSection />
           <FeatureSection scrollToFeatures={scrollToFeatures}/>
           <ReqCall  scrollToRequestCallBack={scrollToRequestCallBack}/>
-
+<Loader/>
           <Workflow />
           <Pricing scrollToPrice={scrollToPrice}/>
           <Testimonials scrollToTestimonials={scrollToTestimonials}/>

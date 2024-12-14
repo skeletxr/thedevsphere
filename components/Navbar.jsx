@@ -136,7 +136,31 @@ const path = usePathname();
             <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
               <ul>
                 {navItems.map((item, index) => (
-                  <li key={index} className="py-4">
+                  <li key={index} className="py-4"
+                  onClick={() => {
+
+                    if (path !== "/") {
+                      router.push("/");
+                    } else if (item.label === "Internship Program") {
+                      scrollToPrice.current.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    } else if (item.label === "Contact Us") {
+                      scrollToRequestCallBack.current.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    } else if (item.label === "Testimonials") {
+                      scrollToTestimonials.current.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }else if (item.label === "Features") {
+                      scrollToFeatures.current.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }
+                    
+                  }}
+                  >
                     <a href={item.href}>{item.label}</a>
                   </li>
                 ))}

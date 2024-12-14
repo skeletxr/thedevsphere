@@ -9,15 +9,18 @@ import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/fileUpload';
 import toast from 'react-hot-toast';
+import Loader from '@/components/ui/loading';
+
 import { Toaster } from 'react-hot-toast';
 const Courses = () => {
-  const notify = () =>{
+  const notify = (text) =>{
     
-    toast.success('Here is your toast.');
+    toast.success(text);
   }
   const {showAuth, setShowAuth} = useContext(GlobalContext)
   const [showScanner, setShowScanner] = useState('');
- 
+  const [showSpinner, setShowSpinner] = useState(false);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (event.target.closest(".image-container")) return;
@@ -36,7 +39,7 @@ const Courses = () => {
   }, [showScanner]);
 
   const handleFileUpload = (e) =>{
-    // handleFileUpload()
+    console.log(e);
   }
 
   return (
@@ -60,7 +63,7 @@ const Courses = () => {
         
           </div>
           <div className="absolute bottom-16" onClick={() =>{
-            notify()
+            notify('Payment Successful so you can now upload proof of payment')
             setShowScanner("Done")
           
           } }>
@@ -70,7 +73,11 @@ const Courses = () => {
         </div>
       ) : showScanner === "Done" && (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-           <FileUpload onChange={handleFileUpload} />
+           {!showSpinner ? <FileUpload onChange={handleFileUpload} /> : (
+            <Loader/>
+           )
+           
+           }
       </div>
       )}
     </div>
