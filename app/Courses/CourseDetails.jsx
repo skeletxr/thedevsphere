@@ -9,10 +9,6 @@ import { PlugZap } from "lucide-react";
 import { GlobeLock } from "lucide-react";
 import { ThreeDCard } from "./CourseCard";
 
-// import user3 from "../assets/profile-pictures/user3.jpg";
-// import user4 from "../assets/profile-pictures/user4.jpg";
-// import user5 from "../assets/profile-pictures/user5.jpg";
-// import user6 from "../assets/profile-pictures/user6.jpg";
 
 const CourseDetails = () => {
   const syllabus = {

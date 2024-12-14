@@ -10,16 +10,20 @@ import Button from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/fileUpload';
 import toast from 'react-hot-toast';
 import Loader from '@/components/ui/loading';
+ 
 
 import { Toaster } from 'react-hot-toast';
+import { sendEmailWithAttachment } from '@/server/mailer';
 const Courses = () => {
-  const notify = (text) =>{
-    
+
+ 
+  const notify = (text) =>{ 
     toast.success(text);
   }
-  const {showAuth, setShowAuth} = useContext(GlobalContext)
+  const {showAuth, setShowAuth, user} = useContext(GlobalContext)
   const [showScanner, setShowScanner] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -38,9 +42,15 @@ const Courses = () => {
     };
   }, [showScanner]);
 
-  const handleFileUpload = (e) =>{
-    console.log(e);
-  }
+  const handleFileUpload = async(e) =>{
+   
+    try{
+        const res = await sendEmailWithAttachment('info.thedevsphere@gmail.com', 'Payment Proof', 'Payment Proof',user ,e[0]);
+        console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+}
 
   return (
     <div className='h-screen overflow-hidden'>
