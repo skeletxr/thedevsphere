@@ -12,6 +12,7 @@ import Testimonials from '@/components/Testimonials';
 import Workflow from '@/components/Workflow';
 import React, { useRef, useState, useContext } from 'react'
 
+
 function page() {
  const { showAuth ,setShowAuth} = useContext(GlobalContext)
   const scrollToPrice = useRef(null);
@@ -23,8 +24,8 @@ const scrollToFeatures = useRef(null)
         <Navbar scrollToFeatures={scrollToFeatures} scrollToTestimonials={scrollToTestimonials} setShowAuth={setShowAuth} showAuth={showAuth} scrollToPrice={scrollToPrice}
         scrollToRequestCallBack={scrollToRequestCallBack}
         />
-
         <div className="max-w-7xl mx-auto pt-19 px-6">
+          
           <HeroSection />
           <FeatureSection scrollToFeatures={scrollToFeatures}/>
           <ReqCall  scrollToRequestCallBack={scrollToRequestCallBack}/>

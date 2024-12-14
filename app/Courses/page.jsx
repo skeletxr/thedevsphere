@@ -8,13 +8,16 @@ import SignUp from '@/components/Auth/signUp';
 import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/fileUpload';
-
+import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 const Courses = () => {
-
+  const notify = () =>{
+    console.log('notify')
+    toast.success('Here is your toast.');
+  }
   const {showAuth, setShowAuth} = useContext(GlobalContext)
-  const [showScanner, setShowScanner] = useState('')
+  const [showScanner, setShowScanner] = useState('');
  
-  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (event.target.closest(".image-container")) return;
@@ -38,6 +41,7 @@ const Courses = () => {
 
   return (
     <div className='h-screen overflow-hidden'>
+  <Toaster/>
    
       <div className="hidden md:block overflow-hidden">
       <Navbar />
@@ -55,10 +59,12 @@ const Courses = () => {
             <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
         
           </div>
-          <div className="absolute bottom-16">
-            <Button name="Done" onClick={() => {setShowScanner('Done')
-            console.log("showScanner",showScanner)
-            }}/>
+          <div className="absolute bottom-16" onClick={() =>{
+            notify()
+            setShowScanner("Done")
+          
+          } }>
+            <Button name="Done" />
 
             </div>
         </div>
