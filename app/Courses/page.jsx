@@ -12,12 +12,9 @@ import toast from 'react-hot-toast';
 import Loader from '@/components/ui/loading';
 import { useParams, useSearchParams } from 'next/navigation';
  
-
  
-const Courses = () => {
+  const Courses = () => {
   const {showAuth, setShowAuth, user, userDetails} = useContext(GlobalContext);
-
-
 
   const searchParams = useSearchParams();
   const [refer, setRefer] = useState(searchParams.get('referral') || null);
