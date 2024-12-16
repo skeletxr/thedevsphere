@@ -27,12 +27,13 @@ const secondaryVariant = {
 
 export const FileUpload = ({
   onChange
+  ,updateToRealTimeDateBase
 }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
 
   const handleFileChange = (newFiles) => {
-    console.log(newFiles);
+    console.log(newFiles.originalFilename, newFiles.filepath);
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
     onChange && onChange(newFiles);
   };
@@ -154,7 +155,7 @@ export const FileUpload = ({
           </div>
         </div>
       </motion.div>
-<div className="flex justify-center mt-4">
+<div className="flex justify-center mt-4" onClick={() => updateToRealTimeDateBase()}>
 <Button name="Done" />
   </div>
     </div>)

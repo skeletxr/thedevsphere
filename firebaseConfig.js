@@ -19,6 +19,7 @@ import {
 const firebaseConfig = {
   apiKey: "AIzaSyBLlv0tjjNALEG-s6qHtIvkbzXfFH03A6g",
   authDomain: "the-dev-sphere-4266c.firebaseapp.com",
+  databaseURL: "https://the-dev-sphere-4266c-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "the-dev-sphere-4266c",
   storageBucket: "the-dev-sphere-4266c.firebasestorage.app",
   messagingSenderId: "96878219547",

@@ -1,7 +1,7 @@
 "use client"
 
 import Navbar from '@/components/Navbar';
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, use } from 'react';
 import { SidebarDemo } from './CoursesSideBar';
 import { GlobalContext } from '@/context/GlobalContext';
 import SignUp from '@/components/Auth/signUp';
@@ -10,20 +10,48 @@ import Button from '@/components/ui/Button';
 import { FileUpload } from '@/components/ui/fileUpload';
 import toast from 'react-hot-toast';
 import Loader from '@/components/ui/loading';
+import { useParams, useSearchParams } from 'next/navigation';
  
 
-import { Toaster } from 'react-hot-toast';
-import { sendEmailWithAttachment } from '@/server/mailer';
+ 
 const Courses = () => {
+  const {showAuth, setShowAuth, user, userDetails} = useContext(GlobalContext);
 
- 
+
+
+  const searchParams = useSearchParams();
+  const [refer, setRefer] = useState(searchParams.get('referral') || null);
+
   const notify = (text) =>{ 
     toast.success(text);
   }
-  const {showAuth, setShowAuth, user} = useContext(GlobalContext)
+ 
   const [showScanner, setShowScanner] = useState('');
   const [showSpinner, setShowSpinner] = useState(false);
 
+
+ const updateToRealTimeDateBase = async() =>{
+
+  if(userDetails.referId === refer) setRefer(null);
+  
+
+  const formData = new FormData();
+  formData.append('referCode', userDetails.referId === refer ? null : refer);
+  formData.append('userId', user.uid);
+  formData.append('email', user.email);
+  formData.append('name', user.displayName);
+
+  const res = await fetch('/api/referDatabase', {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await res.json();
+  console.log(data);
+ }
+
+
+  
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -43,13 +71,31 @@ const Courses = () => {
   }, [showScanner]);
 
   const handleFileUpload = async(e) =>{
-   
-    try{
-        const res = await sendEmailWithAttachment('info.thedevsphere@gmail.com', 'Payment Proof', 'Payment Proof',user ,e[0]);
-        console.log(res);
-    } catch (e) {
-      console.log(e);
-    }
+  
+    // console.log("user details",userDetails.referId, refer);
+
+    if(userDetails && userDetails.referId && userDetails.referId === refer) setRefer(null);
+ 
+
+ console.log("refer code",refer)
+
+    updateToRealTimeDateBase();
+     
+    // console.log(e[0]);
+    const formData = new FormData();
+    formData.append('type', "notify");
+    formData.append('file', e[0]);
+    formData.append('subject', 'Payment Proof');
+    formData.append('text', user.email);
+    formData.append('html', `<ul><li>refer code = ${refer} </li><li>user id = ${user.uid}</li><li>name = ${user.displayName}</li><li>email = ${user.email}</li></ul> refer code is ${refer}`);
+
+    const res = await fetch('/api/sendMail', {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    console.log(data);
+
 }
 
   return (
@@ -72,6 +118,15 @@ const Courses = () => {
             <Image src="/payQR.jpg" alt="QR Code" width={400} height={400}  />
         
           </div>
+          <div className="max-w-[190px]">
+  {/* <input 
+    placeholder="Enter refer code here...." 
+    className="text-white  border-2 border-[#8707ff] rounded-lg px-6 py-2.5 bg-transparent focus:ring-0 focus:outline-none active:shadow-[inset_2px_2px_15px_#8707ff]" 
+    name="text" 
+    type="text" 
+  /> */}
+</div>
+
           <div className="absolute bottom-16" onClick={() =>{
             notify('Payment Successful so you can now upload proof of payment')
             setShowScanner("Done")
@@ -85,7 +140,7 @@ const Courses = () => {
      
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
              <div className='image-container'>
-           {!showSpinner ? <FileUpload onChange={handleFileUpload} /> : (
+           {!showSpinner ? <FileUpload onChange={handleFileUpload} updateToRealTimeDateBase={updateToRealTimeDateBase}/> : (
             <Loader/>
            )}
              

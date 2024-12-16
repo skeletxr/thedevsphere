@@ -1,11 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useContext } from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
+import { GlobalContext } from "@/context/GlobalContext";
+import toast from "react-hot-toast";
 
 export function ThreeDCard({ setShowScanner}) {
+
+  const {user} = useContext(GlobalContext);
+ 
+  const handleClick = () => {
+     if(user){
+       setShowScanner('not done');
+     }else{
+      toast.error("Please login to continue");
+     }
+  }
+
   return (
     <CardContainer className="inter-var">
       <CardBody
@@ -32,10 +45,10 @@ export function ThreeDCard({ setShowScanner}) {
             alt="thumbnail" />
         </CardItem>
         <div className="flex justify-between items-center mt-20" 
-            onClick={() => setShowScanner('not done')}
-        
         >
           <CardItem
+            onClick={() => handleClick()}
+
             translateZ={20}
             // as={Link}
             // href=""
@@ -44,6 +57,8 @@ export function ThreeDCard({ setShowScanner}) {
             Try now →
           </CardItem>
           <CardItem 
+            onClick={() => handleClick()}
+
             translateZ={20}
             as="button"
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold">

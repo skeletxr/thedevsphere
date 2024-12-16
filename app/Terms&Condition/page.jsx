@@ -41,7 +41,7 @@ const Page = () => {
       <div className="space-y-8">
         {termsSections.map((section, index) => (
           <section key={index} className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
+            <h2 className="text-2xl text-gray-500 font-semibold mb-4">{section.title}</h2>
             {section.content.map((item, idx) => (
               <p key={idx} className="text-gray-700 mb-4">
                 {item}
