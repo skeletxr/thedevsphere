@@ -152,11 +152,11 @@ export function SidebarDemo({ setShowScanner }) {
           <div>
             <SidebarLink
               link={{
-                label: "Manu Arora",
+                label: "TheDevSphere",
                 href: "#",
                 icon: (
                   <Image
-                    src="https://assets.aceternity.com/manu.png"
+                    src="/image1.jgp"
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

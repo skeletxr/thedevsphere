@@ -39,17 +39,17 @@ const Footer = () => {
   <a className="link link-hover" href="/Terms&Condition">Terms & Conditions</a>
   </nav>
   <nav>
-    <h6 className="footer-title">Company</h6>
+    <h6 href="/" className="footer-title">TheDevSphere</h6>
     <a className="link link-hover">About us</a>
     <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
+    <a className="link link-hover">Internship</a>
+    <a className="link link-hover">Testimonials</a>
   </nav>
   <nav>
-    <h6 className="footer-title">Legal</h6>
-    <a className="link link-hover">Terms of use</a>
-    <a className="link link-hover">Privacy policy</a>
-    <a className="link link-hover">Cookie policy</a>
+    <h6 href="/" className="footer-title">Legal</h6>
+    <a href="/Terms&Condition" className="link link-hover">Terms of use</a>
+    <a href="/PrivacyPolicy" className="link link-hover">Privacy policy</a>
+    <a href="/Terms&Condition" className="link link-hover">Cookie policy</a>
   </nav>
 </footer>
 </div>

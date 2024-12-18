@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const AcceptApplication = ({data}) => {
+const AcceptApplication = ({data,handleAccept}) => {
 
  console.log(data)
 
@@ -9,18 +9,17 @@ const AcceptApplication = ({data}) => {
     <div className="flex flex-col items-center justify-center " >
       {data && Object.entries(data).map(( [id, entry], index) => (
         
-        <div className="mt-10 border rounded-lg shadow-md p-4 bg-white w-[75vw] h-auto mb-4">
+        <div className="mt-10 border rounded-lg shadow-md p-4 bg-white w-[75vw] h-auto mb-4" key={index}>
         <p className="text-sm text-gray-600">ID: {id}</p>
         
         <p className="text-sm text-gray-600">Name: {entry.name}</p>
-        {console.log(entry)}
           <p className="text-sm text-gray-600">Email: {entry.email}</p>
           <p className="text-sm text-gray-600">Refer Code: {entry.refercode ? entry.refercode : null}</p>
           <p className="text-sm text-gray-600">User uid: {entry.userId ? entry.userId : null}</p>
 
           <div className="flex mt-4 space-x-2">
             <button
-              // onClick={onAccept}
+              onClick={() => handleAccept(entry, id)}
               className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
             >
               Accept

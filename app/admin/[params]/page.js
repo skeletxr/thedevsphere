@@ -12,7 +12,6 @@ function page() {
 
   const [data, setData] = useState(null)
 if (params.key !== process.env.ADMINKEY) {
-
   return <p>Unauthorized</p>;
 }
 
@@ -20,7 +19,12 @@ if (params.key !== process.env.ADMINKEY) {
     const fetchData = async () => {
      
       try {
-        const res = await fetch("/api/adminRoute");
+        const res = await fetch("/api/adminRoute",{
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = await res.json();
         setData(data);
        
@@ -31,8 +35,34 @@ if (params.key !== process.env.ADMINKEY) {
   
     fetchData();
   }, []);
-  
 
+  
+  const handleAccept = async (doc, id) => {
+    console.log("Document:", doc);
+    console.log("ID:", id);
+  
+    try {
+      const res = await fetch(`/api/adminRoute`, { // Removed dynamic ID from URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id, ...doc }), // Include ID in the request body
+      });
+  
+      console.log("Response status:", res.status);
+  
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+  
+      const data = await res.json();
+      console.log("Response data:", data);
+    } catch (error) {
+      console.error("Error updating data:", error);
+    }
+  };
+  
   
   return (
      <>
@@ -46,7 +76,7 @@ if (params.key !== process.env.ADMINKEY) {
       </div>
      </div>
 
-     <AcceptApplication data={data}/>
+     <AcceptApplication data={data} handleAccept={handleAccept}/>
 
      </>
   )
