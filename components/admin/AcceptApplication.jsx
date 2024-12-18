@@ -14,7 +14,7 @@ const AcceptApplication = ({data,handleAccept}) => {
         
         <p className="text-sm text-gray-600">Name: {entry.name}</p>
           <p className="text-sm text-gray-600">Email: {entry.email}</p>
-          <p className="text-sm text-gray-600">Refer Code: {entry.refercode ? entry.refercode : null}</p>
+          <p className="text-sm text-gray-600">Refer Code: {entry.referCode ? entry.referCode : null}</p>
           <p className="text-sm text-gray-600">User uid: {entry.userId ? entry.userId : null}</p>
 
           <div className="flex mt-4 space-x-2">
@@ -35,24 +35,6 @@ const AcceptApplication = ({data,handleAccept}) => {
       ))}
         </div>
  
-  );
-};
-
-// Main component to render multiple entries
-const EntriesList = ({ entries, handleAccept, handleReject }) => {
-  return (
-    <div className="max-w-2xl mx-auto p-4">
-      {entries.map((entry, index) => (
-        <EntryCard
-          key={index}
-          name={entry.name}
-          email={entry.email}
-          refercode={entry.refercode}
-          onAccept={() => handleAccept(entry)}
-          onReject={() => handleReject(entry)}
-        />
-      ))}
-    </div>
   );
 };
 

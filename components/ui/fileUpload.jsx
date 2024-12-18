@@ -27,7 +27,8 @@ const secondaryVariant = {
 
 export const FileUpload = ({
   onChange
-  ,updateToRealTimeDateBase
+  ,updateToRealTimeDateBase,
+  setShowSpinner
 }) => {
   const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
@@ -156,7 +157,7 @@ export const FileUpload = ({
         </div>
       </motion.div>
 <div className="flex justify-center mt-4" onClick={() => updateToRealTimeDateBase()}>
-<Button name="Done" />
+<Button name="Done" onClick={() => setShowSpinner(true)} />
   </div>
     </div>)
   );

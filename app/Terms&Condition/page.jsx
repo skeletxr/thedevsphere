@@ -163,7 +163,7 @@ const termsSections = [
     title: "14. Contact Information",
     content: [
       "For queries, clarifications, or complaints, you may contact us at:",
-      "Email: contact.thedevsphere.com",
+      "Email: contact.thedevsphere@gmail.com",
       "WhatsApp: [--------------]",
     ],
   },

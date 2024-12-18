@@ -29,7 +29,7 @@ import { useParams, useSearchParams } from 'next/navigation';
 
  const updateToRealTimeDateBase = async() =>{
 
-  if(userDetails.referId === refer) setRefer(null);
+  if(userDetails.referId && userDetails.referId === refer) setRefer(null);
   
 
   const formData = new FormData();
@@ -74,7 +74,7 @@ import { useParams, useSearchParams } from 'next/navigation';
     if(userDetails && userDetails.referId && userDetails.referId === refer) setRefer(null);
  
 
- console.log("refer code",refer)
+ 
 
     updateToRealTimeDateBase();
      
@@ -132,7 +132,7 @@ import { useParams, useSearchParams } from 'next/navigation';
      
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
              <div className='image-container'>
-           {!showSpinner ? <FileUpload onChange={handleFileUpload} updateToRealTimeDateBase={updateToRealTimeDateBase}/> : (
+           {!showSpinner ? <FileUpload onChange={handleFileUpload} updateToRealTimeDateBase={updateToRealTimeDateBase} setShowSpinner={setShowSpinner}/> : (
             <Loader/>
            )}
              

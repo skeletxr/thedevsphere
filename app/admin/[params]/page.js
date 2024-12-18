@@ -36,8 +36,10 @@ if (params.key !== process.env.ADMINKEY) {
     fetchData();
   }, []);
 
-  
+
   const handleAccept = async (doc, id) => {
+    setData((prevData) => prevData.filter(item => item.id !== id));
+
     console.log("Document:", doc);
     console.log("ID:", id);
   
@@ -57,7 +59,10 @@ if (params.key !== process.env.ADMINKEY) {
       }
   
       const data = await res.json();
-      console.log("Response data:", data);
+      
+      if(status === 200){
+        alert("Application Accepted")
+      }
     } catch (error) {
       console.error("Error updating data:", error);
     }
@@ -68,7 +73,6 @@ if (params.key !== process.env.ADMINKEY) {
      <>
      <div className="flex flex-col">
      <div className="flex justify-center"
-      onClick={() => fetchData()}
      >
       <Tabs/>
       </div>

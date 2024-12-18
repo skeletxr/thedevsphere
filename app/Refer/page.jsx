@@ -30,6 +30,7 @@ const Refer = () => {
   console.log(isReferralCodeAvailable);
   const handleClick = async () => {
     const res = await referLogic(user);
+    window.location.reload();
     setIsReferralCodeAvailable(res);
   };
   return (
