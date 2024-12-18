@@ -4,26 +4,25 @@
 
 import React, { useContext, useEffect, useRef } from "react";
 
- 
- 
 import { useState } from "react";
- 
 
 import Navbar from "@/components/Navbar";
 import { referLogic } from "@/constants/logic";
 import Footer from "@/components/Footer";
 import { GlobalContext } from "@/context/GlobalContext";
+import { Loader } from "lucide-react";
 
 const Refer = () => {
   const { user, userDetails } = useContext(GlobalContext);
   const scroll = useRef(null);
-  const [isReferralCodeAvailable, setIsReferralCodeAvailable] =
-    useState("pending");
+  const [isReferralCodeAvailable, setIsReferralCodeAvailable] = useState("pending");
+  const [referavai, setReferavai] = useState(false)
 
   useEffect(() => {
     if (user && userDetails && userDetails.referId) {
       setIsReferralCodeAvailable(userDetails.referId);
     } else {
+      setReferavai(true)
       setIsReferralCodeAvailable(false);
     }
   }, [user, userDetails]);
@@ -58,10 +57,7 @@ const Refer = () => {
           className="flex justify-center my-10"
           onClick={() => scroll.current.scrollIntoView({ behavior: "smooth" })}
         >
-          <a
-            
-            className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md max-w-[75vw] mx-auto text-white"
-          >
+          <a className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md max-w-[75vw] mx-auto text-white">
             Get your refferal link
           </a>
         </div>
@@ -133,7 +129,7 @@ const Refer = () => {
                   <img
                     alt="Get rewarded"
                     className="w-3/4 h-3/4 rounded-full"
-                    src='/get-rewarded.png'
+                    src="/get-rewarded.png"
                   />
                 </div>
                 <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
@@ -166,8 +162,8 @@ const Refer = () => {
             className="flex  flex-col md:flex-row w-full max-w-lg "
             ref={scroll}
           >
-            {isReferralCodeAvailable === "pending" ||
-            isReferralCodeAvailable ? (
+            {isReferralCodeAvailable === "pending" || !referavai ||
+             isReferralCodeAvailable  ? (
               <>
                 <div className="flex flex-col gap-4 m-auto">
                   <div className="flex">
@@ -212,7 +208,13 @@ const Refer = () => {
                   </div>
                 </div>
               </>
-            ) : (
+            ) : isReferralCodeAvailable === 'pending' ? (
+              <>
+      <Loader/>
+              
+              </>
+
+            ) : referavai && !isReferralCodeAvailable && (
               <>
                 <div>
                   <div className="flex items-center justify-center m-auto">
@@ -266,8 +268,11 @@ const Refer = () => {
           </div>
         </div>
       </section>
-
-      <Footer />
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Footer />
+        
+      </div>
+      
     </>
   );
 };

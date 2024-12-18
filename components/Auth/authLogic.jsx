@@ -20,7 +20,7 @@ const cookies = new Cookies();
     signUp(details, cookies);
      
   }else if(type === 'login'){
-    login(details);
+    login(details, cookies);
     
   }else if(type === 'provider'){
    
@@ -39,22 +39,27 @@ const signUp = async(details, cookies) =>{
     try{
       const useCredentials = await createUserWithEmailAndPassword(auth, details.email, details.password);
       
-      await setDoc(doc(db, "users", useCredentials.user.uid), {
+      console.log("user creditals",useCredentials);
+     const res = await setDoc(doc(db, "users", useCredentials.user.uid), {
         name: details.name || '',
         email: details.email,
         password: details.password,
         referId: '',
         referUser: [],
         totalAmountPaidForReferral: 0,
-        totalAmountRemainingFromReferral: 0,
-        pandingReferUsers: [],
+        totalAmountRemainingofReferral: 0,
+        purchasedCourses: [],
       });
-      cookies.set("auth-token", userCredential.user.accessToken, {
+       console.log(res);
+      cookies.set("auth-token", useCredentials.user.accessToken, {
         sameSite: "none",
         secure: true,
       });
+      alert('User created successfully');
+      window.location.reload();
 
     }catch(err){
+      console.log(err);
       alert(err.message);
     }
 
@@ -74,7 +79,8 @@ const login = async(details,cookies) =>{
       secure: true,
     });
 
-
+    alert('User Login successfully');
+    window.location.reload();
 
   }
   catch(err){
@@ -94,8 +100,8 @@ const authWithProvide = async(cookies) =>{
 
   if (!userSnapshot.exists()) {
     await setDoc(userDoc, {
-      // name: result.user.displayName || '',
-      // email: result.user.email,
+      name: result.user.displayName || '',
+      email: result.user.email,
       referId: '',
       referUser: [],
       totalAmountPaidForReferral: 0,

@@ -12,19 +12,12 @@ export async function POST(req) {
       const email = formData.get('email');
       const name = formData.get('name');
 
-      // Validate that the authenticated user is only modifying their own data
-      // if (userId !== user.uid) {
-      //   return NextResponse.json({
-      //     status: 403,
-      //     body: "Forbidden: You can only update your own data",
-
-      //   });
-      // }
 
       console.log("Request data:", { userId, referCode, email, name });
 
       // Update the user's data in the 'user/$uid' path
       await set(ref(realTimeDataBase, `users/${userId}`), {
+        userId,
         referCode,
         email,
         name,

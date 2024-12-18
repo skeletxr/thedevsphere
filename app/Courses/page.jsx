@@ -116,12 +116,7 @@ import { useParams, useSearchParams } from 'next/navigation';
         
           </div>
           <div className="max-w-[190px]">
-  {/* <input 
-    placeholder="Enter refer code here...." 
-    className="text-white  border-2 border-[#8707ff] rounded-lg px-6 py-2.5 bg-transparent focus:ring-0 focus:outline-none active:shadow-[inset_2px_2px_15px_#8707ff]" 
-    name="text" 
-    type="text" 
-  /> */}
+
 </div>
 
           <div className="absolute bottom-16" onClick={() =>{

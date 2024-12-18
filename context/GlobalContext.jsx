@@ -9,6 +9,7 @@ import { auth,db } from "@/firebaseConfig";
 const GlobalContext = createContext();
 
 const GlobalProvider = ({ children }) => {
+  
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
 
@@ -25,6 +26,7 @@ const GlobalProvider = ({ children }) => {
       console.log(userData);
       setUserDetails(userData);
     } else {
+      setUserDetails(null);
       console.log("No such document!");
     }
   };

@@ -264,9 +264,11 @@ const Refer = () => {
             )}
           </div>
         </div>
-      </section>
+ 
+      </section>    
 
-      <Footer />
+
+
     </>
   );
 };

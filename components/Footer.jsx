@@ -1,6 +1,15 @@
+
+
+
 import { resourcesLinks, platformLinks, communityLinks } from "@/constants";
+
+
 const Footer = () => {
+
+
   return (
+    <>
+
     <div className=" flex justify-center items-center w-[90vw]">
     <footer className="footer center mt-10 w-screen h-auto text-base-content p-10">
   <aside>
@@ -44,6 +53,9 @@ const Footer = () => {
   </nav>
 </footer>
 </div>
+        
+
+</>
   );
 };
 
