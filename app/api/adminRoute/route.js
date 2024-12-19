@@ -19,15 +19,20 @@ export async function POST(req) {
   try {
     const body = await req.json(); // Parse the request body
     const { id, ...doc } = body; // Extract ID and document data
+    if(!doc || ! id){
+      return NextResponse.json({ message: "Data Not available" }, { status: 400 });
+    }
 console.log("body", doc)
     if (!id) {
       return NextResponse.json({ message: " ID is required" }, { status: 400 });
     }
- 
-   const userCollectionRef = collection(db, "users");
-   
 
+    let userDoc = null;
  
+    if(doc.referCode && doc.referCode !== 'null'){
+      console.log("Refer code found in the request body:", doc.referCode);
+
+   const userCollectionRef = collection(db, "users");
    const q = query(userCollectionRef, where("referId", "==", doc.referCode));
 // Debugging: Log the query
 
@@ -35,7 +40,7 @@ console.log("body", doc)
     const userDocRef = querySnapshot.docs[0].ref;
     
 
-    const userDoc = await getDoc(userDocRef);
+     userDoc = await getDoc(userDocRef);
     const currenttotalAmountRemainingFromReferral = userDoc.data().totalAmountRemainingFromReferral || 0;
 
     await updateDoc(userDocRef, {
@@ -43,11 +48,19 @@ console.log("body", doc)
       totalAmountRemainingFromReferral: currenttotalAmountRemainingFromReferral + 2000,
     });
 
+  }
     const userUpdateRef = firestoreDoc(db, "users", id);
     await updateDoc(userUpdateRef, {
-      ReferedBy: userDoc.data().email,
+      ...(doc.referCode !== 'null' ? {
+         ReferedBy: arrayUnion(`Referred by: ${userDoc.data().email} for ${process.env.COURSE1}`),
+         OwnedCourses: arrayUnion(process.env.COURSE1),
+        } :{
+          OwnedCourses: arrayUnion(process.env.COURSE1),
+      }),
     });
     
+
+
     const deleteRef = ref(realTimeDataBase, `users/${id}`); // Adjust the path based on your database structure
     await remove(deleteRef);
 
@@ -66,9 +79,13 @@ console.log("body", doc)
 }
 
 
-export async function GET() {
-  console.log("GET request received");
+export async function GET(req) {
+ 
+  const { searchParams } = new URL(req.url);
+    const tab = searchParams.get('tab');
 
+console.log("Tab:", tab);
+if(tab === '1'){
   const userRef = ref(realTimeDataBase, "users/");
   try {
     const snapshot = await get(userRef);
@@ -88,6 +105,13 @@ export async function GET() {
       { status: 500 }
     );
   }
+}else{
+  console.log("Tab 2 data requested");
+  return NextResponse.json(
+    { message: "Not data available at tab 2" },
+    { status: 200 }
+  );
+}
 }
 
 

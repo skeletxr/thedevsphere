@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import {
   IconArrowLeft,
@@ -13,6 +13,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import CourseDetails from "./CourseDetails";
 import { ThreeDCard } from "./CourseCard";
+import { GlobalContext } from "@/context/GlobalContext";
 
 const items = [
   { id: 1, name: "Item 1" },
@@ -21,6 +22,7 @@ const items = [
 ];
 
 export function SidebarDemo({ setShowScanner }) {
+  const {user} = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
   const [subDropdowns, setSubDropdowns] = useState({}); // For sub-dropdowns
@@ -152,11 +154,11 @@ export function SidebarDemo({ setShowScanner }) {
           <div>
             <SidebarLink
               link={{
-                label: "TheDevSphere",
+                label: `${user && user.displayName ? user.displayName : "User"}`,
                 href: "#",
                 icon: (
                   <Image
-                    src="/image1.jgp"
+                  src={user && user.photoURL ? user.photoURL : "/avatar.png"}
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}

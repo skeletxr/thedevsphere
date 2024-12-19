@@ -35,7 +35,7 @@ function page() {
         <HeroSection />
         <FeatureSection scrollToFeatures={scrollToFeatures} />
         <ReqCall scrollToRequestCallBack={scrollToRequestCallBack} />
-        <Loader />
+        {/* <Loader /> */}
         <Workflow />
         <Pricing scrollToPrice={scrollToPrice} />
         <Testimonials scrollToTestimonials={scrollToTestimonials} />

@@ -16,7 +16,7 @@
 
 .tab-container {
   position: relative;
-  width: 395px;
+  width:  600px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -29,7 +29,8 @@
 
 .indicator {
   content: "";
-  width: 130px;  height: 28px;
+  width: 200px;  
+  height: 28px;
   background: #008922;
   position: absolute;
   top: 2px;
@@ -42,7 +43,7 @@
 }
 
 .tab {
-  width: 130px;
+  width:200px;
   height: 28px;
   position: absolute;
   z-index: 99;
@@ -52,9 +53,12 @@
 
 
 .tab_label {
-  width: 130px;
+  width: 205px;
   height: 28px;
-
+  white-space: nowrap;
+  overflow-x: hidden;
+  
+  text-overflow: ellipsis;
   position: relative;
   z-index: 999;
 
@@ -75,9 +79,9 @@
 }
 
 .tab--2:checked ~ .indicator {
-  left: calc(130px + 2px);
+  left: calc(200px + 2px);
 }
 
 .tab--3:checked ~ .indicator {
-  left: calc(130px * 2 + 2px);
+  left: calc(200px * 2 + 2px);
 }

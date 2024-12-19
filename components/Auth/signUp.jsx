@@ -41,24 +41,26 @@ const SignUp = ({ showAuth, setShowAuth }) => {
               <form action="#">
                 <div className="relative mt-6">
                   <input
+                    autoFocus
                     type="email"
                     value={form.email}
                     onChange={(e) =>
                       setForm({ ...form, email: e.target.value })
                     }
                     placeholder="Email"
-                    className="w-full h-12 px-4 text-black border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full h-12 px-4 text-white border rounded-md focus:outline-none focus:border-blue-500"
                   />
                 </div>
-                <div className="relative mt-6">
+                <div className="relative mt-6 ">
                   <input
+                    capture
                     value={form.password}
                     onChange={(e) =>
                       setForm({ ...form, password: e.target.value })
                     }
                     type={showPassword.login ? "text" : "password"}
                     placeholder="Password"
-                    className="w-full h-12 px-4 text-black border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full h-12 px-4 text-white border rounded-md focus:outline-none focus:border-blue-500"
                   />
                   <i
                     className={`bx ${
@@ -144,7 +146,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                       setForm({ ...form, email: e.target.value })
                     }
                     placeholder="Email"
-                    className="w-full h-12 px-4 text-black border rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full h-12 px-4 text-white border rounded-md focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div className="relative mt-6">
@@ -155,15 +157,16 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                       setForm({ ...form, password: e.target.value })
                     }
                     placeholder="Create password"
-                    className="w-full h-12 px-4 border text-black rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full h-12 px-4 border text-white rounded-md focus:outline-none focus:border-blue-500"
                   />
                 </div>
                 <div className="relative mt-6">
                   <input
+                  required
                     // onChange={(e) => e.target.value === form.password ? setForm({ ...form,  password: e.target.value }) : null}
                     type={showPassword.signup ? "text" : "password"}
                     placeholder="Confirm password"
-                    className="w-full h-12 px-4 border text-black rounded-md focus:outline-none focus:border-blue-500"
+                    className="w-full h-12 px-4 border text-white rounded-md focus:outline-none focus:border-blue-500"
                   />
                   <i
                     className={`bx ${

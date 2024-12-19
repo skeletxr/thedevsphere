@@ -1,15 +1,15 @@
+"use client";
 import React from "react";
 
 
-const AcceptApplication = ({data,handleAccept}) => {
+const AcceptApplication = ({data,handleAccept, handleReject}) => {
 
- console.log(data)
 
   return (
     <div className="flex flex-col items-center justify-center " >
-      {data && Object.entries(data).map(( [id, entry], index) => (
-        
+      {data && Object.entries(data).map(( [id, entry], index) => (   
         <div className="mt-10 border rounded-lg shadow-md p-4 bg-white w-[75vw] h-auto mb-4" key={index}>
+
         <p className="text-sm text-gray-600">ID: {id}</p>
         
         <p className="text-sm text-gray-600">Name: {entry.name}</p>
@@ -25,14 +25,16 @@ const AcceptApplication = ({data,handleAccept}) => {
               Accept
             </button>
             <button
-              // onClick={onReject}
+              onClick={() => handleReject(id)}
               className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
             >
               Reject
             </button>
           </div>
         </div>
+        
       ))}
+
         </div>
  
   );
