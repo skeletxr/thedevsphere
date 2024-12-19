@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 function page() {
   const params = useParams();
   const [showLoading, setShowLoading] = useState(false);
+  const [disable, setDisable] = React.useState(false);
 
   const [tabSwitch, setTabSwitch] = useState(1);
 
@@ -29,7 +30,7 @@ function page() {
           },
         });
         const data = await res.json();
-        setData("data :", data);
+        setData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -38,9 +39,9 @@ function page() {
     fetchData();
   }, [tabSwitch]);
 
-  console.log("tab switch", tabSwitch);
 
   const handleAccept = async (doc, id) => {
+    setDisable(true);
     setShowLoading(true);
     console.log("Document:", doc);
     console.log("ID:", id);
@@ -73,15 +74,21 @@ function page() {
     } catch (error) {
       console.error("Error updating data:", error);
     }
+
+    setDisable(false);
   };
 
   const handleReject = async (id) => {
+    setDisable(true);
+    console.log("ID:", id);
+    if(!id) return;
     const deleteRef = ref(realTimeDataBase, `users/${id}`); // Adjust the path based on your database structure
     await remove(deleteRef);
     setData((prevData) =>
       Array.isArray(prevData) ? prevData.filter((item) => item.id !== id) : []
     );
     toast.success("Application Rejected");
+    setDisable(false);
   };
 
   return (
@@ -95,9 +102,12 @@ function page() {
       {tabSwitch === 1 ? (
         
         <AcceptApplication
+        disable={disable}
           data={data}
           handleAccept={handleAccept}
           handleReject={handleReject}
+
+
         />
       ) : (
         <div>Tab 2</div>

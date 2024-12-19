@@ -79,7 +79,7 @@ const path = usePathname();
                     onClick={() =>
                       showAuth ? setShowAuth("") : setShowAuth("Login")
                     }
-                    className="py-2 px-3 border rounded-md"
+                    className="py-2 px-3 cursor-pointer border rounded-md"
                   >
                     Log In
                   </a>
@@ -87,7 +87,7 @@ const path = usePathname();
                     onClick={() =>
                       showAuth ? setShowAuth("") : setShowAuth("Signup")
                     }
-                    className="bg-gradient-to-r from-purple-500 to-purple-800 py-2 px-3 text-white rounded-md"
+                    className="bg-gradient-to-r from-purple-500 to-purple-800 py-2 px-3 cursor-pointer text-white rounded-md"
                   >
                     Create an account
                   </a>
@@ -96,7 +96,7 @@ const path = usePathname();
                 <>
                   <a
                     onClick={() => router.push("/")}
-                    className="py-2 px-3 border rounded-md"
+                    className="py-2 cursor-pointer px-3 border rounded-md"
                   >
                     Home
                   </a>
@@ -105,7 +105,7 @@ const path = usePathname();
                 <>
                   <a
                     onClick={() => router.push("/Refer")}
-                    className="py-2 px-3 border rounded-md"
+                    className="py-2 cursor-pointer px-3 border rounded-md"
                   >
                     Referrals
                   </a>
@@ -120,7 +120,7 @@ const path = usePathname();
                     window.location.reload();
                     router.push("/");
                   }}
-                  className="py-2 px-3 border rounded-md"
+                  className="py-2 px-3 cursor-pointer border rounded-md"
                 >
                   LogOut
                 </button>

@@ -2,7 +2,7 @@
 import React from "react";
 
 
-const AcceptApplication = ({data,handleAccept, handleReject}) => {
+const AcceptApplication = ({data,handleAccept, handleReject, disable}) => {
 
 
   return (
@@ -19,12 +19,14 @@ const AcceptApplication = ({data,handleAccept, handleReject}) => {
 
           <div className="flex mt-4 space-x-2">
             <button
-              onClick={() => handleAccept(entry, id)}
+              onClick={() => handleAccept(entry, id)  }
+              disabled={disable}
               className="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600"
             >
               Accept
             </button>
             <button
+              disabled={disable}
               onClick={() => handleReject(id)}
               className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
             >

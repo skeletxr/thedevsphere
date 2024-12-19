@@ -31,25 +31,24 @@ const Footer = () => {
     </p>
   </aside>
   <nav>
-    <h6 className="footer-title">Features</h6>
+    <h6 className="footer-title">Services</h6>
+    <a className="link link-hover">Features</a>
     <a className="link link-hover">Contact Us</a>
-    <a className="link link-hover">Internship Program</a>
-    <a className="link link-hover">Testimonials</a>
-   
-  <a className="link link-hover" href="/Terms&Condition">Terms & Conditions</a>
+    <a className="link link-hover">Internship Program</a>   
+  <a className="link link-hover">Testimonials</a>
   </nav>
   <nav>
-    <h6 href="/" className="footer-title">TheDevSphere</h6>
+    <h6 href="/" className="footer-title">Company</h6>
     <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Internship</a>
-    <a className="link link-hover">Testimonials</a>
+    <a href="/ContactUs" className="link link-hover">Contact info</a>
+    <a className="link link-hover">Documentation</a>
+   
   </nav>
   <nav>
     <h6 href="/" className="footer-title">Legal</h6>
     <a href="/Terms&Condition" className="link link-hover">Terms of use</a>
     <a href="/PrivacyPolicy" className="link link-hover">Privacy policy</a>
-    <a href="/Terms&Condition" className="link link-hover">Cookie policy</a>
+    <a href="/CookiePolicy" className="link link-hover">Cookie policy</a>
   </nav>
 </footer>
 </div>

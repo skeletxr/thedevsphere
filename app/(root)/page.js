@@ -39,7 +39,7 @@ function page() {
         <Workflow />
         <Pricing scrollToPrice={scrollToPrice} />
         <Testimonials scrollToTestimonials={scrollToTestimonials} />
-      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 
         <Footer/>
         </div>
