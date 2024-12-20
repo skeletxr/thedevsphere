@@ -19,7 +19,6 @@ function page() {
   if (params.key !== process.env.ADMINKEY) {
     return <p>Unauthorized</p>;
   }
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,13 +28,22 @@ function page() {
             "Content-Type": "application/json",
           },
         });
-        const data = await res.json();
-        setData(data);
+  
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+ 
+        
+        const text = await res.json();
+        console.log("Text:", text.data);
+        // const data = text ? JSON.parse(text) : {};
+        // console.log("Data:", data);
+        // setData(data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, [tabSwitch]);
 
@@ -117,3 +125,47 @@ function page() {
 }
 
 export default page;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// useEffect(() => {
+//   const fetchData = async () => {
+//     try {
+//       const res = await fetch(`/api/adminRoute?tab=${tabSwitch}`, {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
+      
+
+   
+//       const data = await res.json();
+//       console.log("Data:", data);
+//       setData(data);
+//     } catch (error) {
+//       console.error("Error fetching data:", error);
+//     }
+//   };
+
+//   fetchData();
+// }, [tabSwitch]);

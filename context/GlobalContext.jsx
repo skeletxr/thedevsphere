@@ -23,7 +23,7 @@ const GlobalProvider = ({ children }) => {
     const userSnapshot = await getDoc(userDoc);
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
-      console.log(userData);
+      // console.log(userData);
       setUserDetails(userData);
     } else {
       setUserDetails(null);

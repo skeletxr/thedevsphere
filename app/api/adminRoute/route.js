@@ -108,16 +108,40 @@ export async function GET(req) {
       );
     }
   } else {
-    console.log("Tab 2 data requested");
+    
 
-    // const userCollectionRef = collection(db, "users");
-    // const q = query(userCollectionRef, where("totalAmountRemainingFromReferral", ">", '0'));    
-    // console.log("Tab 2 data requested", q);
-    return NextResponse.json(
-      { message: "Not data available at tab 2" },
-      { data: "No data available", status: 200 },
-      { status: 200 }
-    );
+    const userCollectionRef = collection(db, "users");
+    const q = query(userCollectionRef, where("totalAmountRemainingFromReferral", ">", 0));    
+
+    
+    try {
+        const querySnapshot = await getDocs(q);
+        // console.log("Tab 2 data retrieved", {
+        //     size: querySnapshot.size,
+        //     empty: querySnapshot.empty,
+        //     docs: querySnapshot.docs.map(doc => doc.id),
+        //     data: querySnapshot.docs.map(doc => doc.data())
+        // });
+    
+        if (querySnapshot.empty) {
+            return NextResponse.json(
+                { message: "No data available at tab 2" },
+                { status: 200 }
+            );
+        }
+    
+        const data = querySnapshot.docs.map(doc => doc.data());
+        return NextResponse.json(
+            { message: "Data retrieved successfully", data: data },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error("Error retrieving Tab 2 data", error);
+        return NextResponse.json(
+            { message: "Error retrieving data", error: error.message },
+            { status: 500 }
+        );
+    }
   }
 }
 
