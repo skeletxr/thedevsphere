@@ -7,6 +7,7 @@ const AcceptApplication = ({data,handleAccept, handleReject, disable}) => {
 
   return (
     <div className="flex flex-col items-center justify-center " >
+      {console.log(data)}
       {data && Object.entries(data).map(( [id, entry], index) => (   
         <div className="mt-10 border rounded-lg shadow-md p-4 bg-white w-[75vw] h-auto mb-4" key={index}>
 

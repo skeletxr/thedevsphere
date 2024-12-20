@@ -7,6 +7,7 @@ import { ref, remove } from "firebase/database";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import ReferralData from "@/components/ReferalData/ReferralData";
 
 function page() {
   const params = useParams();
@@ -35,10 +36,9 @@ function page() {
  
         
         const text = await res.json();
-        console.log("Text:", text.data);
-        // const data = text ? JSON.parse(text) : {};
-        // console.log("Data:", data);
-        // setData(data);
+        console.log("Text:", {text, tabSwitch});
+       
+        {tabSwitch === 1 ? setData(text) : tabSwitch === 2 ? setData(text.data) : tabSwitch === 3 && setData(text)}
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -107,18 +107,22 @@ function page() {
         </div>
         <div className="flex w-full "></div>
       </div>
+
       {tabSwitch === 1 ? (
-        
         <AcceptApplication
-        disable={disable}
+          disable={disable}
           data={data}
           handleAccept={handleAccept}
           handleReject={handleReject}
-
-
         />
-      ) : (
-        <div>Tab 2</div>
+      ) : tabSwitch === 2 ? (
+        // data && Object.entries(data).map(([id, item], index) => (
+          // <div key={id}>
+            <ReferralData data={data} />
+          // </div>
+        // ))
+      ) : tabSwitch === 3 && (
+        <div>Tab 3</div>
       )}
     </>
   );
