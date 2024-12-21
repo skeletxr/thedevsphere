@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import ReferralData from "@/components/ReferalData/ReferralData";
+import Loader from "@/components/ui/loading";
 
 function page() {
   const params = useParams();
@@ -53,15 +54,16 @@ function page() {
     setShowLoading(true);
     console.log("Document:", doc);
     console.log("ID:", id);
-
+    const type = "application";
     try {
+      toast.loading("Accepting Application so please don't Refresh The Page and please wait for while...");
       const res = await fetch(`/api/adminRoute`, {
         // Removed dynamic ID from URL
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, ...doc }), // Include ID in the request body
+        body: JSON.stringify({ id, type, ...doc }), // Include ID in the request body
       });
 
       if (!res.ok) {
@@ -69,17 +71,20 @@ function page() {
       }
 
       const data = await res.json();
-
-      if (data.status === 200) {
+      
         setData((prevData) =>
           Array.isArray(prevData)
             ? prevData.filter((item) => item.id !== id)
             : []
         );
+        toast.dismiss();
         toast.success("Application Accepted");
         setShowLoading(false);
-      }
+       
     } catch (error) {
+      toast.dismiss();
+      setShowLoading(false);
+
       console.error("Error updating data:", error);
     }
 
@@ -108,7 +113,7 @@ function page() {
         <div className="flex w-full "></div>
       </div>
 
-      {tabSwitch === 1 ? (
+      {!showLoading ? tabSwitch === 1 ? (
         <AcceptApplication
           disable={disable}
           data={data}
@@ -116,13 +121,13 @@ function page() {
           handleReject={handleReject}
         />
       ) : tabSwitch === 2 ? (
-        // data && Object.entries(data).map(([id, item], index) => (
-          // <div key={id}>
+ 
             <ReferralData data={data} />
-          // </div>
-        // ))
+
       ) : tabSwitch === 3 && (
         <div>Tab 3</div>
+      ) : (
+        <Loader/>
       )}
     </>
   );

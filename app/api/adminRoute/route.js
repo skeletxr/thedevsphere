@@ -16,8 +16,13 @@ import {
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  const body = await req.json(); 
+  const {type} = body;
+  if(type === "application") {
+    
+
   try {
-    const body = await req.json(); // Parse the request body
+    // Parse the request body
     const { id, ...doc } = body; // Extract ID and document data
     if (!doc || !id) {
       return NextResponse.json(
@@ -31,6 +36,9 @@ export async function POST(req) {
     }
 
     let userDoc = null;
+
+
+
 
     if (doc.referCode && doc.referCode !== "null") {
       console.log("Refer code found in the request body:", doc.referCode);
@@ -52,19 +60,26 @@ export async function POST(req) {
           currenttotalAmountRemainingFromReferral + 2000,
       });
     }
+
+
+
+
+
     const userUpdateRef = firestoreDoc(db, "users", id);
-    await updateDoc(userUpdateRef, {
-      ...(doc.referCode !== "null"
-        ? {
-            ReferedBy: arrayUnion(
-              `Referred by: ${userDoc.data().email} for ${process.env.COURSE1}`
-            ),
-            OwnedCourses: arrayUnion(process.env.COURSE1),
-          }
-        : {
-            OwnedCourses: arrayUnion(process.env.COURSE1),
-          }),
-    });
+
+
+  await updateDoc(userUpdateRef, {
+    ...(doc.referCode !== "null"
+      ? {
+          ReferedBy: arrayUnion(
+            `Referred by: ${userDoc.data().email} for ${process.env.COURSE1}`
+          ),
+          OwnedCourses: arrayUnion(process.env.COURSE1),
+        }
+      : {
+          OwnedCourses: arrayUnion(process.env.COURSE1),
+        }),
+  });
 
     const deleteRef = ref(realTimeDataBase, `users/${id}`); // Adjust the path based on your database structure
     await remove(deleteRef);
@@ -80,6 +95,37 @@ export async function POST(req) {
       { status: 500 }
     );
   }
+}else if(type === "UpdatePaymentInfo"){
+  const {  email, amount } = body;
+try{
+  const userCollectionRef = collection(db, "users");
+  const q = query(userCollectionRef, where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  const userDocRef = querySnapshot.docs[0].ref;
+  const userDoc = await getDoc(userDocRef);
+  const currenttotalAmountRemainingFromReferral =
+    userDoc.data().totalAmountRemainingFromReferral || 0;
+  
+    await updateDoc(userDocRef, {
+      totalAmountRemainingFromReferral:
+        currenttotalAmountRemainingFromReferral - amount,
+      totalAmountPaidForReferral: amount,
+    });
+
+  return NextResponse.json(
+    { message: "Data saved successfully" },
+    { status: 200 }
+  );
+}catch(err){
+  console.error("Error saving data:", err);
+  return NextResponse.json(
+    { message: "Internal Server Error" },
+    { status: 500 }
+  );
+}
+}
+
+
 }
 
 export async function GET(req) {
@@ -108,104 +154,39 @@ export async function GET(req) {
       );
     }
   } else {
-    
-
     const userCollectionRef = collection(db, "users");
-    const q = query(userCollectionRef, where("totalAmountRemainingFromReferral", ">", 0));    
+    const q = query(
+      userCollectionRef,
+      where("totalAmountRemainingFromReferral", ">", 0)
+    );
 
-    
     try {
-        const querySnapshot = await getDocs(q);
-        // console.log("Tab 2 data retrieved", {
-        //     size: querySnapshot.size,
-        //     empty: querySnapshot.empty,
-        //     docs: querySnapshot.docs.map(doc => doc.id),
-        //     data: querySnapshot.docs.map(doc => doc.data())
-        // });
-    
-        if (querySnapshot.empty) {
-            return NextResponse.json(
-                { message: "No data available at tab 2" },
-                { status: 200 }
-            );
-        }
-    
-        const data = querySnapshot.docs.map(doc => doc.data());
+      const querySnapshot = await getDocs(q);
+      // console.log("Tab 2 data retrieved", {
+      //     size: querySnapshot.size,
+      //     empty: querySnapshot.empty,
+      //     docs: querySnapshot.docs.map(doc => doc.id),
+      //     data: querySnapshot.docs.map(doc => doc.data())
+      // });
+
+      if (querySnapshot.empty) {
         return NextResponse.json(
-            { message: "Data retrieved successfully", data: data },
-            { status: 200 }
+          { message: "No data available at tab 2" },
+          { status: 200 }
         );
+      }
+
+      const data = querySnapshot.docs.map((doc) => doc.data());
+      return NextResponse.json(
+        { message: "Data retrieved successfully", data: data },
+        { status: 200 }
+      );
     } catch (error) {
-        console.error("Error retrieving Tab 2 data", error);
-        return NextResponse.json(
-            { message: "Error retrieving data", error: error.message },
-            { status: 500 }
-        );
+      console.error("Error retrieving Tab 2 data", error);
+      return NextResponse.json(
+        { message: "Error retrieving data", error: error.message },
+        { status: 500 }
+      );
     }
   }
 }
-
-
-// export async function POST(req) {
-//   try {
-//     const body = await req.json(); // Parse the request body
-//     const { id, ...doc } = body; // Extract ID and document data
-//     console.log("Request Body:", doc);
-
-//     // Check if the ID and referCode are provided in the request
-//     if (!id || !doc.referCode) {
-//       return NextResponse.json(
-//         { message: "ID and referCode are required" },
-//         { status: 400 }
-//       );
-//     }
-
-//     // Reference the users collection and create the query
-//     const userCollectionRef = collection(db, "users");
-//     console.log("Querying users collection for referCode:", doc.referCode);
-//     const q = query(userCollectionRef, where("referId", "==", doc.referCode));
-
-//     // Execute the query
-//     const querySnapshot = await getDocs(q);
-
-//     // Log the query result for debugging
-//     console.log("querySnapshot:", querySnapshot);
-//     console.log("Number of documents found:", querySnapshot.size);
-
-//     // Check if any documents were found
-//     if (querySnapshot.empty) {
-//       return NextResponse.json(
-//         { message: "No user found with the provided referCode" },
-//         { status: 404 }
-//       );
-//     }
-
-//     // Get the reference of the first matching document
-//     const userDocRef = querySnapshot.docs[0].ref;
-//     console.log("User Document Reference:", userDocRef);
-
-//     // Fetch the user document to get the current referral balance
-//     const userDoc = await getDoc(userDocRef);
-//     const currentTotalAmountRemainingFromReferral =
-//       userDoc.data().totalAmountRemainingFromReferral || 0;
-//     console.log("Current referral balance:", currentTotalAmountRemainingFromReferral);
-
-//     // Update the user's referUser field and totalAmountRemainingFromReferral
-//     await updateDoc(userDocRef, {
-//       referUser: arrayUnion(id),
-//       totalAmountRemainingFromReferral: currentTotalAmountRemainingFromReferral + 2000,
-//     });
-
-//     // Return success response
-//     return NextResponse.json(
-//       { message: "Data saved successfully" },
-//       { status: 200 }
-//     );
-//   } catch (error) {
-//     console.error("Error saving data:", error);
-//     return NextResponse.json(
-//       { message: "Internal Server Error", error: error.message },
-//       { status: 500 }
-//     );
-//   }
-// }

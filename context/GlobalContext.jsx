@@ -4,7 +4,9 @@ import { createContext, useEffect, useState } from "react";
 
  
 import { doc, getDoc } from "firebase/firestore";
-import { auth,db } from "@/firebaseConfig";
+import { auth,db, realTimeDataBase } from "@/firebaseConfig";
+
+import { ref, get } from "firebase/database";
 
 const GlobalContext = createContext();
 
@@ -12,7 +14,7 @@ const GlobalProvider = ({ children }) => {
   
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
-
+  const [isCoursePurchased, setIsCoursePurchased] = useState(false);
   const [user, setUser] = useState(null);
   const [userDetails, setUserDetails] = useState(null);
 
@@ -31,11 +33,30 @@ const GlobalProvider = ({ children }) => {
     }
   };
 
+  const checkCoursePurchasedPending = async (id) => {
+    if (!id) {
+      console.error("User ID is undefined");
+      return;
+    }
+  
+    const userRef = ref(realTimeDataBase, `users/${id}`);
+    const snapshot = await get(userRef);
+    if (snapshot.exists()) {
+      const userData = snapshot.val();
+      console.log("is course purchased", userData);
+      setIsCoursePurchased(true);
+    } else {
+      console.log("No such document!");
+      setIsCoursePurchased(false);
+    }
+  };
+
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged((userD) => {
       if (userD) {
         getUserInfo(userD); // Call getUserInfo when user is signed in
         setIsAuthorized(true);
+        checkCoursePurchasedPending(userD.uid);
       } else {
         setIsAuthorized(false);
         setUser(null);
@@ -46,6 +67,10 @@ const GlobalProvider = ({ children }) => {
     return () => unsubscribeAuth();
   }, []);
 
+
+
+
+
   return (
     <GlobalContext.Provider
       value={{
@@ -53,7 +78,9 @@ const GlobalProvider = ({ children }) => {
         user,
         userDetails,
         setShowAuth,
-        showAuth
+        showAuth,
+        isCoursePurchased,
+        checkCoursePurchasedPending
       }}
     >
       {children}

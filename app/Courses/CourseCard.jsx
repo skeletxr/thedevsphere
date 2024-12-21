@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
 import { GlobalContext } from "@/context/GlobalContext";
@@ -9,8 +9,24 @@ import toast from "react-hot-toast";
 
 export function ThreeDCard({ setShowScanner}) {
 
-  const {user} = useContext(GlobalContext);
- 
+  const {user, isCoursePurchased, userDetails} = useContext(GlobalContext);
+ console.log(userDetails);
+  
+ const [checkStatus, setCheckStatus] = useState("Buy Now");
+
+ useEffect(() => {
+   if (isCoursePurchased) {
+     setCheckStatus("Pending");
+   } else if (userDetails && userDetails.OwnedCourses && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
+     setCheckStatus("Purchased");
+   } else {
+     setCheckStatus("Buy Now");
+   }
+ }, [isCoursePurchased, userDetails]);
+
+
+ console.log(checkStatus)
+   
   const handleClick = () => {
      if(user){
        setShowScanner('not done');
@@ -47,7 +63,8 @@ export function ThreeDCard({ setShowScanner}) {
         <div className="flex justify-between items-center mt-20" 
         >
           <CardItem
-            onClick={() => handleClick()}
+                        onClick={() => checkStatus === "Buy Now" && handleClick()}
+
 
             translateZ={20}
             // as={Link}
@@ -57,12 +74,12 @@ export function ThreeDCard({ setShowScanner}) {
             Try now →
           </CardItem>
           <CardItem 
-            onClick={() => handleClick()}
-
+            onClick={() => checkStatus === "Buy Now" && handleClick()}
+             
             translateZ={20}
             as="button"
             className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold">
-            Buy Now
+              {checkStatus}
           </CardItem>
         </div>
       </CardBody>

@@ -1,15 +1,16 @@
+"use client";
+
+// import { resourcesLinks, platformLinks, communityLinks } from "@/constants";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 
+const Footer = ({scrollToTestimonials,  scrollToPrice, scrollToRequestCallBack}) => {
 
-import { resourcesLinks, platformLinks, communityLinks } from "@/constants";
-
-
-const Footer = () => {
-
+  const pathName = usePathname();
 
   return (
-    <>
-
+    
     <div className=" flex justify-center items-center w-[90vw]">
     <footer className="footer center mt-10 w-screen h-auto text-base-content p-10">
   <aside>
@@ -31,30 +32,80 @@ const Footer = () => {
     </p>
   </aside>
   <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Features</a>
-    <a className="link link-hover">Contact Us</a>
-    <a className="link link-hover">Internship Program</a>   
-  <a className="link link-hover">Testimonials</a>
-  </nav>
-  <nav>
-    <h6 href="/" className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a href="/ContactUs" className="link link-hover">Contact info</a>
-    <a className="link link-hover">Documentation</a>
-   
-  </nav>
-  <nav>
-    <h6 href="/" className="footer-title">Legal</h6>
-    <a href="/Terms&Condition" className="link link-hover">Terms of use</a>
-    <a href="/PrivacyPolicy" className="link link-hover">Privacy policy</a>
-    <a href="/CookiePolicy" className="link link-hover">Cookie policy</a>
-  </nav>
-</footer>
-</div>
-        
-
-</>
+          <h6 className="footer-title">Features</h6>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToRequestCallBack.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Contact Us
+          </div>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToPrice.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Internship Program
+          </div>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToTestimonials.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Testimonials
+          </div>
+          <Link href="/Terms&Condition" className="link link-hover">
+            Terms & Conditions
+          </Link>
+        </nav>
+        <nav>
+          <h6 className="footer-title">TheDevSphere</h6>
+          <div className="link link-hover">About us</div>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToRequestCallBack.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Contact
+          </div>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToPrice.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Internship
+          </div>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToTestimonials.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Testimonials
+          </div>
+        </nav>
+        <nav>
+          <h6 className="footer-title">Legal</h6>
+          <Link href="/Terms&Condition" className="link link-hover">
+            Terms of use
+          </Link>
+          <Link href="/PrivacyPolicy" className="link link-hover">
+            Privacy policy
+          </Link>
+        </nav>
+      </footer>
+    </div>
   );
 };
 

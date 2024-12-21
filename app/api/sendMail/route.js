@@ -5,7 +5,8 @@
 
 import { NextResponse } from "next/server";
 import nodemailer from 'nodemailer';
-import formidable from 'formidable';
+import { doc as firestoreDoc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 export async function POST(req) {
   try {
@@ -18,10 +19,14 @@ export async function POST(req) {
     html = formData.get('html');
 
 
-    if(type == "notify"){ // Parse the request body as FormData
+    if(type == "notify"){ 
      file = formData.get('file');
   fileBuffer = Buffer.from(await file.arrayBuffer());
-
+  //  const id = formData.get('id');
+  //      const userUpdateRef = firestoreDoc(db, "users", id);
+  //   await updateDoc(userUpdateRef, {
+       
+  //    });
     }
 
 console.log( subject, text, html);

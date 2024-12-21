@@ -17,13 +17,13 @@ import {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBLlv0tjjNALEG-s6qHtIvkbzXfFH03A6g",
+  apiKey: "AIzaSyAnzHm1XWvscrQxMHbXrVUf6hMT-YGjBsA",
   authDomain: "the-dev-sphere-4266c.firebaseapp.com",
   databaseURL: "https://the-dev-sphere-4266c-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "the-dev-sphere-4266c",
   storageBucket: "the-dev-sphere-4266c.firebasestorage.app",
   messagingSenderId: "96878219547",
-  appId: "1:96878219547:web:3b6f99e8e010a940d483be"
+  appId: "1:96878219547:web:dd9e0da8476680b5d483be"
 };
 
 // Initialize Firebase

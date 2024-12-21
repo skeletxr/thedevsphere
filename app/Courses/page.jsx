@@ -1,54 +1,48 @@
-"use client"
+"use client";
 
-import Navbar from '@/components/Navbar';
-import React, { useState, useContext, useEffect, use } from 'react';
-import { SidebarDemo } from './CoursesSideBar';
-import { GlobalContext } from '@/context/GlobalContext';
-import SignUp from '@/components/Auth/signUp';
-import Image from 'next/image';
-import Button from '@/components/ui/Button';
-import { FileUpload } from '@/components/ui/fileUpload';
-import toast from 'react-hot-toast';
-import Loader from '@/components/ui/loading';
-import { useParams, useSearchParams } from 'next/navigation';
- 
- 
-  const Courses = () => {
-  const {showAuth, setShowAuth, user, userDetails} = useContext(GlobalContext);
+import Navbar from "@/components/Navbar";
+import React, { useState, useContext, useEffect, use } from "react";
+import { SidebarDemo } from "./CoursesSideBar";
+import { GlobalContext } from "@/context/GlobalContext";
+import SignUp from "@/components/Auth/signUp";
+import Image from "next/image";
+import Button from "@/components/ui/Button";
+import { FileUpload } from "@/components/ui/fileUpload";
+import toast from "react-hot-toast";
+import Loader from "@/components/ui/loading";
+import { useSearchParams } from "next/navigation";
+
+const Courses = () => {
+  const { showAuth, setShowAuth, user, userDetails, checkCoursePurchasedPending } =
+    useContext(GlobalContext);
 
   const searchParams = useSearchParams();
-  const [refer, setRefer] = useState(searchParams.get('referral') || null);
+  const [refer, setRefer] = useState(searchParams.get("referral") || null);
 
-  const notify = (text) =>{ 
+  const notify = (text) => {
     toast.success(text);
-  }
- 
-  const [showScanner, setShowScanner] = useState('');
+  };
+
+  const [showScanner, setShowScanner] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
 
+  const updateToRealTimeDateBase = async () => {
+    if (userDetails.referId && userDetails.referId === refer) setRefer(null);
 
- const updateToRealTimeDateBase = async() =>{
+    const formData = new FormData();
+    formData.append("referCode", userDetails.referId === refer ? null : refer);
+    formData.append("userId", user.uid);
+    formData.append("email", user.email);
+    formData.append("name", user.displayName);
 
-  if(userDetails.referId && userDetails.referId === refer) setRefer(null);
-  
+    const res = await fetch("/api/referDatabase", {
+      method: "POST",
+      body: formData,
+    });
 
-  const formData = new FormData();
-  formData.append('referCode', userDetails.referId === refer ? null : refer);
-  formData.append('userId', user.uid);
-  formData.append('email', user.email);
-  formData.append('name', user.displayName);
-
-  const res = await fetch('/api/referDatabase', {
-    method: 'POST',
-    body: formData
-  });
-
-  const data = await res.json();
-  console.log(data);
- }
-
-
-  
+    const data = await res.json();
+    return data.status;
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -67,84 +61,93 @@ import { useParams, useSearchParams } from 'next/navigation';
     };
   }, [showScanner]);
 
-  const handleFileUpload = async(e) =>{
-  
-    // console.log("user details",userDetails.referId, refer);
+  const handleFileUpload = async (e) => {
+    setShowSpinner(true);
 
-    if(userDetails && userDetails.referId && userDetails.referId === refer) setRefer(null);
- 
+    if (userDetails && userDetails.referId && userDetails.referId === refer)
+      setRefer(null);
 
- 
+    const up = await updateToRealTimeDateBase();
 
-    updateToRealTimeDateBase();
-     
     // console.log(e[0]);
     const formData = new FormData();
-    formData.append('type', "notify");
-    formData.append('file', e[0]);
-    formData.append('subject', 'Payment Proof');
-    formData.append('text', user.email);
-    formData.append('html', `<ul><li>refer code = ${refer} </li><li>user id = ${user.uid}</li><li>name = ${user.displayName}</li><li>email = ${user.email}</li></ul> refer code is ${refer}`);
+    formData.append("type", "notify");
+    // formData.append("id", user.uid);
+    formData.append("file", e[0]);
+    formData.append("subject", "Payment Proof");
+    formData.append("text", user.email);
+    formData.append(
+      "html",
+      `<ul><li>refer code = ${refer} </li><li>user id = ${user.uid}</li><li>name = ${user.displayName}</li><li>email = ${user.email}</li></ul> refer code is ${refer}`
+    );
 
-    const res = await fetch('/api/sendMail', {
-      method: 'POST',
-      body: formData
+    const res = await fetch("/api/sendMail", {
+      method: "POST",
+      body: formData,
     });
     const data = await res.json();
-    console.log(data);
 
-}
+    setShowSpinner(false);
+    if (data.status === 200 && up === 200) {
+      checkCoursePurchasedPending(user.uid);
+      notify("Payment Proof uploaded successfully");
+    } else {
+      notify("Payment Proof not uploaded successfully");
+    }
+  };
 
   return (
-    <div className='h-screen overflow-hidden'>
-  {/* <Toaster/> */}
-   
+    <div className="h-screen overflow-hidden">
+      {/* <Toaster/> */}
+
       <div className="hidden md:block overflow-hidden">
-      <Navbar />
+        <Navbar />
       </div>
-    
-      <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner}/>
+
+      <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} />
       {showAuth && (
-          <div className="flex fixed top-0 right-20">
-            <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
-          </div>
-        )}
-      {showScanner && showScanner === "not done" ? (
+        <div className="flex fixed top-0 right-20">
+          <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
+        </div>
+      )}
+      {!showSpinner ? showScanner && showScanner === "not done" ? (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
           <div className="image-container">
-            <Image src="/payQR.jpg" alt="QR Code" width={400} height={400}  />
-        
+            <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
           </div>
-          <div className="max-w-[190px]">
+          <div className="max-w-[190px]"></div>
 
-</div>
-
-          <div className="absolute bottom-16" onClick={() =>{
-            notify('Payment Successful so you can now upload proof of payment')
-            setShowScanner("Done")
-          
-          } }>
+          <div
+            className="absolute bottom-16"
+            onClick={() => {
+              notify(
+                "Payment Successful so you can now upload proof of payment"
+              );
+              setShowScanner("Done");
+            }}
+          >
             <Button name="Done" />
-
-            </div>
+          </div>
         </div>
-      ) : showScanner === "Done" && (
-     
+      ) : (
+        showScanner === "Done" && (
+          <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+            <div className="image-container">
+              {/* {!showSpinner ? ( */}
+                <FileUpload onChange={handleFileUpload} />
+              {/* ) : (
+                <Loader />
+              )} */}
+            </div>
+          </div>
+        )
+      ) : (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-             <div className='image-container'>
-           {!showSpinner ? <FileUpload onChange={handleFileUpload} updateToRealTimeDateBase={updateToRealTimeDateBase} setShowSpinner={setShowSpinner}/> : (
-            <Loader/>
-           )}
-             
-      </div>
-      </div>
+<Loader/>
+</div>
       )}
     </div>
   );
 };
 
 export default Courses;
- 
-
-
-
