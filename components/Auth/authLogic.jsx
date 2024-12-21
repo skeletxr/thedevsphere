@@ -8,29 +8,31 @@
 import { auth, db, provider } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import toast from "react-hot-toast";
 import Cookies from "universal-cookie";
 
-const auths = (type, e,   details) => {
+const auths = (type, e,   details, setShowAuth) => {
 
   e.preventDefault();
 
     
 const cookies = new Cookies();
   if( type === 'signup'){
-    signUp(details, cookies);
+    signUp(details, cookies, setShowAuth);
      
   }else if(type === 'login'){
-    login(details, cookies);
+    login(details, cookies, setShowAuth);
     
   }else if(type === 'provider'){
    
-    authWithProvide(cookies)
+    authWithProvide(cookies, setShowAuth)
   
   }
 
 }
 
-const signUp = async(details, cookies) =>{
+const signUp = async(details, cookies, setShowAuth) =>{
+   toast.loading('Creating User...');
     if(details.email === '' || details.password === ''){
       alert('Please fill in all fields');
       return;
@@ -55,9 +57,10 @@ const signUp = async(details, cookies) =>{
         sameSite: "none",
         secure: true,
       });
-      alert('User created successfully');
-      window.location.reload();
-
+      toast.dismiss();
+      toast.success('User created successfully');
+      // window.location.reload();
+      setShowAuth(false)
     }catch(err){
       console.log(err);
       alert(err.message);
@@ -66,7 +69,7 @@ const signUp = async(details, cookies) =>{
 }
 
 
-const login = async(details,cookies) =>{
+const login = async(details,cookies, setShowAuth) =>{
   if(details.email === '' || details.password === ''){
     alert('Please fill in all fields');
     return;
@@ -78,9 +81,8 @@ const login = async(details,cookies) =>{
       sameSite: "none",
       secure: true,
     });
-
-    alert('User Login successfully');
-    window.location.reload();
+    toast.success('Login successful');
+    setShowAuth(false);
 
   }
   catch(err){
@@ -109,6 +111,7 @@ const authWithProvide = async(cookies) =>{
       pandingReferUsers: [],
     });
   }
+  setShowAuth(false);
 }
 
 export default auths

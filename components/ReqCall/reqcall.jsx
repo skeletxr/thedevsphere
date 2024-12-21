@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 const ReqCall = ({ scrollToRequestCallBack }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
+    toast.loading("Sending Request...");
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     const formData1 = new FormData();
@@ -18,8 +19,10 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
     console.log(res);
    if(res.status == 200){
     e.target.reset();
+    toast.dismiss();
     toast.success("Request sended successfully");
    }else{
+    toast.dismiss();
     toast.error(`Failed to send request ${res.status}`);
     }
 

@@ -42,6 +42,7 @@ function page() {
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 
         <Footer
+        scrollToFeatures={scrollToFeatures}
         scrollToTestimonials={scrollToTestimonials}
         scrollToPrice={scrollToPrice}
         scrollToRequestCallBack={scrollToRequestCallBack}

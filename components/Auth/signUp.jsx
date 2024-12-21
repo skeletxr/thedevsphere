@@ -76,7 +76,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                 </div>
                 <div className="mt-6">
                   <button
-                    onClick={(e) => auths("login", e, form)}
+                    onClick={(e) => auths("login", e, form, setShowAuth)}
                     className="w-full h-12 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                   >
                     Login

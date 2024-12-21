@@ -90,9 +90,10 @@ const Courses = () => {
     setShowSpinner(false);
     if (data.status === 200 && up === 200) {
       checkCoursePurchasedPending(user.uid);
+      setShowScanner(false);
       notify("Payment Proof uploaded successfully");
     } else {
-      notify("Payment Proof not uploaded successfully");
+      toast.error("Payment Proof not uploaded successfully");
     }
   };
 

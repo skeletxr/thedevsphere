@@ -11,9 +11,13 @@ import { referLogic } from "@/constants/logic";
 import Footer from "@/components/Footer";
 import { GlobalContext } from "@/context/GlobalContext";
 import { Loader } from "lucide-react";
+import Table from "@/components/table";
 
 const Refer = () => {
-  const { user, userDetails } = useContext(GlobalContext);
+  const { user, userDetails, getUserInfo } = useContext(GlobalContext);
+  if(!user){
+    return;
+  }
   const scroll = useRef(null);
   const [isReferralCodeAvailable, setIsReferralCodeAvailable] = useState("pending");
   const [referavai, setReferavai] = useState(false)
@@ -29,9 +33,12 @@ const Refer = () => {
 
   console.log(isReferralCodeAvailable);
   const handleClick = async () => {
+    if(user && userDetails){
     const res = await referLogic(user);
-    window.location.reload();
+    getUserInfo(user)
+    //window.location.reload();
     setIsReferralCodeAvailable(res);
+    }
   };
   return (
     <>
@@ -41,7 +48,7 @@ const Refer = () => {
 
       <div
         // style={{ backgroundColor: "#1D232A" }}
-        className="flex min-h-[65vh] flex-col items-center justify-center mt-6  max-w-[75vw] mx-auto lg:mt-20"
+        className="flex min-h-[65vh] flex-col items-center justify-center mx-auto max-w-[75vw]  lg:mt-15"
       >
         <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide">
           Refer To Your Friends And Earn{" "}
@@ -55,10 +62,10 @@ const Refer = () => {
           certificate of completion!
         </p>
         <div
-          className="flex justify-center my-10"
+          className="flex justify-center mt-20"
           onClick={() => scroll.current.scrollIntoView({ behavior: "smooth" })}
         >
-          <a className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md max-w-[75vw] mx-auto text-white">
+          <a className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 rounded-md max-w-[75vw] cursor-pointer mx-auto text-white">
             Get your refferal link
           </a>
         </div>
@@ -151,7 +158,7 @@ const Refer = () => {
       <section>
         <div
           style={{ backgroundColor: "transparent" }}
-          className="flex flex-col items-center justify-center max-h-[50vh] px-4 bg-gray-900 text-white"
+          className="flex flex-col items-center justify-center mt-10 max-h-[50vh] px-4 bg-gray-900 text-white"
         >
           <h1 className="text-3xl md:text-4xl font-bold text-purple-200 mb-2 text-center">
             Ready to earn cash rewards?
@@ -253,11 +260,11 @@ const Refer = () => {
                   <div>
                     <p className="text-sm text-gray-500 mt-4 text-center">
                       By using our service you agree with our{" "}
-                      <a href="#" className="text-purple-400 underline">
+                      <a href="/Terms&Conditions" className="text-purple-400 underline">
                         Terms of Service
                       </a>{" "}
                       and{" "}
-                      <a href="#" className="text-purple-400 underline">
+                      <a href="/PrivacyPolicy" className="text-purple-400 underline">
                         Privacy Policy
                       </a>
                       .
@@ -268,9 +275,11 @@ const Refer = () => {
             )}
           </div>
         </div>
+        <Table userDetails={userDetails} />
       </section>
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Footer />
+
+        <Footer classs="mt-0" />
         
       </div>
       

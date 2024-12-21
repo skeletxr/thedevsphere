@@ -80,7 +80,9 @@ const GlobalProvider = ({ children }) => {
         setShowAuth,
         showAuth,
         isCoursePurchased,
-        checkCoursePurchasedPending
+        checkCoursePurchasedPending,
+        getUserInfo
+        
       }}
     >
       {children}

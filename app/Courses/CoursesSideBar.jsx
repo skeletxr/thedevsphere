@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import CourseDetails from "./CourseDetails";
 import { ThreeDCard } from "./CourseCard";
 import { GlobalContext } from "@/context/GlobalContext";
+import toast from "react-hot-toast";
 
 const items = [
   { id: 1, name: "Item 1" },
@@ -22,7 +23,7 @@ const items = [
 ];
 
 export function SidebarDemo({ setShowScanner }) {
-  const {user} = useContext(GlobalContext);
+  const {user, userDetails, isCoursePurchased} = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
   const [subDropdowns, setSubDropdowns] = useState({}); // For sub-dropdowns
@@ -100,24 +101,33 @@ export function SidebarDemo({ setShowScanner }) {
 
                 return (
                   <div key={index}>
+
                     {/* Dropdown Toggle */}
                     <div
                       className="flex items-center cursor-pointer"
-                      onClick={() => setCoursesOpen(!coursesOpen)}
+                      onClick={() => {
+                          if (isCoursePurchased) {
+                            toast.error("Payment Verification Pending (this may take upto 24 Hours)");
+                          } else if (userDetails && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
+                            setCoursesOpen(!coursesOpen);
+                          }
+                        }}
                     >
                       {link.icon}
                       <span className="ml-3">{link.label}</span>
                     </div>
 
                     {/* Dropdown Content */}
-                    {link.label === "My Courses" && coursesOpen && (
+                    {link.label === "My Courses" && coursesOpen &&  (
                       <div className="ml-6 mt-2 flex flex-col gap-2">
                         {link.sections.map((section, secIndex) => (
                           <div key={secIndex}>
                             {/* Sub-dropdown Toggle */}
                             <div
                               className="flex items-center cursor-pointer"
-                              onClick={() => toggleSubDropdown(secIndex)}
+                              onClick={() => {
+                                
+                                toggleSubDropdown(secIndex)}}
                             >
                               <IconArrowLeft
                                 className={`transform ${

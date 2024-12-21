@@ -5,14 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 
-const Footer = ({scrollToTestimonials,  scrollToPrice, scrollToRequestCallBack}) => {
+const Footer = ({scrollToFeatures, scrollToTestimonials,  scrollToPrice, scrollToRequestCallBack, classs}) => {
 
   const pathName = usePathname();
 
   return (
     
     <div className=" flex justify-center items-center w-[90vw]">
-    <footer className="footer center mt-10 w-screen h-auto text-base-content p-10">
+    <footer className={`footer center ${classs ? classs : 'mt-10'} w-screen h-auto text-base-content p-10`}>
   <aside>
     <svg
       width="50"
@@ -32,7 +32,16 @@ const Footer = ({scrollToTestimonials,  scrollToPrice, scrollToRequestCallBack})
     </p>
   </aside>
   <nav>
-          <h6 className="footer-title">Features</h6>
+          <h6 className="footer-title">pages</h6>
+          <div
+            onClick={() =>
+              pathName == "/" &&
+              scrollToFeatures.current.scrollIntoView({ behavior: "smooth" })
+            }
+            className="link link-hover"
+          >
+            Features
+          </div>
           <div
             onClick={() =>
               pathName == "/" &&
@@ -49,33 +58,27 @@ const Footer = ({scrollToTestimonials,  scrollToPrice, scrollToRequestCallBack})
             }
             className="link link-hover"
           >
-            Internship Program
+           Internship Program
           </div>
           <div
-            onClick={() =>
-              pathName == "/" &&
-              scrollToTestimonials.current.scrollIntoView({ behavior: "smooth" })
-            }
-            className="link link-hover"
+          onClick={() =>
+            pathName == "/" &&
+            scrollToTestimonials.current.scrollIntoView({ behavior: "smooth" })
+          }
+          className="link link-hover"
           >
-            Testimonials
+          Testimonials
           </div>
-          <Link href="/Terms&Condition" className="link link-hover">
-            Terms & Conditions
-          </Link>
         </nav>
         <nav>
           <h6 className="footer-title">TheDevSphere</h6>
           <div className="link link-hover">About us</div>
-          <div
-            onClick={() =>
-              pathName == "/" &&
-              scrollToRequestCallBack.current.scrollIntoView({ behavior: "smooth" })
-            }
+          <Link
+           href="/ContactUs"
             className="link link-hover"
           >
-            Contact
-          </div>
+            Our E-mail
+          </Link>
           <div
             onClick={() =>
               pathName == "/" &&
