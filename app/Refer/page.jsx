@@ -2,9 +2,9 @@
 
 "use client";
 
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
-import { useState } from "react";
+ 
 
 import Navbar from "@/components/Navbar";
 import { referLogic } from "@/constants/logic";
@@ -15,10 +15,8 @@ import Table from "@/components/table";
 
 const Refer = () => {
   const { user, userDetails, getUserInfo } = useContext(GlobalContext);
-  if(!user){
-    return;
-  }
-  const scroll = useRef(null);
+  const scroll = useRef();
+
   const [isReferralCodeAvailable, setIsReferralCodeAvailable] = useState("pending");
   const [referavai, setReferavai] = useState(false)
 
@@ -31,7 +29,9 @@ const Refer = () => {
     }
   }, [user, userDetails]);
 
-  console.log(isReferralCodeAvailable);
+  if(!user){
+    return;
+  } 
   const handleClick = async () => {
     if(user && userDetails){
     const res = await referLogic(user);

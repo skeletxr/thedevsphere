@@ -28,7 +28,7 @@ console.log('Resolved token path:', TOKEN_PATH);
 console.log("oAuth2Client",fs.existsSync(TOKEN_PATH))
     if (fs.existsSync(TOKEN_PATH)) {
       const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
-      console.log("token",token)
+      console.log("tokens",token)
       oAuth2Client.setCredentials(token);
 
       if (new Date() >= new Date(token.expiry_date)) {

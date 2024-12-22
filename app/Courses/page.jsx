@@ -105,7 +105,7 @@ const Courses = () => {
         <Navbar />
       </div>
 
-      <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} />
+      <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} />
       {showAuth && (
         <div className="flex fixed top-0 right-20">
           <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />

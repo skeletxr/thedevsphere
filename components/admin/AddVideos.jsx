@@ -45,9 +45,9 @@ if(tabSwitch === 3){
     <>
 
 
-     { Object.entries(data).map(([, option]) => (
+     { Object.entries(data).map(([_,option], index) => (
         <label
-          key={option.id}
+          key={index}
           htmlFor={option.id}
           className="checkbox flex items-center cursor-pointer"
         >

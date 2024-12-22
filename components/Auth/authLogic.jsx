@@ -57,10 +57,11 @@ const signUp = async(details, cookies, setShowAuth) =>{
         sameSite: "none",
         secure: true,
       });
+      setShowAuth(false)
+
       toast.dismiss();
       toast.success('User created successfully');
       // window.location.reload();
-      setShowAuth(false)
     }catch(err){
       console.log(err);
       alert(err.message);

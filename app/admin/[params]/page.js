@@ -51,12 +51,11 @@ function page() {
   }, [tabSwitch]);
 
 
-  const handleAccept = async (doc, id) => {
+  const handleAccept = async (doc, id, typos) => {
     setDisable(true);
     setShowLoading(true);
-    console.log("Document:", doc);
-    console.log("ID:", id);
-    const type = "application";
+ 
+    const type = typos ? typos : "application";
     try {
       toast.loading("Accepting Application so please don't Refresh The Page and please wait for while...");
       const res = await fetch(`/api/adminRoute`, {
@@ -73,12 +72,13 @@ function page() {
       }
 
       const data = await res.json();
-      
+      if(type === "application"){
         setData((prevData) =>
           Array.isArray(prevData)
             ? prevData.filter((item) => item.id !== id)
             : []
         );
+      }
         toast.dismiss();
         toast.success("Application Accepted");
         setShowLoading(false);
@@ -111,6 +111,7 @@ function page() {
   const handlePlaylist = async () =>{
       console.log("clickCountForAddVideo",clickCountForAddVideo)
       console.log("checkedCount",checkedCount)
+      handleAccept(clickCountForAddVideo, checkedCount, "playlist")
   }
 
   return (

@@ -19,9 +19,37 @@ import { listAllFolders } from "./VideoStreamingLogic";
 export async function POST(req) {
   const body = await req.json(); 
   const {type} = body;
-  if(type === "application") {
-    
+  console.log("Type:", body);
+  if(type === "playlist"){
+const { id: users, ...doc  } = body;
+if (!doc || !users) {
+  return NextResponse.json(
+    { message: "Data Not available" },
+    { status: 400 }
+  );
+}
+console.log("body", doc);
+ 
 
+try{
+
+  
+
+}catch(err){  
+
+  console.error("Error saving data:", err);
+  return NextResponse.json(
+    { message: "Internal Server Error" },
+    { status: 500 }
+  );
+}finally{
+  return NextResponse.json(
+    { message: "Data saved successfully" },
+    { status: 200 }
+  );
+}
+ 
+  }else if(type === "application") {     
   try {
     // Parse the request body
     const { id, ...doc } = body; // Extract ID and document data
@@ -41,8 +69,8 @@ export async function POST(req) {
 
 
 
-    if (doc.referCode && doc.referCode !== "null") {
-      console.log("Refer code found in the request body:", doc.referCode);
+  if (doc.referCode && doc.referCode !== "null") {
+      // console.log("Refer code found in the request body:", doc.referCode);
 
       const userCollectionRef = collection(db, "users");
       const q = query(userCollectionRef, where("referId", "==", doc.referCode));

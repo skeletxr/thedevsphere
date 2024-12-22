@@ -22,8 +22,8 @@ const items = [
   // Add more items as needed
 ];
 
-export function SidebarDemo({ setShowScanner }) {
-  const {user, userDetails, isCoursePurchased} = useContext(GlobalContext);
+export function SidebarDemo({ setShowScanner, setRefer }) {
+  const { user, userDetails, isCoursePurchased } = useContext(GlobalContext);
   const [open, setOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
   const [subDropdowns, setSubDropdowns] = useState({}); // For sub-dropdowns
@@ -35,22 +35,25 @@ export function SidebarDemo({ setShowScanner }) {
       icon: (
         <IconHomeShare
           stroke={2}
-          className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0"
+          className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0"
         />
       ),
+      onClick: () => {
+        window.location.href = "/";
+      }, // Added onClick for redirection
     },
     {
       label: "Courses",
       href: "/Courses",
       icon: (
-        <IconBook className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconBook className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "My Courses",
       href: "",
       icon: (
-        <IconBook className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconBook className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
       isDropdown: true,
       sections: [
@@ -93,32 +96,45 @@ export function SidebarDemo({ setShowScanner }) {
             className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden background-color:black"
             style={{ background: "black" }}
           >
-            <div className="mt-8 flex flex-col gap-2">
+            <div className="mt-8 flex flex-col cursor-pointer gap-2">
               {links.map((link, index) => {
                 if (!link.isDropdown) {
-                  return <SidebarLink key={index} link={link} />;
+                  return (
+                    <SidebarLink
+                      key={index}
+                      link={link}
+                      onClick={link.onClick} // Ensure SidebarLink handles this
+                    />
+                  );
                 }
 
                 return (
                   <div key={index}>
-
                     {/* Dropdown Toggle */}
                     <div
                       className="flex items-center cursor-pointer"
                       onClick={() => {
-                          if (isCoursePurchased) {
-                            toast.error("Payment Verification Pending (this may take upto 24 Hours)");
-                          } else if (userDetails && userDetails.OwnedCourses && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
-                            setCoursesOpen(!coursesOpen);
-                          }
-                        }}
+                        if (isCoursePurchased) {
+                          toast.error(
+                            "Payment Verification Pending (this may take up to 24 Hours)"
+                          );
+                        } else if (
+                          userDetails &&
+                          userDetails.OwnedCourses &&
+                          userDetails.OwnedCourses.includes(
+                            "SSJWEBDEVCOURSE"
+                          )
+                        ) {
+                          setCoursesOpen(!coursesOpen);
+                        }
+                      }}
                     >
                       {link.icon}
                       <span className="ml-3">{link.label}</span>
                     </div>
 
                     {/* Dropdown Content */}
-                    {link.label === "My Courses" && coursesOpen &&  (
+                    {link.label === "My Courses" && coursesOpen && (
                       <div className="ml-6 mt-2 flex flex-col gap-2">
                         {link.sections.map((section, secIndex) => (
                           <div key={secIndex}>
@@ -126,8 +142,8 @@ export function SidebarDemo({ setShowScanner }) {
                             <div
                               className="flex items-center cursor-pointer"
                               onClick={() => {
-                                
-                                toggleSubDropdown(secIndex)}}
+                                toggleSubDropdown(secIndex);
+                              }}
                             >
                               <IconArrowLeft
                                 className={`transform ${
@@ -142,14 +158,16 @@ export function SidebarDemo({ setShowScanner }) {
                             {/* Sub-dropdown Content */}
                             {subDropdowns[secIndex] && (
                               <div className="ml-6 mt-1 flex flex-col gap-1">
-                                {section.subsections.map((sub, subIndex) => (
-                                  <div
-                                    key={subIndex}
-                                    className="text-neutral-700 dark:text-neutral-200"
-                                  >
-                                    {sub}
-                                  </div>
-                                ))}
+                                {section.subsections.map(
+                                  (sub, subIndex) => (
+                                    <div
+                                      key={subIndex}
+                                      className="text-neutral-700 dark:text-neutral-200"
+                                    >
+                                      {sub}
+                                    </div>
+                                  )
+                                )}
                               </div>
                             )}
                           </div>
@@ -164,11 +182,17 @@ export function SidebarDemo({ setShowScanner }) {
           <div>
             <SidebarLink
               link={{
-                label: `${user && user.displayName ? user.displayName : "User"}`,
+                label: `${
+                  user && user.displayName ? user.displayName : "User"
+                }`,
                 href: "#",
                 icon: (
                   <Image
-                  src={user && user.photoURL ? user.photoURL : "/avatar.png"}
+                    src={
+                      user && user.photoURL
+                        ? user.photoURL
+                        : "/avatar.png"
+                    }
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -180,7 +204,7 @@ export function SidebarDemo({ setShowScanner }) {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard setShowScanner={setShowScanner} />
+      <Dashboard setShowScanner={setShowScanner} setRefer={setRefer} />
     </div>
   );
 }
@@ -214,33 +238,26 @@ export const LogoIcon = () => {
   );
 };
 
-// const CoursesSideBar = () => {
-//   return (
-//     <div>
-//       {items.map((item) => (
-//         <div key={item.id}>{item.name}</div>
-//       ))}
-//     </div>
-//   );
-// };
-
-const Dashboard = ({ setShowScanner }) => {
+const Dashboard = ({ setShowScanner, setRefer }) => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black flex flex-col gap-2 flex-1 w-full h-full overflow-y-auto">
-        {/* <div className="w-full">
+        <div className="w-full">
           <h1 className="text-gray-400 text-5xl font-sans">
             Full Stack Web Development
           </h1>
         </div>
         <div className="flex flex-col md:flex-row h-screen overflow-y-auto no-scrollbar">
           <div className="md:fixed md:top-6 md:right-10">
-            <ThreeDCard setShowScanner={setShowScanner} />
+            <ThreeDCard
+              setShowScanner={setShowScanner}
+              setRefer={setRefer}
+            />
           </div>
           <div>
             <CourseDetails />
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
