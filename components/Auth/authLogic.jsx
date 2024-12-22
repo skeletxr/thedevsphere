@@ -25,7 +25,7 @@ const cookies = new Cookies();
     
   }else if(type === 'provider'){
    
-    authWithProvide(cookies, setShowAuth)
+    authWithProvide(cookies)
   
   }
 
@@ -111,7 +111,6 @@ const authWithProvide = async(cookies) =>{
       pandingReferUsers: [],
     });
   }
-  setShowAuth(false);
 }
 
 export default auths

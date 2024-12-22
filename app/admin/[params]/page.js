@@ -9,12 +9,14 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import ReferralData from "@/components/ReferalData/ReferralData";
 import Loader from "@/components/ui/loading";
+import CheckboxGroup from "@/components/admin/AddVideos";
 
 function page() {
   const params = useParams();
   const [showLoading, setShowLoading] = useState(false);
   const [disable, setDisable] = React.useState(false);
-
+  const [checkedCount, setCheckedCount] = useState([]);
+  const [clickCountForAddVideo, setClickCountForAddVideo] = useState([])
   const [tabSwitch, setTabSwitch] = useState(1);
 
   const [data, setData] = useState(null);
@@ -39,7 +41,7 @@ function page() {
         const text = await res.json();
         console.log("Text:", {text, tabSwitch});
        
-        {tabSwitch === 1 ? setData(text) : tabSwitch === 2 ? setData(text.data) : tabSwitch === 3 && setData(text)}
+        {tabSwitch === 1 ? setData(text) : tabSwitch === 2 ? setData(text.data) : tabSwitch === 3 ? setData(text.data) : setData(text.data)}
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -104,6 +106,13 @@ function page() {
     setDisable(false);
   };
 
+
+
+  const handlePlaylist = async () =>{
+      console.log("clickCountForAddVideo",clickCountForAddVideo)
+      console.log("checkedCount",checkedCount)
+  }
+
   return (
     <>
       <div className="flex flex-col">
@@ -124,8 +133,12 @@ function page() {
  
             <ReferralData data={data} />
 
-      ) : tabSwitch === 3 && (
-        <div>Tab 3</div>
+      ) : tabSwitch === 3 ? (
+        <div><CheckboxGroup data={data} tabSwitch={tabSwitch} setTabSwitch={setTabSwitch} checkedCount={checkedCount} setCheckedCount={setCheckedCount}/></div>
+      ) : tabSwitch === 4 && (
+        <div>
+          <CheckboxGroup data={data} checkedCount={checkedCount} clickCountForAddVideo={clickCountForAddVideo} setClickCountForAddVideo={setClickCountForAddVideo}  handlePlaylist={handlePlaylist}/>
+        </div>
       ) : (
         <Loader/>
       )}
@@ -149,32 +162,3 @@ export default page;
 
 
 
-
-
-
-
-
-
-
-// useEffect(() => {
-//   const fetchData = async () => {
-//     try {
-//       const res = await fetch(`/api/adminRoute?tab=${tabSwitch}`, {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-      
-
-   
-//       const data = await res.json();
-//       console.log("Data:", data);
-//       setData(data);
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//     }
-//   };
-
-//   fetchData();
-// }, [tabSwitch]);

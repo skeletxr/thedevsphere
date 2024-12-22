@@ -108,7 +108,7 @@ export function SidebarDemo({ setShowScanner }) {
                       onClick={() => {
                           if (isCoursePurchased) {
                             toast.error("Payment Verification Pending (this may take upto 24 Hours)");
-                          } else if (userDetails && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
+                          } else if (userDetails && userDetails.OwnedCourses && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
                             setCoursesOpen(!coursesOpen);
                           }
                         }}
@@ -214,21 +214,21 @@ export const LogoIcon = () => {
   );
 };
 
-const CoursesSideBar = () => {
-  return (
-    <div>
-      {items.map((item) => (
-        <div key={item.id}>{item.name}</div>
-      ))}
-    </div>
-  );
-};
+// const CoursesSideBar = () => {
+//   return (
+//     <div>
+//       {items.map((item) => (
+//         <div key={item.id}>{item.name}</div>
+//       ))}
+//     </div>
+//   );
+// };
 
 const Dashboard = ({ setShowScanner }) => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black flex flex-col gap-2 flex-1 w-full h-full overflow-y-auto">
-        <div className="w-full">
+        {/* <div className="w-full">
           <h1 className="text-gray-400 text-5xl font-sans">
             Full Stack Web Development
           </h1>
@@ -240,7 +240,7 @@ const Dashboard = ({ setShowScanner }) => {
           <div>
             <CourseDetails />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

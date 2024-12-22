@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 
 import { NextResponse } from "next/server";
+import { listAllFolders } from "./VideoStreamingLogic";
 
 export async function POST(req) {
   const body = await req.json(); 
@@ -153,7 +154,7 @@ export async function GET(req) {
         { status: 500 }
       );
     }
-  } else {
+  } else if (tab === "2") {
     const userCollectionRef = collection(db, "users");
     const q = query(
       userCollectionRef,
@@ -188,5 +189,72 @@ export async function GET(req) {
         { status: 500 }
       );
     }
-  }
+  }else if(tab === "3"){
+    const userCollectionRef = collection(db, "users");
+    const q = query(
+      userCollectionRef,
+      where("OwnedCourses", "array-contains", process.env.COURSE1)
+    );
+
+    try {
+      const querySnapshot = await getDocs(q);
+    
+      if (querySnapshot.empty) {
+        return NextResponse.json(
+          { message: "No data available at tab 2" },
+          { status: 200 }
+        );
+      }
+
+      const data = querySnapshot.docs.map((doc) => {
+        const docData = doc.data();
+        return {
+          id: doc.id,
+          email: docData.email,
+          name: docData.name
+        };
+      });
+      return NextResponse.json(
+        { message: "Data retrieved successfully", data: data },
+        { status: 200 }
+      );
+    } catch (error) {
+      console.error("Error retrieving Tab 2 data", error);
+      return NextResponse.json(
+        { message: "Error retrieving data", error: error.message },
+        { status: 500 }
+      );
+    }
+  }else if(tab === "4"){
+try{
+     const res = await listAllFolders();
+
+
+  return NextResponse.json(
+    { message: "Data for Tab 4", data: res },
+    { status: 200 }
+  );
+} catch(err){
+  console.error("Error fetching data:", err);
 }
+  }
+
+}
+
+
+
+
+
+  //  const res = await listAllFolders();
+  // try{
+  //   const fetchData = await fetch(`${process.env.driveFileFetchUrl}/getAllFile`)
+  //   const data = await fetchData.json();
+  
+  //   return NextResponse.json(
+  //     { message: "Data for Tab 4", data: data },
+  //     { status: 200 }
+  //   );
+  // } catch(err){
+  //   console.error("Error fetching data:", err);
+  // }
+  //   }
