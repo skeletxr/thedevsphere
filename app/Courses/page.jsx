@@ -1,21 +1,24 @@
-import React, { useState, useContext, useEffect, use } from "react";
-import { Suspense } from "react";
+"use client"; // Ensure this is present for client-side rendering
+
+import React, { useState, useContext, useEffect, Suspense } from "react";
+import { GlobalContext } from "@/context/GlobalContext";
+import { useSearchParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { SidebarDemo } from "./CoursesSideBar";
-import { GlobalContext } from "@/context/GlobalContext";
 import SignUp from "@/components/Auth/signUp";
 import Image from "next/image";
 import Button from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/fileUpload";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/loading";
-import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 
-const Courses = () => {
+// Define client-side only components with dynamic import
+const ClientSideComponent = () => {
   const { showAuth, setShowAuth, user, userDetails, checkCoursePurchasedPending } =
     useContext(GlobalContext);
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // Using useSearchParams in client component
   const [refer, setRefer] = useState(searchParams.get("referral") || null);
 
   const notify = (text) => {
@@ -68,10 +71,8 @@ const Courses = () => {
 
     const up = await updateToRealTimeDateBase();
 
-    // console.log(e[0]);
     const formData = new FormData();
     formData.append("type", "notify");
-    // formData.append("id", user.uid);
     formData.append("file", e[0]);
     formData.append("subject", "Payment Proof");
     formData.append("text", user.email);
@@ -98,19 +99,20 @@ const Courses = () => {
 
   return (
     <div className="h-screen overflow-hidden">
-      {/* <Toaster/> */}
-
-      <div className="hidden md:block overflow-hidden">
-        <Navbar />
-      </div>
-
-      <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} />
-      {showAuth && (
-        <div className="flex fixed top-0 right-20">
-          <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
-        </div>
-      )}
+      {/* Suspense wrapper here */}
       <Suspense fallback={<Loader />}>
+        <div className="hidden md:block overflow-hidden">
+          <Navbar />
+        </div>
+
+        <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} />
+        
+        {showAuth && (
+          <div className="flex fixed top-0 right-20">
+            <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
+          </div>
+        )}
+
         {!showSpinner ? showScanner && showScanner === "not done" ? (
           <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
             <div className="image-container">
@@ -148,4 +150,5 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+// Dynamically import the ClientSideComponent to ensure it renders on the client
+export default dynamic(() => Promise.resolve(ClientSideComponent), { ssr: false });
