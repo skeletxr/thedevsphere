@@ -6,12 +6,39 @@ import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import Link from "next/link";
 import { GlobalContext } from "@/context/GlobalContext";
 import toast from "react-hot-toast";
+import { supabase } from "@/supabase";
+
+// Function to check if the referral code exists (assuming it's already imported or added as shown earlier)
+const checkReferralCodeExists = async (referralCode) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("referral_code")
+      .eq("referral_code", referralCode)
+      .single(); // Using .single() to expect only one result
+
+    if (error) {
+      // console.error("Error checking referral code:", error);
+      return { success: false, message: "Error checking referral code. Please try again." };
+    }
+
+    if (data) {
+      return { success: true, message: "Referral code is valid!" };
+    } else {
+      return { success: false, message: "Referral code is not valid." };
+    }
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return { success: false, message: "An unexpected error occurred." };
+  }
+};
 
 export function ThreeDCard({ setShowScanner, setRefer }) {
   const { user, isCoursePurchased, userDetails } = useContext(GlobalContext);
   const [checkStatus, setCheckStatus] = useState("Buy Now");
   const [showReferralInput, setShowReferralInput] = useState(false);
   const [referralCode, setReferralCode] = useState("");
+  const [referralMessage, setReferralMessage] = useState(""); // New state for showing the referral message
 
   useEffect(() => {
     if (isCoursePurchased) {
@@ -35,16 +62,26 @@ export function ThreeDCard({ setShowScanner, setRefer }) {
     }
   };
 
-  const handleDone = () => {
-    setRefer(referralCode);
-    setShowReferralInput(false);
-    setShowScanner("not done"); // Proceed with the original function
-    console.log("Referral Code:", referralCode); // Log the referral code
+  const handleDone = async () => {
+    const result = await checkReferralCodeExists(referralCode);
+
+    if (result.success) {
+      // If referral code is valid, proceed
+      setRefer(referralCode);
+      setShowReferralInput(false);
+      setShowScanner("not done");
+      toast.success(result.message);
+    } else {
+      // If referral code is invalid, show message
+      // setReferralMessage(result.message); // Set the error message
+      setReferralMessage("Please Enter a Valid Referral Code"); // Set the error message
+
+    }
   };
 
   const handleSkip = () => {
     setShowReferralInput(false);
-    setShowScanner("not done"); // Proceed without referral code
+    setShowScanner("not done");
   };
 
   return (
@@ -91,6 +128,7 @@ export function ThreeDCard({ setShowScanner, setRefer }) {
             {checkStatus}
           </CardItem>
         </div>
+
         {showReferralInput && (
           <div className="mt-4">
             <input
@@ -100,6 +138,9 @@ export function ThreeDCard({ setShowScanner, setRefer }) {
               onChange={(e) => setReferralCode(e.target.value)}
               className="w-full p-2 border rounded-lg"
             />
+            {referralMessage && (
+              <p className="text-red-500 text-sm mt-2">{referralMessage}</p>
+            )}
             <div className="flex justify-between mt-2">
               <button
                 onClick={handleDone}
