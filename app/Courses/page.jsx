@@ -1,12 +1,11 @@
-"use client";
-
-import Navbar from "@/components/Navbar";
 import React, { useState, useContext, useEffect, use } from "react";
+import { Suspense } from "react";
+import Navbar from "@/components/Navbar";
 import { SidebarDemo } from "./CoursesSideBar";
 import { GlobalContext } from "@/context/GlobalContext";
 import SignUp from "@/components/Auth/signUp";
 import Image from "next/image";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/button";
 import { FileUpload } from "@/components/ui/fileUpload";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/loading";
@@ -111,42 +110,40 @@ const Courses = () => {
           <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
         </div>
       )}
-      {!showSpinner ? showScanner && showScanner === "not done" ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="image-container">
-            <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
-          </div>
-          <div className="max-w-[190px]"></div>
-
-          <div
-            className="absolute bottom-16"
-            onClick={() => {
-              notify(
-                "Payment Successful so you can now upload proof of payment"
-              );
-              setShowScanner("Done");
-            }}
-          >
-            <Button name="Done" />
-          </div>
-        </div>
-      ) : (
-        showScanner === "Done" && (
+      <Suspense fallback={<Loader />}>
+        {!showSpinner ? showScanner && showScanner === "not done" ? (
           <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
             <div className="image-container">
-              {/* {!showSpinner ? ( */}
-                <FileUpload onChange={handleFileUpload} />
-              {/* ) : (
-                <Loader />
-              )} */}
+              <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
+            </div>
+            <div className="max-w-[190px]"></div>
+
+            <div
+              className="absolute bottom-16"
+              onClick={() => {
+                notify(
+                  "Payment Successful so you can now upload proof of payment"
+                );
+                setShowScanner("Done");
+              }}
+            >
+              <Button name="Done" />
             </div>
           </div>
-        )
-      ) : (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-<Loader/>
-</div>
-      )}
+        ) : (
+          showScanner === "Done" && (
+            <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+              <div className="image-container">
+                <FileUpload onChange={handleFileUpload} />
+              </div>
+            </div>
+          )
+        ) : (
+          <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+            <Loader />
+          </div>
+        )}
+      </Suspense>
     </div>
   );
 };
