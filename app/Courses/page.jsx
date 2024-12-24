@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 const ClientSideComponent = () => {
   const { showAuth, setShowAuth, user, userDetails, checkCoursePurchasedPending } =
     useContext(GlobalContext);
+    const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
 
   const searchParams = useSearchParams(); // Using useSearchParams in client component
   const [refer, setRefer] = useState(searchParams.get("referral") || null);
@@ -24,7 +25,7 @@ const ClientSideComponent = () => {
   const notify = (text) => {
     toast.success(text);
   };
-
+  // const [coursesData, setCoursesData] = useState([]);
   const [showScanner, setShowScanner] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
 
@@ -97,6 +98,30 @@ const ClientSideComponent = () => {
     }
   };
 
+
+  const handleFetchData = async (type, data) => {
+    toast.loading("Gwtting Things Ready...");
+    console.log("Data", {data, type})
+    try{
+      const res = await fetch(`/api/Courses`, {
+        // Removed dynamic ID from URL
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ type, data }),
+      });
+      const courses = await res.json();
+      // setCoursesData(courses);
+      toast.dismiss();
+      return courses;
+    }catch(err){
+      toast.dismiss();
+      toast.error("Error Fetching Data")
+      console.log(err)
+    }
+  }
+
   return (
     <div className="h-screen overflow-hidden">
       {/* Suspense wrapper here */}
@@ -105,7 +130,7 @@ const ClientSideComponent = () => {
           <Navbar />
         </div>
 
-        <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} />
+        <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} setCoursesOpen={setCoursesOpen} coursesOpen={coursesOpen}  handleFetchData={handleFetchData}/>
         
         {showAuth && (
           <div className="flex fixed top-0 right-20">
