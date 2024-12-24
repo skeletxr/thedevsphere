@@ -1,6 +1,6 @@
 "use client";
 import React, { useContext, useState } from "react";
-import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
+
 import {
   IconArrowLeft,
   IconHomeShare,
@@ -15,6 +15,8 @@ import CourseDetails from "./CourseDetails";
 import { ThreeDCard } from "./CourseCard";
 import { GlobalContext } from "@/context/GlobalContext";
 import toast from "react-hot-toast";
+import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sideBar";
+import VideoList from "@/components/ui/videoList";
 
 const items = [
   { id: 1, name: "Item 1" },
@@ -24,6 +26,7 @@ const items = [
 
 export function SidebarDemo({ setShowScanner, setRefer }) {
   const { user, userDetails, isCoursePurchased } = useContext(GlobalContext);
+  const [showVideo, setShowVideo] = useState(false);
   const [open, setOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
   const [subDropdowns, setSubDropdowns] = useState({}); // For sub-dropdowns
@@ -204,7 +207,7 @@ export function SidebarDemo({ setShowScanner, setRefer }) {
           </div>
         </SidebarBody>
       </Sidebar>
-      <Dashboard setShowScanner={setShowScanner} setRefer={setRefer} />
+      <Dashboard setShowScanner={setShowScanner} setRefer={setRefer} showVideo={showVideo}/>
     </div>
   );
 }
@@ -238,11 +241,14 @@ export const LogoIcon = () => {
   );
 };
 
-const Dashboard = ({ setShowScanner, setRefer }) => {
+const Dashboard = ({ setShowScanner, setRefer, showVideo }) => {
   return (
     <div className="flex flex-1">
       <div className="p-2 md:p-10 border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-black flex flex-col gap-2 flex-1 w-full h-full overflow-y-auto">
-        <div className="w-full">
+    {
+      !showVideo ? (
+        <>
+            <div className="w-full">
           <h1 className="text-gray-400 text-5xl font-sans">
             Full Stack Web Development
           </h1>
@@ -258,6 +264,13 @@ const Dashboard = ({ setShowScanner, setRefer }) => {
             <CourseDetails />
           </div>
         </div>
+        </>
+      ) :(
+        <>
+        <VideoList/>
+        </>
+      )
+    }
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-import Button from "../ui/button";
+import Button from "@/components/ui/Button";
 import toast from "react-hot-toast";
 
 const MySwal = withReactContent(Swal);

@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import { SidebarDemo } from "./CoursesSideBar";
 import SignUp from "@/components/Auth/signUp";
 import Image from "next/image";
-import Button from "@/components/ui/button";
+import Button from "@/components/ui/Button";
 import { FileUpload } from "@/components/ui/fileUpload";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/loading";

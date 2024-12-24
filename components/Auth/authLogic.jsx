@@ -1,9 +1,4 @@
-// import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-// import { auth, provider } from "../../../firebaseConfig";
-// import Cookies from "universal-cookie";
-// import { doc, setDoc } from "firebase/firestore";
-// import { db } from "../../../firebaseConfig";
-// import {collection, getDoc} from 'firebase/firestore';
+ 
 
 import { auth, db, provider } from "@/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
@@ -63,6 +58,7 @@ const signUp = async(details, cookies, setShowAuth) =>{
       toast.success('User created successfully');
       // window.location.reload();
     }catch(err){
+      toast.dismiss();
       console.log(err);
       alert(err.message);
     }

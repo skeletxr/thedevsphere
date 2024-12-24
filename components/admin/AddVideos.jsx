@@ -1,41 +1,37 @@
 "use client";
 
-import React from "react";
-import Button from "../ui/button";
+import React, { useState } from "react";
+import Button from "@/components/ui/Button";
 
-const CheckboxGroup = ({data,tabSwitch ,setTabSwitch,setCheckedCount ,checkedCount, setClickCountForAddVideo, clickCountForAddVideo, handlePlaylist}) => {
+const CheckboxGroup = ({data,tabSwitch ,setTabSwitch,setCheckedCount ,checkedCount, handlePlaylist}) => {
 
+const [videoId, setVideoId] = useState([])
 
-
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e, title) => {
     
     const { id, checked } = e.target;
 if(tabSwitch === 3){
   
     if (checked) {
-      console.log("checked",checked)
       setCheckedCount((prevCount) => [...prevCount, id]);
-      console.log("checkedCount",checkedCount)
-
     } else {
       setCheckedCount((prevCount) =>
         prevCount.filter((optionId) => optionId !== id)
       );
     }
-    console.log(checkedCount);
   }else{
     
     if (checked) {
-      console.log("checked",checked)
-      setClickCountForAddVideo((prevCount) => [...prevCount, id]);
-      console.log("checkedCount",checkedCount)
+ 
+      setVideoId((prevVideoIds) => [...prevVideoIds, { id, title }]);
+ 
 
     } else {
-      setClickCountForAddVideo((prevCount) =>
-        prevCount.filter((optionId) => optionId !== id)
+      setVideoId((prevVideoIds) =>
+        prevVideoIds.filter((video) => video.id !== id)
       );
     }
-    console.log(clickCountForAddVideo);
+
   }
   };
 
@@ -95,7 +91,7 @@ if(tabSwitch === 3){
     </>
   ): (
     <>
-    {console.log("data2",checkedCount)}
+   
        { data && data.map((option, index) => (
         <label
           key={index}
@@ -107,7 +103,7 @@ if(tabSwitch === 3){
             id={option.id}
             type="checkbox"
             className="absolute w-[1.375em] h-[1.375em] opacity-0 peer"
-            onChange={(e) =>handleCheckboxChange(e)}
+            onChange={(e) =>handleCheckboxChange(e, option.name)}
           />
           {/* SVG for box and tick */}
             <svg
@@ -115,7 +111,7 @@ if(tabSwitch === 3){
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 22 22"
             >
-          {clickCountForAddVideo.includes(option.id) && (
+          {videoId.some(video => video.id === option.id) && (
             <>
               <rect
                 width="21"
@@ -149,7 +145,7 @@ if(tabSwitch === 3){
       <div className="font-bold pt-3 border-t border-black/20">
         Options chosen: {checkedCount.length} / {data && data.length}
       </div>
-      <div className="flex" onClick={() => {tabSwitch === 3 ? setTabSwitch(4) : handlePlaylist()}} >
+      <div className="flex" onClick={() => {tabSwitch === 3 ? setTabSwitch(4) : handlePlaylist(videoId)}} >
         <Button name={tabSwitch === 3 ? "Next" : "Add to Playlist"} />
       </div>
     </div>

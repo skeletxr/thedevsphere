@@ -177,7 +177,7 @@ const Refer = () => {
                   <div className="flex">
                     <input
                       disabled
-                      value={`http://localhost:3000/Courses?referral=${isReferralCodeAvailable}`}
+                      value={`${process.env.NEXT_PUBLIC_BASE_URL}/Courses?referral=${isReferralCodeAvailable}`}
                       type="text"
                       placeholder="your link will appear here"
                       className="flex-grow px-4 py-3  md:rounded-l-lg  text-gray-900 bg-gray-200 placeholder-gray-500 outline-none focus:ring-2 focus:ring-purple-500"
@@ -187,7 +187,7 @@ const Refer = () => {
                     <button
                       onClick={() =>
                         navigator.clipboard.writeText(
-                          `http://localhost:3000/Courses?referral=${isReferralCodeAvailable}`
+                          `${process.env.NEXT_PUBLIC_BASE_URL}/Courses?referral=${isReferralCodeAvailable}`
                         )
                       }
                       className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-b-lg md:rounded-r-lg md:rounded-b-none transition duration-300"

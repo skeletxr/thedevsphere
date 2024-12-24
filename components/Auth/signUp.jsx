@@ -14,6 +14,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
     email: "",
     password: "",
   });
+
   const toggleForm = () => {
     setShowSignup(!showSignup);
   };
@@ -31,9 +32,15 @@ const SignUp = ({ showAuth, setShowAuth }) => {
         showSignup ? "show-signup" : ""
       }`}
     >
+      <button
+        onClick={() => setShowAuth(false)}
+        className="fixed top-1 right-1 bg-red-500 text-black px-4 py-2 rounded-md hover:bg-red-600 z-50"
+      >
+        Close
+      </button>
       {showAuth === "Login" ? (
         <>
-          <div className="relative max-w-md w-full pt-8 pl-8 pr-8  bg-white rounded-lg shadow-md form login">
+          <div className="relative max-w-md w-full pt-8 pl-8 pr-8 bg-white rounded-lg shadow-md form login">
             <div className="form-content">
               <header className="text-2xl font-semibold text-center text-gray-800">
                 Login
@@ -51,9 +58,8 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                     className="w-full h-12 px-4 text-white border rounded-md focus:outline-none focus:border-blue-500"
                   />
                 </div>
-                <div className="relative mt-6 ">
+                <div className="relative mt-6">
                   <input
-                    capture
                     value={form.password}
                     onChange={(e) =>
                       setForm({ ...form, password: e.target.value })
@@ -103,12 +109,6 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                 Or
               </span>
             </div>
-            {/* <div className="mt-6">
-          <a href="#" className="flex items-center justify-center h-12 bg-blue-700 text-white rounded-md">
-            <i className='bx bxl-facebook text-xl'></i>
-            <span className="ml-2">Login with Facebook</span>
-          </a>
-        </div> */}
             <div
               className="mt-4"
               onClick={(e) => {
@@ -132,7 +132,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
         </>
       ) : (
         <>
-          <div className="relative max-w-md w-full pt-8 pl-8 pr-8  bg-white rounded-lg shadow-md form signup">
+          <div className="relative max-w-md w-full pt-8 pl-8 pr-8 bg-white rounded-lg shadow-md form signup">
             <div className="form-content">
               <header className="text-2xl font-semibold text-center text-gray-800">
                 Signup
@@ -162,8 +162,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                 </div>
                 <div className="relative mt-6">
                   <input
-                  required
-                    // onChange={(e) => e.target.value === form.password ? setForm({ ...form,  password: e.target.value }) : null}
+                    required
                     type={showPassword.signup ? "text" : "password"}
                     placeholder="Confirm password"
                     className="w-full h-12 px-4 border text-white rounded-md focus:outline-none focus:border-blue-500"
@@ -217,7 +216,6 @@ const SignUp = ({ showAuth, setShowAuth }) => {
                 <span className="ml-2">Login with Google</span>
               </a>
             </div>
-
             <div className="flex text-gray-400 text-[12px] max-w-56 ml-auto mr-auto text-center pt-4 pb-2">
               By signing up, you agree to our Terms & Conditions & Privacy
               Policy

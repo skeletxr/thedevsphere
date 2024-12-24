@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
+import { supabase } from '@/supabase';
  
 
 dotenv.config(); // Load environment variables
@@ -225,3 +226,67 @@ export async function fetchFileContents(fileId) {
     throw error;
   }
 }
+
+
+
+
+
+
+export async function upsertPlaylists(users, doc, videoType) {
+  try {
+    // Convert doc object to an array of video objects
+    const videos = Object.values(doc)
+      .filter(item => item.id && item.title) // Ensure valid video objects
+      .map(item => ({ id: item.id, title: item.title, type: videoType }));
+
+    const results = []; // Array to hold results for all users
+
+    // Iterate over each userId in the users array
+    for (const userId of users) {
+      const userIdText = userId.toString(); // Ensure userId is treated as TEXT
+
+      // Iterate over each video
+      for (const video of videos) {
+        // First, check if the video already exists for the user and videoType
+        const { data: existingVideos, error: fetchError } = await supabase
+          .from('playlist')
+          .select('video_id')
+          .eq('user_id', userIdText)  // Ensure user_id is treated as TEXT
+          .eq('video_type', videoType) // Filter by video type
+          .eq('video_id', video.id);  // Filter by video ID
+
+        if (fetchError) throw fetchError;
+
+        // If the video already exists for this user and video type, skip adding it
+        if (existingVideos.length > 0) {
+          console.log(`Video ${video.title} of type ${videoType} already exists for user ${userIdText}. Skipping.`);
+        } else {
+          // Insert the new video if it does not exist
+          const { error: upsertError } = await supabase
+            .from('playlist')
+            .upsert([
+              {
+                user_id: userIdText,    // Ensure user_id is correctly passed as TEXT
+                video_id: video.id,     // Insert the video ID
+                title: video.title,     // Insert the video title
+                video_type: videoType,  // Insert the video type (HTML, CSS, etc.)
+                updated_at: new Date().toISOString(), // Add server timestamp
+              }
+            ]);
+
+          if (upsertError) throw upsertError;
+
+          console.log(`Video ${video.title} of type ${videoType} for user ${userIdText} inserted.`);
+        }
+      }
+
+      results.push({ userId: userIdText, message: 'Playlist upserted successfully' });
+    }
+
+    return { message: 'Playlists upserted successfully', results };
+  } catch (error) {
+    console.error('Error upserting playlists:', error.message);
+    return { error: error.message };
+  }
+}
+

@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+
 import Link from "next/link";
 import { GlobalContext } from "@/context/GlobalContext";
 import toast from "react-hot-toast";
 import { supabase } from "@/supabase";
+import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-Card";
 
 // Function to check if the referral code exists (assuming it's already imported or added as shown earlier)
 const checkReferralCodeExists = async (referralCode) => {

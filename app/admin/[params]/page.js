@@ -10,13 +10,13 @@ import toast from "react-hot-toast";
 import ReferralData from "@/components/ReferalData/ReferralData";
 import Loader from "@/components/ui/loading";
 import CheckboxGroup from "@/components/admin/AddVideos";
+import { alertInput } from "@/constants/alertInput";
 
 function page() {
   const params = useParams();
   const [showLoading, setShowLoading] = useState(false);
   const [disable, setDisable] = React.useState(false);
   const [checkedCount, setCheckedCount] = useState([]);
-  const [clickCountForAddVideo, setClickCountForAddVideo] = useState([])
   const [tabSwitch, setTabSwitch] = useState(1);
 
   const [data, setData] = useState(null);
@@ -51,10 +51,10 @@ function page() {
   }, [tabSwitch]);
 
 
-  const handleAccept = async (doc, id, typos) => {
+  const handleAccept = async (doc, id, typos, videoT) => {
     setDisable(true);
     setShowLoading(true);
- 
+    const videoType = videoT ? videoT : null;
     const type = typos ? typos : "application";
     try {
       toast.loading("Accepting Application so please don't Refresh The Page and please wait for while...");
@@ -64,7 +64,7 @@ function page() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, type, ...doc }), // Include ID in the request body
+        body: JSON.stringify({ id, type, ...doc, videoType }),
       });
 
       if (!res.ok) {
@@ -108,10 +108,11 @@ function page() {
 
 
 
-  const handlePlaylist = async () =>{
-      console.log("clickCountForAddVideo",clickCountForAddVideo)
-      console.log("checkedCount",checkedCount)
-      handleAccept(clickCountForAddVideo, checkedCount, "playlist")
+  const handlePlaylist = async (videoData) => {
+    const type = await alertInput("Enter Playlist Name", "text", "Create Playlist");
+    if (type === "cancel") return;
+
+    handleAccept(videoData, checkedCount, "playlist", type);
   }
 
   return (
@@ -138,7 +139,7 @@ function page() {
         <div><CheckboxGroup data={data} tabSwitch={tabSwitch} setTabSwitch={setTabSwitch} checkedCount={checkedCount} setCheckedCount={setCheckedCount}/></div>
       ) : tabSwitch === 4 && (
         <div>
-          <CheckboxGroup data={data} checkedCount={checkedCount} clickCountForAddVideo={clickCountForAddVideo} setClickCountForAddVideo={setClickCountForAddVideo}  handlePlaylist={handlePlaylist}/>
+          <CheckboxGroup data={data} checkedCount={checkedCount}  handlePlaylist={handlePlaylist}/>
         </div>
       ) : (
         <Loader/>
