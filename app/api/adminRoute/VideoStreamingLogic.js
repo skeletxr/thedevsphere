@@ -108,10 +108,13 @@ export async function listAllFolders(folderId) {
     let pageToken = null;
 
     do {
+
       const res = await drive.files.list({
-        q: "mimeType = 'application/vnd.google-apps.folder' and trashed = false",
+        q: folderId 
+          ? `'${folderId}' in parents and (mimeType = 'video/mp2t' or mimeType = 'application/vnd.apple.mpegurl')`
+          : "mimeType = 'application/vnd.google-apps.folder' and trashed = false",
         fields: "nextPageToken, files(id, name)",
-        pageToken,
+        pageToken: pageToken,
       });
 
       if (res?.data?.files) {

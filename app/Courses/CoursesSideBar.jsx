@@ -1,10 +1,6 @@
 "use client";
 import React, { useContext, useState } from "react";
-import {
-  IconArrowLeft,
-  IconHomeShare,
-  IconBook,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconHomeShare, IconBook } from "@tabler/icons-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -15,6 +11,7 @@ import { GlobalContext } from "@/context/GlobalContext";
 import toast from "react-hot-toast";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sideBar";
 import VideoList from "@/components/ui/videoList";
+import HLSPlayer from "@/components/courses/player";
 
 export function SidebarDemo({
   setShowScanner,
@@ -27,7 +24,7 @@ export function SidebarDemo({
   const [showVideo, setShowVideo] = useState(false);
   const [courseData, setCourseData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [subCourseData, setSubCourseData] = useState([])
+  const [subCourseData, setSubCourseData] = useState([]);
   const [subDropdowns, setSubDropdowns] = useState({}); // For sub-dropdowns
 
   const links = [
@@ -114,9 +111,7 @@ export function SidebarDemo({
                         } else if (
                           userDetails &&
                           userDetails.OwnedCourses &&
-                          userDetails.OwnedCourses.includes(
-                            "SSJWEBDEVCOURSE"
-                          )
+                          userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")
                         ) {
                           handleFetchData(
                             "CourseData",
@@ -164,22 +159,27 @@ export function SidebarDemo({
                                     <div
                                       className="flex items-center cursor-pointer"
                                       onClick={() => {
-                                        handleFetchData(
-                                          "CourseList",
-                                          [user.uid, sub]
-                                        ).then((data) => {
-                                          console.log("data", data);
-                                          // setSubCourseData(data.data.titles);
+                                        handleFetchData("CourseList", [
+                                          user.uid,
+                                          sub,
+                                        ]).then((data) => {
+                                          console.log("data subdrop", subDropdowns);
+
+                                          // if(!subDropdowns[0-0]){
+                                          //   console.log("data subdrop6566");
+                                          setSubCourseData(data);
+                                          // }
                                           toggleSubDropdown(
                                             `${secIndex}-${subIndex}`
                                           );
                                         });
-                                        
                                       }}
                                     >
                                       <IconArrowLeft
                                         className={`transform ${
-                                          subDropdowns[`${secIndex}-${subIndex}`]
+                                          subDropdowns[
+                                            `${secIndex}-${subIndex}`
+                                          ]
                                             ? "rotate-90"
                                             : "rotate-0"
                                         } text-neutral-500 h-4 w-4`}
@@ -188,12 +188,32 @@ export function SidebarDemo({
                                     </div>
 
                                     {/* Inner Dropdown Content */}
-                                    {subDropdowns[`${secIndex}-${subIndex}`] && (
+                                    {subDropdowns[
+                                      `${secIndex}-${subIndex}`
+                                    ] && (
                                       <div className="ml-6 mt-1 flex flex-col gap-1">
-                                        {/* Add inner content here */}
-                                        <div className="text-gray-500">
-                                          Additional Content for {sub}
-                                        </div>
+                                        {subCourseData &&
+                                          console.log(
+                                            "subCourseData",
+                                            subCourseData.data
+                                          )}
+                                        {subCourseData &&
+                                          Array.isArray(subCourseData.data) && (
+                                            <>
+                                           
+                                              {(subCourseData.data[0].video_type === sub || subCourseData.data.some(data => data.video_type === sub)) && subCourseData.data.map(
+                                                (data, index) => (
+                                                  <div
+                                                    className="text-gray-500"
+                                                    key={index}
+                                                    onClick={() => setShowVideo(data.video_id)}
+                                                  >
+                                                    {data.title}
+                                                  </div>
+                                                )
+                                              )}
+                                            </>
+                                          )}
                                       </div>
                                     )}
                                   </div>
@@ -218,11 +238,7 @@ export function SidebarDemo({
                 href: "#",
                 icon: (
                   <Image
-                    src={
-                      user && user.photoURL
-                        ? user.photoURL
-                        : "/avatar.png"
-                    }
+                    src={user && user.photoURL ? user.photoURL : "/avatar.png"}
                     className="h-7 w-7 flex-shrink-0 rounded-full"
                     width={50}
                     height={50}
@@ -267,7 +283,9 @@ const Dashboard = ({ setShowScanner, setRefer, showVideo }) => {
             </div>
           </>
         ) : (
-          <VideoList />
+          <>
+          <HLSPlayer showVideo={showVideo}/>
+          </> 
         )}
       </div>
     </div>
@@ -275,15 +293,6 @@ const Dashboard = ({ setShowScanner, setRefer, showVideo }) => {
 };
 
 export default SidebarDemo;
-
-
-
-
-
-
-
-
-
 
 // "use client";
 // import React, { useContext, useState } from "react";
@@ -415,11 +424,11 @@ export default SidebarDemo;
 //                             "SSJWEBDEVCOURSE"
 //                           )
 //                         ) {
-                        
+
 //                            handleFetchData("CourseData",userDetails.OwnedCourses[0]).then((data) => {
 //                           console.log("data",data);
 //                           setCourseData(data.data.titles);
-                         
+
 //                           setCoursesOpen(!coursesOpen);
 //                            });
 //                         }
@@ -468,7 +477,7 @@ export default SidebarDemo;
 //                                 toggleSubDropdown(secIndex);
 //                               }}
 //                             >
-                              
+
 //                               <IconArrowLeft
 //                                 className={`transform ${
 //                                   subDropdowns[secIndex]
