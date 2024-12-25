@@ -198,8 +198,8 @@ export async function streamTsFile(file, res) {
       { fileId: file.id, alt: 'media' },
       { responseType: 'stream' }
     );
-
-    response.data.pipe(res);
+   return response.data;
+    // response.data.pipe(res); 
   } catch (error) {
     console.error('Error streaming .ts file:', error.message);
     res.status(500).send('Error streaming the file');

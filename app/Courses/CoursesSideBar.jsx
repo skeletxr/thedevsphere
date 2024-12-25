@@ -201,7 +201,7 @@ export function SidebarDemo({
                                           Array.isArray(subCourseData.data) && (
                                             <>
                                            
-                                              {(subCourseData.data[0].video_type === sub || subCourseData.data.some(data => data.video_type === sub)) && subCourseData.data.map(
+                                              {(subCourseData.data[0] && subCourseData.data[0].video_type === sub || subCourseData.data.some(data => data.video_type === sub)) && subCourseData.data.map(
                                                 (data, index) => (
                                                   <div
                                                     className="text-gray-500"

@@ -30,14 +30,17 @@ const HLSPlayer = ({ showVideo }) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ type: "video", id: encryptedId }),
         });
+        
 
         if (!response.ok) {
           console.error("Failed to fetch video source:", response.status);
           return;
         }
+       console.log("response", response)
 
         const data = await response.text(); // Assuming the .m3u8 content is returned as text
-        console.log("Video source fetched:", data);
+       
+ 
         setVideoSource(data); // Set the video source content (m3u8 content)
 
       } catch (error) {
@@ -46,38 +49,51 @@ const HLSPlayer = ({ showVideo }) => {
     };
 
     fetchVideoSource();
+    initializeVideoStream()
   }, [showVideo, videoId]); // Dependency array includes videoId to avoid fetching same video repeatedly
-
   const initializeVideoStream = () => {
     const videoElement = videoRef.current;
-
+  
     if (Hls.isSupported() && videoSource) {
+      // Create a Blob from the raw .m3u8 manifest data
+      const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
+      const blobUrl = URL.createObjectURL(blob); // Generate the Blob URL
+      console.log("Blob URL:", blobUrl); // Debug: log the generated Blob URL
+  
       const hls = new Hls({ debug: true });
-      hls.loadSource(videoSource);
+      hls.loadSource(blobUrl); // Use the Blob URL instead of raw videoSource
       hls.attachMedia(videoElement);
-
-      hls.on(Hls.Events.MANIFEST_PARSED, () => setIsLoading(false));
-      hls.on(Hls.Events.ERROR, (event, data) => console.error("HLS.js error:", data));
-
+  
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        console.log("Manifest parsed successfully");
+        setIsLoading(false);
+      });
+  
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        console.error("HLS.js error:", data);
+      });
+  
       window.hls = hls;
+  
+      // Clean up Blob URL when the HLS instance is destroyed
+      hls.on(Hls.Events.DESTROYING, () => {
+        URL.revokeObjectURL(blobUrl);
+      });
     } else if (videoElement.canPlayType("application/vnd.apple.mpegurl") && videoSource) {
-      videoElement.src = videoSource;
+      // Fallback for native HLS support
+      const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
+      const blobUrl = URL.createObjectURL(blob);
+  
+      videoElement.src = blobUrl;
+  
+      videoElement.onended = () => {
+        URL.revokeObjectURL(blobUrl); // Clean up Blob URL after playback
+      };
     } else {
       console.error("HLS is not supported in this browser.");
     }
   };
-
-  const handleStart = () => {
-    if (!isStarted) {
-      setIsStarted(true);
-      setIsLoading(true);
-      initializeVideoStream();
-    }
-
-    videoRef.current.onloadeddata = () => {
-      videoRef.current.play().catch((error) => console.error("Video playback failed:", error));
-    };
-  };
+  
 
   // Cleanup HLS.js instance on unmount
   useEffect(() => {
@@ -108,7 +124,7 @@ const HLSPlayer = ({ showVideo }) => {
 
         {!isStarted && (
           <button
-            onClick={handleStart}
+            onClick={initializeVideoStream}
             className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700 transition"
             disabled={isLoading || !videoSource} // Disable the button until the video source is loaded
           >

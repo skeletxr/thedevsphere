@@ -16,7 +16,7 @@ const Pricing = ({ scrollToPrice }) => {
   };
 
   return (
-    <div className="mt-20 mx-auto w-full h-auto min-h-[100vh]" ref={scrollToPrice}>
+    <div className="mt-20 w-full h-auto min-h-[100vh]" ref={scrollToPrice}>
       <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center my-8 tracking-wide">
         Internship and Training Programs
       </h2>
@@ -28,7 +28,7 @@ const Pricing = ({ scrollToPrice }) => {
           className="overflow-x-auto flex space-x-4 pb-4 snap-x snap-mandatory"
         >
           {pricingOptions.map((option, index) => (
-            <div key={index} className="flex-shrink-0 w-[320px] sm:w-[320px] md:w-[350px] p-2 snap-start">
+            <div key={index} className="flex-shrink-0 sm:w-[320px] md:w-[350px] p-2 snap-start">
               <div className="p-6 sm:p-10 border border-neutral-700 rounded-xl flex flex-col justify-between h-full">
                 <p className="text-3xl sm:text-4xl mb-6 sm:mb-8">
                   {option.title}
@@ -81,40 +81,47 @@ const Pricing = ({ scrollToPrice }) => {
       </div>
 
       {/* Desktop Layout: Cards should come side by side with increased width */}
-      <div className="hidden sm:flex flex-wrap justify-center w-full max-w-full gap-8">
-        {pricingOptions.map((option, index) => (
-          <div key={index} className="flex-grow-0 w-[32%] p-4"> {/* Increased width with gap */}
-            <div className="p-10 border border-neutral-700 rounded-xl">
-              <p className="text-4xl mb-8">
-                {option.title}
-                {option.title === "Pro" && (
-                  <span className="bg-gradient-to-r from-purple-500 to-purple-400 text-transparent bg-clip-text text-xl mb-4 ml-2">
-                    (Most Popular)
-                  </span>
-                )}
-              </p>
-              <p className="mb-8">
-                <span className="text-5xl mt-6 mr-2">{option.price}</span>
-                <span className="text-neutral-400 tracking-tight">/Month</span>
-              </p>
-              <ul>
-                {option.features.map((feature, index) => (
-                  <li key={index} className="mt-8 flex items-center">
-                    <CheckCircle2 />
-                    <span className="ml-2">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/Courses"
-                className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-purple-400 hover:text-black`}
-              >
-                {option.title === "Full Stack Web Development" ? "Subscribe" : "Coming soon"}
-              </Link>
-            </div>
-          </div>
-        ))}
+      <div className="hidden sm:flex justify-center w-full gap-6 px-4"> {/* Adjusted gap */}
+  {pricingOptions.map((option, index) => (
+    <div 
+      key={index} 
+      className="flex-grow-0 sm:flex-shrink-0 sm:w-[37%] sm:max-w-[480px] w-full p-4"> {/* Desktop-specific width */}
+      <div className="p-10 border border-neutral-700 rounded-xl">
+        <p className="text-4xl mb-8">
+          {option.title}
+          {option.title === "Pro" && (
+            <span className="bg-gradient-to-r from-purple-500 to-purple-400 text-transparent bg-clip-text text-xl mb-4 ml-2">
+              (Most Popular)
+            </span>
+          )}
+        </p>
+        <p className="mb-8">
+          <span className="text-5xl mt-6 mr-2">{option.price}</span>
+          <span className="text-neutral-400 tracking-tight">/Month</span>
+        </p>
+        <ul>
+          {option.features.map((feature, index) => (
+            <li key={index} className="mt-8 flex items-center">
+              <CheckCircle2 />
+              <span className="ml-2">{feature}</span>
+            </li>
+          ))}
+        </ul>
+        <Link
+          href="/Courses"
+          className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-purple-400 hover:text-black`}
+        >
+          {option.title === "Full Stack Web Development" ? "Subscribe" : "Coming soon"}
+        </Link>
       </div>
+    </div>
+  ))}
+</div>
+
+
+
+
+
     </div>
   );
 };
