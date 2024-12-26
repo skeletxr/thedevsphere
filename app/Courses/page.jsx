@@ -100,7 +100,7 @@ const ClientSideComponent = () => {
 
 
   const handleFetchData = async (type, data) => {
-    toast.loading("Gwtting Things Ready...");
+    toast.loading("Getting Things Ready...");
     console.log("Data", {data, type})
     try{
       const res = await fetch(`/api/Courses`, {
