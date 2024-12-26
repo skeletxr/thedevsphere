@@ -44,7 +44,8 @@ const HLSPlayer = ({ showVideo }) => {
         setVideoSource(data); // Set the video source content (m3u8 content)
 
       } catch (error) {
-        console.error("Failed to fetch video source:", error);
+
+        // console.error("Failed to fetch video source:", error);
       }
     };
 
@@ -70,7 +71,7 @@ const HLSPlayer = ({ showVideo }) => {
       });
   
       hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error("HLS.js error:", data);
+        // console.error("HLS.js error:", data);
       });
   
       window.hls = hls;

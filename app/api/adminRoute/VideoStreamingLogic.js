@@ -7,11 +7,8 @@ import { supabase } from '@/supabase';
 
 dotenv.config(); // Load environment variables
 
-// Paths for credentials and tokens
-const TOKEN_PATH = path.resolve('./token.json');  // Ensure it's resolved to an absolute path
-
-// Helper to authorize and return Google Drive instance
-export async function authorize() {
+ 
+export async function authorize(firebaseUserId) {
   try {
     const credentials = {
       client_id: process.env.GOOGLE_CLIENT_ID,
@@ -24,22 +21,38 @@ export async function authorize() {
       credentials.client_secret,
       credentials.redirect_uris[0]
     );
-console.log('Resolved token path:', TOKEN_PATH);
 
-console.log("oAuth2Client",fs.existsSync(TOKEN_PATH))
-    if (fs.existsSync(TOKEN_PATH)) {
-      const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
-      console.log("tokens",token)
-      oAuth2Client.setCredentials(token);
+    // Fetch the token from Supabase for the given user
+    const { data: tokenData, error } = await supabase
+      .from('tokens')
+      .select('*')
+      // .eq('user_id', firebaseUserId)
+      .single();
 
-      if (new Date() >= new Date(token.expiry_date)) {
-        console.log('Token expired. Refreshing...');
-        await refreshAccessToken(oAuth2Client);
-      }
+    if (error || !tokenData) {
+      // If no token exists or there was an error, initiate OAuth flow
+      console.log('No token found for user, initiating OAuth flow...');
+      await getAccessToken(oAuth2Client, firebaseUserId);
     } else {
-      await getAccessToken(oAuth2Client);
+      console.log('Token found in Supabase:', tokenData);
+      // Set credentials with the existing token from Supabase
+      oAuth2Client.setCredentials({
+        access_token: tokenData.access_token,
+        refresh_token: tokenData.refresh_token,
+        scope: tokenData.scope,
+        token_type: tokenData.token_type,
+        expiry_date: tokenData.expiry_date,
+      });
+
+      // Check if the token is expired
+      const currentTime = new Date().getTime();
+      if (currentTime > tokenData.expiry_date) {
+        console.log('Token expired. Refreshing...');
+        await refreshAccessToken(oAuth2Client, firebaseUserId);
+      }
     }
 
+    // Return the Google Drive API instance
     return google.drive({ version: 'v3', auth: oAuth2Client });
   } catch (error) {
     console.error('Authorization error:', error.message);
@@ -47,25 +60,42 @@ console.log("oAuth2Client",fs.existsSync(TOKEN_PATH))
   }
 }
 
-// Refresh the access token
-async function refreshAccessToken(oAuth2Client) {
-  return new Promise((resolve, reject) => {
-    oAuth2Client.refreshAccessToken((err, tokens) => {
-      if (err) return reject(`Error refreshing access token: ${err.message}`);
-      oAuth2Client.setCredentials(tokens);
-      fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens)); // Save new token
-      resolve(oAuth2Client);
-    });
-  });
+// Refresh the access token and update it in Supabase
+async function refreshAccessToken(oAuth2Client, firebaseUserId) {
+  try {
+    // Refresh the access token
+    const { credentials } = await oAuth2Client.refreshAccessToken();
+console.log("credentials",credentials)
+    // Update the token in Supabase
+    const { data, error } = await supabase
+      .from('tokens')
+      .update({
+        access_token: credentials.access_token,
+        refresh_token: credentials.refresh_token,
+        expiry_date: credentials.expiry_date,
+      })
+      .eq('id', 3);
+
+    if (error) {
+      throw new Error('Error updating token in Supabase');
+    }
+
+    console.log('Token refreshed and updated in Supabase');
+  } catch (error) {
+    console.error('Error refreshing access token:', error.message);
+    throw error;
+  }
 }
 
 // Get a new access token using the OAuth flow
-function getAccessToken(oAuth2Client) {
+async function getAccessToken(oAuth2Client, firebaseUserId) {
   return new Promise((resolve, reject) => {
+    // Generate the authorization URL
     const authUrl = oAuth2Client.generateAuthUrl({
       access_type: 'offline',
       scope: ['https://www.googleapis.com/auth/drive.file'],
     });
+
     console.log('Authorize this app by visiting this URL:', authUrl);
 
     const input = require('prompt-sync')();
@@ -77,9 +107,7 @@ function getAccessToken(oAuth2Client) {
 
     console.log("Inputted code:", code);
 
-    oAuth2Client.getToken(code, (err, token) => {
-
-      console.log("tokes",token)
+    oAuth2Client.getToken(code, async (err, token) => {
       if (err) {
         console.error('Error retrieving access token:', err.response?.data || err.message);
         return reject(err);
@@ -88,10 +116,26 @@ function getAccessToken(oAuth2Client) {
       console.log('Access token retrieved successfully:', token);
       oAuth2Client.setCredentials(token);
 
-      // Save the token to token.json
-      fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
-      console.log('Token stored to', TOKEN_PATH);
+      // Save the new token to Supabase
+      const { data, error } = await supabase
+        .from('tokens')
+        .upsert([
+          {
+            access_token: token.access_token,
+            refresh_token: token.refresh_token,
+            expiry_date: token.expiry_date,
+            scope: token.scope,
+            token_type: token.token_type,
+            user_id: firebaseUserId, // Firebase user ID
+          },
+        ]);
 
+      if (error) {
+        console.error('Error storing token in Supabase:', error.message);
+        return reject(error);
+      }
+
+      console.log('Token stored in Supabase');
       resolve(oAuth2Client);
     });
   });
@@ -231,9 +275,7 @@ export async function fetchFileContents(fileId) {
 }
 
 
-
-
-
+ 
 
 export async function upsertPlaylists(users, doc, videoType) {
   try {
@@ -293,3 +335,113 @@ export async function upsertPlaylists(users, doc, videoType) {
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const TOKEN_PATH = path.resolve('./token.json');  // Ensure it's resolved to an absolute path
+
+// // Helper to authorize and return Google Drive instance
+// export async function authorize() {
+//   try {
+//     const credentials = {
+//       client_id: process.env.GOOGLE_CLIENT_ID,
+//       client_secret: process.env.GOOGLE_CLIENT_SECRET,
+//       redirect_uris: process.env.GOOGLE_REDIRECT_URIS.split(','),
+//     };
+
+//     const oAuth2Client = new google.auth.OAuth2(
+//       credentials.client_id,
+//       credentials.client_secret,
+//       credentials.redirect_uris[0]
+//     );
+// console.log('Resolved token path:', TOKEN_PATH);
+
+// console.log("oAuth2Client",fs.existsSync(TOKEN_PATH))
+//     if (fs.existsSync(TOKEN_PATH)) {
+//       const token = JSON.parse(fs.readFileSync(TOKEN_PATH));
+//       console.log("tokens",token)
+//       oAuth2Client.setCredentials(token);
+
+//       if (new Date() >= new Date(token.expiry_date)) {
+//         console.log('Token expired. Refreshing...');
+//         await refreshAccessToken(oAuth2Client);
+//       }
+//     } else {
+//       await getAccessToken(oAuth2Client);
+//     }
+
+//     return google.drive({ version: 'v3', auth: oAuth2Client });
+//   } catch (error) {
+//     console.error('Authorization error:', error.message);
+//     throw error;
+//   }
+// }
+
+// // Refresh the access token
+// async function refreshAccessToken(oAuth2Client) {
+//   return new Promise((resolve, reject) => {
+//     oAuth2Client.refreshAccessToken((err, tokens) => {
+//       if (err) return reject(`Error refreshing access token: ${err.message}`);
+//       oAuth2Client.setCredentials(tokens);
+//       fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens)); // Save new token
+//       resolve(oAuth2Client);
+//     });
+//   });
+// }
+
+// // Get a new access token using the OAuth flow
+// function getAccessToken(oAuth2Client) {
+//   return new Promise((resolve, reject) => {
+//     const authUrl = oAuth2Client.generateAuthUrl({
+//       access_type: 'offline',
+//       scope: ['https://www.googleapis.com/auth/drive.file'],
+//     });
+//     console.log('Authorize this app by visiting this URL:', authUrl);
+
+//     const input = require('prompt-sync')();
+//     const code = input('Enter the code from that page here: ').trim();
+
+//     if (!code) {
+//       return reject("No code entered.");
+//     }
+
+//     console.log("Inputted code:", code);
+
+//     oAuth2Client.getToken(code, (err, token) => {
+
+//       console.log("tokes",token)
+//       if (err) {
+//         console.error('Error retrieving access token:', err.response?.data || err.message);
+//         return reject(err);
+//       }
+
+//       console.log('Access token retrieved successfully:', token);
+//       oAuth2Client.setCredentials(token);
+
+//       // Save the token to token.json
+//       fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
+//       console.log('Token stored to', TOKEN_PATH);
+
+//       resolve(oAuth2Client);
+//     });
+//   });
+// }

@@ -6,33 +6,33 @@ import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { GlobalContext } from "@/context/GlobalContext";
 import toast from "react-hot-toast";
-import { supabase } from "@/supabase";
 import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-Card";
+import { checkReferralCodeExists } from "@/constants/serverLogic";
 
 // Function to check if the referral code exists (assuming it's already imported or added as shown earlier)
-const checkReferralCodeExists = async (referralCode) => {
-  try {
-    const { data, error } = await supabase
-      .from("users")
-      .select("referral_code")
-      .eq("referral_code", referralCode)
-      .single(); // Using .single() to expect only one result
+// const checkReferralCodeExists = async (referralCode) => {
+//   try {
+//     const { data, error } = await supabase
+//       .from("users")
+//       .select("referral_code")
+//       .eq("referral_code", referralCode)
+//       .single(); // Using .single() to expect only one result
 
-    if (error) {
-      // console.error("Error checking referral code:", error);
-      return { success: false, message: "Error checking referral code. Please try again." };
-    }
+//     if (error) {
+//       // console.error("Error checking referral code:", error);
+//       return { success: false, message: "Error checking referral code. Please try again." };
+//     }
 
-    if (data) {
-      return { success: true, message: "Referral code is valid!" };
-    } else {
-      return { success: false, message: "Referral code is not valid." };
-    }
-  } catch (err) {
-    console.error("Unexpected error:", err);
-    return { success: false, message: "An unexpected error occurred." };
-  }
-};
+//     if (data) {
+//       return { success: true, message: "Referral code is valid!" };
+//     } else {
+//       return { success: false, message: "Referral code is not valid." };
+//     }
+//   } catch (err) {
+//     console.error("Unexpected error:", err);
+//     return { success: false, message: "An unexpected error occurred." };
+//   }
+// };
 
 export function ThreeDCard({ setShowScanner, setRefer }) {
   const { user, isCoursePurchased, userDetails } = useContext(GlobalContext);
