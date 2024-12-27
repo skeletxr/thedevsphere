@@ -113,12 +113,12 @@ const HLSPlayer = ({ showVideo }) => {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen bg-gray-100"
+      className="flex justify-center items-center min-h-screen bg-black overflow-hidden "
       style={{ fontFamily: "Arial, sans-serif" }}
     >
       <div
-        className="bg-white shadow-lg rounded-lg p-6"
-        style={{ maxWidth: "800px", width: "100%", textAlign: "center" }}
+        className="bg-white shadow-lg rounded-lg w-screen overflow-hidden "
+        // style={{ maxWidth: "800px", width: "100%", textAlign: "center" }}
       >
         <video
           ref={videoRef}
@@ -126,8 +126,8 @@ const HLSPlayer = ({ showVideo }) => {
           crossOrigin="anonymous"
           playsInline
           poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png"
-          className="w-full max-w-[700px] rounded-lg"
-        ></video>
+          className="w-full h-screen rounded-lg overflow-hidden "
+        ></video>  
       </div>
       <ToastContainer /> {/* Add the ToastContainer here */}
     </div>
@@ -290,6 +290,7 @@ export default HLSPlayer;
 // };
 
 // export default HLSPlayer;
+
 
 
 
