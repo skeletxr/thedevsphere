@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useContext, useState, useEffect } from "react";
 // import { useRouter } from "next/router";
@@ -75,22 +75,22 @@ const path = usePathname();
             <div className="hidden lg:flex justify-center space-x-12 items-center">
               {!isAuthorized ? (
                 <>
-                  <a
+                  <div
                     onClick={() =>
                       showAuth ? setShowAuth("") : setShowAuth("Login")
                     }
                     className="py-2 px-3 cursor-pointer border rounded-md"
                   >
                     Log In
-                  </a>
-                  <a
+                  </div>
+                  <div
                     onClick={() =>
                       showAuth ? setShowAuth("") : setShowAuth("Signup")
                     }
                     className="bg-gradient-to-r from-purple-500 to-purple-800 py-2 px-3 cursor-pointer text-white rounded-md"
                   >
                     Create an account
-                  </a>
+                  </div>
                 </>
               ) : path === "/Refer" ? (
                 <>
@@ -166,22 +166,20 @@ const path = usePathname();
                 ))}
               </ul>
               <div className="flex space-x-6">
-                <a
+                <Link href="/MAuth"
                   className="py-2 px-3 border rounded-md"
-                  onClick={() =>
-                    showAuth ? setShowAuth("") : setShowAuth("Login")
-                  }
+                 
                 >
                   Sign In
-                </a>
-                <a
+                </Link>
+                <Link href="/MAuth"
                   onClick={() =>
                     showAuth ? setShowAuth("") : setShowAuth("Signup")
                   }
                   className="py-2 px-3 rounded-md bg-gradient-to-r from-purple-500 to-purple-800"
                 >
                   Create an account
-                </a>
+                </Link>
               </div>
             </div>
           )}

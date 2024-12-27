@@ -113,11 +113,11 @@ const HLSPlayer = ({ showVideo }) => {
 
   return (
     <div
-      className="flex justify-center items-center min-h-screen bg-black overflow-hidden "
+      className="flex justify-center items-center md:my-auto bg-black"
       style={{ fontFamily: "Arial, sans-serif" }}
     >
       <div
-        className="bg-white shadow-lg rounded-lg w-screen overflow-hidden "
+        className="bg-white shadow-lg rounded-lg "
         // style={{ maxWidth: "800px", width: "100%", textAlign: "center" }}
       >
         <video
@@ -126,8 +126,8 @@ const HLSPlayer = ({ showVideo }) => {
           crossOrigin="anonymous"
           playsInline
           poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png"
-          className="w-full h-screen rounded-lg overflow-hidden "
-        ></video>  
+          className="w-full max-w-[1100px] min-w-[70vw]  rounded-lg"
+        ></video>
       </div>
       <ToastContainer /> {/* Add the ToastContainer here */}
     </div>

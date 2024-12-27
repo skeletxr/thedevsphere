@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "boxicons/css/boxicons.min.css";
 import auths from "./authLogic";
+import { GlobalContext } from "@/context/GlobalContext";
 
 const SignUp = ({ showAuth, setShowAuth }) => {
+  const {containerRef} = useContext(GlobalContext);
   const [showSignup, setShowSignup] = useState(false);
   const [showPassword, setShowPassword] = useState({
     login: false,
@@ -28,6 +30,7 @@ const SignUp = ({ showAuth, setShowAuth }) => {
 
   return (
     <section
+    ref={containerRef}
       className={`flex items-center justify-center h-screen bg-transparent ${
         showSignup ? "show-signup" : ""
       }`}

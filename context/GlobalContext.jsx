@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 
  
 import { doc, getDoc } from "firebase/firestore";
@@ -11,7 +11,7 @@ import { ref, get } from "firebase/database";
 const GlobalContext = createContext();
 
 const GlobalProvider = ({ children }) => {
-  
+  const containerRef = useRef(null);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isCoursePurchased, setIsCoursePurchased] = useState(false);
@@ -69,6 +69,23 @@ const GlobalProvider = ({ children }) => {
 
 
 
+  useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (containerRef.current && !containerRef.current.contains(event.target)) {
+          setShowAuth(false);
+        }
+      };
+  
+      if (showAuth) {
+        document.addEventListener("click", handleClickOutside);
+      } else {
+        document.removeEventListener("click", handleClickOutside);
+      }
+  
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, [showAuth]);
 
 
   return (
@@ -81,7 +98,8 @@ const GlobalProvider = ({ children }) => {
         showAuth,
         isCoursePurchased,
         checkCoursePurchasedPending,
-        getUserInfo
+        getUserInfo,
+        containerRef
         
       }}
     >
