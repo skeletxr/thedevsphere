@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { signOut } from "firebase/auth";
 import { auth, db } from "@/firebaseConfig";
 import { storeUserReferral } from "./serverLogic";
+ 
 // import { supabase } from "@/supabase";
 
 // Store the user's referral code in the 'users' table
@@ -23,42 +24,7 @@ const generateReferralCode = () => {
   return referralCode;
 };
 
-// const storeUserReferral = async (user_id, referral_code) => {
-//   try {
-//     // Check if the user already exists in the database
-//     const { data, error } = await supabase
-//       .from("users")
-//       .select("user_id")
-//       .eq("user_id", user_id);
-
-//     if (error) {
-//       throw new Error("Error checking user existence: " + error.message);
-//     }
-
-//     if (data.length > 0) {
-//       // Update existing user's referral code if user exists
-//       const { updateError } = await supabase
-//         .from("users")
-//         .update({ referral_code })
-//         .eq("user_id", user_id);
-
-//       if (updateError) {
-//         throw new Error("Error updating referral code: " + updateError.message);
-//       }
-//     } else {
-//       // Insert new user if user does not exist
-//       const { insertError } = await supabase
-//         .from("users")
-//         .insert([{ user_id, referral_code }]);
-
-//       if (insertError) {
-//         throw new Error("Error inserting user: " + insertError.message);
-//       }
-//     }
-//   } catch (error) {
-//     console.error("Error storing user referral code:", error);
-//   }
-// };
+ 
 
 // Logic for handling referral
 export const referLogic = async (user) => {

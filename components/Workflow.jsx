@@ -1,5 +1,5 @@
 // filepath: /c:/web devlopment/Next.js/Project/TheDevSphere/components/Workflow.jsx
-
+ 
 import { checklistItems } from "@/constants";
 import { CheckCircle2 } from "lucide-react";
 // import codeImg from "/code.jpg";
@@ -20,7 +20,7 @@ const Workflow = () => {
       </h2>
       <div className="flex flex-wrap justify-center">
         <div className="p-2 w-full lg:w-1/2">
-          <img src="/code.jpg" alt="Coding" />
+          <img src="/images/MERN.png" alt="Coding" />
         </div>
         <div className="pt-12 w-full lg:w-1/2">
           {checklistItems.map((item, index) => (

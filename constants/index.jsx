@@ -95,24 +95,24 @@ export const features = [
 
 export const checklistItems = [
   {
-    title: "Code merge made easy",
+    title: "Future-Proof your career",
     description:
-      "Track the performance of your VR apps and gain insights into user behavior.",
+      "Learn the most in-demand stack trusted by top tech companies.",
   },
   {
-    title: "Review code without worry",
+    title: "Project-Based Learning",
     description:
-      "Track the performance of your VR apps and gain insights into user behavior.",
+      "Build real-world applications from scratch to boost your portfolio.",
   },
   {
-    title: "AI Assistance to reduce time",
+    title: "Community Support",
     description:
-      "Track the performance of your VR apps and gain insights into user behavior.",
+      "Collaborate with peers and mentors to solve challenges together.",
   },
   {
-    title: "Share work in minutes",
+    title: "Certificate of Completion",
     description:
-      "Track the performance of your VR apps and gain insights into user behavior.",
+      "Earn a Certificate of Completion that validates your learning journey and skill mastery.",
   },
 ];
 

@@ -95,7 +95,7 @@ const CourseDetails = () => {
         {Object.entries(syllabus).map(([section, topics]) => (
           <div key={section} className="mt-8">
             <h2 className="text-2xl font-semibold text-purple-300">{section}</h2>
-            <ul className="list-none mt-4">
+            <ul className="md:list-none pl-5 text-sm list-disc mt-4">
               {topics.map((topic, index) => (
                 <li key={index} className="text-white font-mono text-lg mt-2">
                   {topic}

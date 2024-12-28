@@ -1,25 +1,42 @@
 "use client";
-import "boxicons/css/boxicons.min.css";
 
-import React, { useEffect, useState } from "react";
+import auths from "@/components/Auth/authLogic";
+import { GlobalContext } from "@/context/GlobalContext";
+import "boxicons/css/boxicons.min.css";
+import {  useRouter, useSearchParams } from "next/navigation";
+ 
+ 
+import React, { useContext, useState } from "react";
+ 
+
 
 const page = () => {
-  const SubmitEvent = (e) => {
+   const Routers = useRouter();
+   const action = useSearchParams().get("action");
+  
+    
+ const [AuthState, setAuthState] = useState(action === "signup" ? true : false);
+
+  const {setShowAuth} = useContext(GlobalContext);
+  const SubmitEvent =  async(e) => {
     e.preventDefault();
+
     console.log(e);
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log("Email:", email);
     console.log("Password:", password);
+    console.log("user created successfully");
+    
+    await auths(!AuthState ? "login" : "signup", e, { email, password }, setShowAuth);
+    Routers.push("/");
   };
+
   const [showPassword, setShowPassword] = useState({
     login: false,
     signup: false,
   });
-  // const [form, setForm] = useState({
-  //   email: "",
-  //   password: "",
-  // });
+
 
   const togglePasswordVisibility = (form) => {
     setShowPassword((prevState) => ({
@@ -34,7 +51,6 @@ const page = () => {
   //   }
   // }, []);
   return (
-    // <div className="mobile-only">
     <div className=" ">
       <div className="flex justify-center items-center min-h-screen bg-black">
         <form className="w-full max-w-md bg-black p-6 rounded-lg shadow-lg" onSubmit={SubmitEvent}>
@@ -62,8 +78,7 @@ const page = () => {
                   id="email"
                   placeholder="Enter your Email"
                   className="w-full border-none outline-none   p-2 text-white bg-transparent"
-                  type="email"
-                          
+                  type="email"                         
                 />
                  
               
@@ -95,20 +110,19 @@ const page = () => {
                   d="m304 224c-8.832031 0-16-7.167969-16-16v-80c0-52.929688-43.070312-96-96-96s-96 43.070312-96 96v80c0 8.832031-7.167969 16-16 16s-16-7.167969-16-16v-80c0-70.59375 57.40625-128 128-128s128 57.40625 128 128v80c0 8.832031-7.167969 16-16 16zm0 0"
                 />
               </svg>
-              <div className="relative" >
-              <input
-                id="password"
-                placeholder="Enter your Password"
-                className="w-full border-none outline-none p-2 text-white bg-transparent"
-                // onChange={(e) => setForm({ ...form, password: e.target.value })}
-                type={showPassword.login ? "text" : "password"}
-              />
-              <i
-          className={`bx ${
-            showPassword.login ? "bx-show" : "bx-hide"
-          } absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer`}
-          onClick={() => togglePasswordVisibility("login")}
-        ></i>
+              <div className="relative flex-1">
+                <input
+                  id="password"
+                  placeholder="Enter your Password"
+                  className="w-full border-none outline-none p-2 text-white bg-transparent"
+                  type={showPassword.login ? "text" : "password"}
+                />
+                <i
+                  className={`bx ${
+                    showPassword.login ? "bx-show" : "bx-hide"
+                  } absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 cursor-pointer`}
+                  onClick={() => togglePasswordVisibility("login")}
+                ></i>
               </div>
             </div>
           </div>
@@ -129,18 +143,20 @@ const page = () => {
             type="submit"
             className="w-full bg-purple-600 text-white py-3 rounded-md font-semibold mt-4 hover:bg-purple-700"
           >
-            Sign In
+            {!AuthState ? "Sign In" : "Sign Up" }
           </button>
 
           <p className="text-center text-sm text-white mt-4">
             Don't have an account?{" "}
-            <span className="text-purple-300 cursor-pointer">Sign Up</span>
+            <span className="text-purple-300 cursor-pointer"> {AuthState ? "Sign In" : "Sign Up" }</span>
           </p>
 
           <p className="text-center text-sm text-white my-4">Or With</p>
 
-          <div className="flex space-x-4 mb-6">
-            <button className="w-full bg-white border border-purple-300 py-3 rounded-md flex items-center justify-center space-x-2 hover:border-purple-500">
+          <div className="flex space-x-4 mb-6" >
+            <div onClick={async() => {await auths("provider")
+              Routers.push("/");
+            }}   className="w-full bg-white border border-purple-300 py-3 rounded-md flex items-center justify-center space-x-2 hover:border-purple-500">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={20}
@@ -170,16 +186,8 @@ const page = () => {
                 />
               </svg>
               Google
-            </button>
-            {/* <button className="w-full bg-white border border-purple-300 py-3 rounded-md flex items-center justify-center space-x-2 hover:border-purple-500">
-              <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 22.773 22.773" className="text-purple-700">
-                <g>
-                  <path d="M15.769,0c0.053,0,0.106,0,0.162,0c0.13,1.606-0.483,2.806-1.228,3.675c-0.731,0.863-1.732,1.7-3.351,1.573c-0.108-1.583,0.506-2.694,1.25-3.561C13.292,0.879,14.557,0.16,15.769,0z" />
-                  <path d="M20.67,16.716c0,0.016,0,0.03,0,0.045c-0.455,1.378-1.104,2.559-1.896,3.655c-0.723,0.995-1.609,2.334-3.191,2.334c-1.367,0-2.275-0.879-3.676-0.903c-1.482-0.024-2.297,0.735-3.652,0.926c-0.155,0-0.31,0-0.462,0c-0.995-0.144-1.798-0.932-2.383-1.642c-1.725-2.098-3.058-4.808-3.306-8.276c0-0.34,0-0.679,0-1.019c0.105-2.482,1.311-4.5,2.914-5.478c0.846-0.52,2.009-0.963,3.304-0.765c0.555,0.086,1.122,0.276,1.619,0.464c0.471,0.181,1.06,0.502,1.618,0.485c0.378-0.011,0.754-0.208,1.135-0.347c1.116-0.403,2.21-0.865,3.652-0.648c1.733,0.262,2.963,1.032,3.723,2.22c-1.466,0.933-2.625,2.339-2.427,4.74C17.818,14.688,19.086,15.964,20.67,16.716z" />
-                </g>
-              </svg>
-              Apple
-            </button> */}
+            </div>
+            
           </div>
         </form>
       </div>

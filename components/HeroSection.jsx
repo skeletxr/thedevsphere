@@ -1,18 +1,17 @@
 "use client";
 
-import React from "react";
+import React, {useContext} from "react";
 import { FlipWords } from "./ui/textEffect";
-
+import { GlobalContext } from "@/context/GlobalContext";
 const words = [
   "Developer",
   "Innovator",
   "Creator",
-  "Builder",
-  "Designer",
-  "Coder",
   "Programmer",
 ];
-const HeroSection = () => {
+const HeroSection = ({scrollToPrice}) => {
+  const {   userDetails } = useContext(GlobalContext);
+
   return (
     <div className="flex flex-col items-center mt-6 lg:mt-20">
       <div className="flex flex-row" >
@@ -29,12 +28,15 @@ const HeroSection = () => {
         certificate of completion!
       </p>
       <div className="flex justify-center my-10">
-        <a
-          href="#"
+        <div
+           onClick={() => scrollToPrice.current.scrollIntoView({
+            behavior: "smooth",
+          })}
           className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md text-white"
         >
-          Start for free
-        </a>
+         {userDetails ?   userDetails.OwnedCourses ?
+      userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE") && "My Courses" : "Explore Courses" : "Explore Now"}
+        </div>
         <a
           href="#"
           className="py-3 px-4 mx-3 rounded-md border text-neutral-500"

@@ -32,12 +32,15 @@ function page() {
         scrollToRequestCallBack={scrollToRequestCallBack}
       />
       <div className="max-w-7xl mx-auto pt-19 px-6">
-        <HeroSection />
+        <HeroSection  
+        scrollToPrice={scrollToPrice}
+        
+        />
         <FeatureSection scrollToFeatures={scrollToFeatures} />
-        <ReqCall scrollToRequestCallBack={scrollToRequestCallBack} />
+        <Pricing scrollToPrice={scrollToPrice} />
         {/* <Loader /> */}
         <Workflow />
-        <Pricing scrollToPrice={scrollToPrice} />
+        <ReqCall scollToRequestCallBack={scrollToRequestCallBack} />
         <Testimonials scrollToTestimonials={scrollToTestimonials} />
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 

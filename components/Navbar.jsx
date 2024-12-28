@@ -166,13 +166,15 @@ const path = usePathname();
                 ))}
               </ul>
               <div className="flex space-x-6">
-                <Link href="/MAuth"
+             {!isAuthorized ? (  
+              <>
+              <Link href={{ pathname: "/MAuth", query: { action: "login" } }}
                   className="py-2 px-3 border rounded-md"
                  
                 >
-                  Sign In
+                  Sign In 
                 </Link>
-                <Link href="/MAuth"
+                <Link href={{ pathname: "/MAuth", query: { action: "signup" } }}
                   onClick={() =>
                     showAuth ? setShowAuth("") : setShowAuth("Signup")
                   }
@@ -180,6 +182,41 @@ const path = usePathname();
                 >
                   Create an account
                 </Link>
+                </>
+             )
+                : path === "/Refer" ? (
+                  <>
+                    <a
+                      onClick={() => router.push("/")}
+                      className="py-2 cursor-pointer px-3 border rounded-md"
+                    >
+                      Home
+                    </a>
+                  </>
+                ) : (
+                  <>
+                    <a
+                      onClick={() => router.push("/Refer")}
+                      className="py-2 cursor-pointer px-3 border rounded-md"
+                    >
+                      Referrals
+                    </a>
+                  </>
+                )}
+  
+                {path !== "/Refer" && isAuthorized && (
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowAuth(false);
+                      window.location.reload();
+                      router.push("/");
+                    }}
+                    className="py-2 px-3 cursor-pointer border rounded-md"
+                  >
+                    LogOut
+                  </button>
+                )}
               </div>
             </div>
           )}

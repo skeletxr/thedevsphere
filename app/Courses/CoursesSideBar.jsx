@@ -265,10 +265,12 @@ const Dashboard = ({ setShowScanner, setRefer, showVideo }) => {
       <div className={` border border-neutral-200 dark:border-neutral-700  dark:bg-black flex flex-col gap-2 flex-1 w-full h-full ${!showVideo ? "overflow-y-auto p-2 bg-white md:p-10" : " bg-black flex overflow-hidden h-[70vh] w-auto "}`}>
         {!showVideo ? (
           <>
+          <div className=" hidden md:block ">
             <div className="w-full">
               <h1 className="text-gray-400 text-5xl font-sans">
                 Full Stack Web Development
               </h1>
+            </div>
             </div>
             <div className="flex flex-col md:flex-row h-screen overflow-y-auto no-scrollbar">
               <div className="md:fixed md:top-6 md:right-10">
