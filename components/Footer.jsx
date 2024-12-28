@@ -28,7 +28,7 @@ const Footer = ({scrollToFeatures, scrollToTestimonials,  scrollToPrice, scrollT
     <p>
       thedevsphere.tech
       <br />
-      Providing the best resources for developers
+      Providing best resources for developers
     </p>
   </aside>
   <nav>
