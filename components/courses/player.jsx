@@ -145,11 +145,6 @@ export default HLSPlayer;
 
 
 
-
-
-
-
-
 // import React, { useEffect, useRef, useState } from "react";
 // import Hls from "hls.js";
 // import CryptoJS from "crypto-js";

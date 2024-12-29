@@ -103,12 +103,12 @@ const path = usePathname();
                 </>
               ) : (
                 <>
-                  <a
-                    onClick={() => router.push("/Refer")}
+                  <Link href="/Refer"
+                    // onClick={() => router.push("/Refer")}
                     className="py-2 cursor-pointer px-3 border rounded-md"
                   >
                     Referrals
-                  </a>
+                  </Link>
                 </>
               )}
 

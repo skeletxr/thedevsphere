@@ -11,14 +11,14 @@ const Workflow = () => {
     <>
 
     <section>
-    <div className="mt-1">
-      <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center mt-6 tracking-wide">
+    <div className="">
+      <h2 className="text-3xl mb-7  sm:text-5xl lg:text-6xl text-center mt-6 tracking-wide">
         Get your first{" "}
         <span className="bg-gradient-to-r from-purple-500 to-purple-800 text-transparent bg-clip-text">
           internship.
         </span>
       </h2>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center items-center">
         <div className="p-2 w-full lg:w-1/2">
           <img src="/images/MERN.png" alt="Coding" />
         </div>
