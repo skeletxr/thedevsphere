@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 import toast from 'react-hot-toast';
 
@@ -131,7 +132,7 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
 
       {/* Image on the right for larger screens */}
       <div className="flex hidden md:block w-full max-w-[500px] h-auto mr-6 lg:mr-0 lg:ml-6">
-        <img src="/images/contact-us.png" alt="Contact Us" className="w-full h-auto" />
+        <Image width={500} height={500} src="/images/contact-us.png" alt="Contact Us" className="w-full h-auto" />
       </div>
     </div>
   );

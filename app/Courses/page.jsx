@@ -15,8 +15,9 @@ import dynamic from "next/dynamic";
 
 // Define client-side only components with dynamic import
 const ClientSideComponent = () => {
-  const { showAuth, setShowAuth, user, userDetails, checkCoursePurchasedPending } =
+  const { showAuth, setShowAuth, user,isCoursePurchased, userDetails, checkCoursePurchasedPending } =
     useContext(GlobalContext);
+    
     const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
 
   const searchParams = useSearchParams(); // Using useSearchParams in client component
@@ -28,6 +29,9 @@ const ClientSideComponent = () => {
   // const [coursesData, setCoursesData] = useState([]);
   const [showScanner, setShowScanner] = useState("");
   const [showSpinner, setShowSpinner] = useState(false);
+  const [courseData, setCourseData] = useState([]);
+  const [showVideo, setShowVideo] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const updateToRealTimeDateBase = async () => {
     if (userDetails.referId && userDetails.referId === refer) setRefer(null);
@@ -122,6 +126,41 @@ const ClientSideComponent = () => {
     }
   }
 
+
+
+
+  const handleMobileMyCourses = (params) => {
+    if (isCoursePurchased) {
+      toast.error(
+        "Payment Verification Pending (this may take up to 24 Hours)"
+      );
+    } else if (
+      userDetails &&
+      userDetails.OwnedCourses &&
+      userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")
+    ) {
+      handleFetchData("CourseData", userDetails.OwnedCourses[0]).then(
+        (data) => {
+          console.log("data", data);
+          setCourseData(data.data.titles);
+          setCoursesOpen(!coursesOpen);
+          if(params && params === "mobile"){
+            setShowVideo(true)
+            setOpen(false)
+          }
+        }
+      );
+    }
+  };
+
+useEffect(() => {
+ 
+  if (searchParams.get("starter")) {
+    console.log("Starter");
+    handleMobileMyCourses("mobile");
+  }
+}, []);
+
   return (
     <div className="h-screen overflow-hidden">
       {/* Suspense wrapper here */}
@@ -130,7 +169,7 @@ const ClientSideComponent = () => {
           <Navbar />
         </div>
 
-        <SidebarDemo showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} setCoursesOpen={setCoursesOpen} coursesOpen={coursesOpen}  handleFetchData={handleFetchData}/>
+        <SidebarDemo setOpen={setOpen} open={open} setShowVideo={setShowVideo} showVideo={showVideo} setCourseData={setCourseData} courseData={courseData} showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} setCoursesOpen={setCoursesOpen} coursesOpen={coursesOpen}  handleFetchData={handleFetchData} handleMobileMyCourses={handleMobileMyCourses}/>
         
         {showAuth && (
           <div className="flex fixed top-0 right-20">

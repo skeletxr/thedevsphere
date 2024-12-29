@@ -73,85 +73,86 @@ const Refer = () => {
       </div>
 
       {/* --------REFER STEPS SECTION------- */}
-
       <section
-        style={{ backgroundColor: "transparent" }}
-        className="bg-gray-900 max-w-[85vw] mx-auto"
-      >
-        <div className="hero h-20vh"></div>
-        <div className="text-gray-600 body-font">
-          <div className="container px-5 py-2 mx-auto">
-            <div className="flex flex-wrap">
-              <div className="w-1/4 mb-10 px-4">
-                <div className=" overflow-hidden flex items-center justify-center">
-                  <img
-                    alt="Login unique code"
-                    className="w-3/4 h-3/4 rounded-full"
-                    src="/login-unique-code.png"
-                  />
-                </div>
-                <h2 className="title-font text-2xl text-center font-medium text-white mt-6 mb-3">
-                  Step 1
-                </h2>
-                <p className="leading-relaxed text-purple-300 text-center text-xl">
-                  Login/ Sign up and get your unique code and referral link on
-                  'Refer and Earn' page.
-                </p>
-              </div>
-
-              <div className="w-1/4 mb-10 px-4">
-                <div className=" overflow-hidden flex items-center justify-center">
-                  <img
-                    alt="Share your code"
-                    className="object-cover object-center w-3/4 h-3/4 rounded-full"
-                    src="/get-rewarded.png"
-                  />
-                </div>
-                <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
-                  Step 2
-                </h2>
-                <p className="leading-relaxed text-purple-300 text-center text-xl">
-                  Refer a friend/family to our website with the help of a code.
-                </p>
-              </div>
-
-              <div className="w-1/4 mb-10 px-4">
-                <div className="overflow-hidden flex items-center justify-center">
-                  <img
-                    alt="Referee shops"
-                    className="object-cover object-center w-3/4 h-3/4 rounded-full"
-                    src="/referee-shops.png"
-                  />
-                </div>
-                <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
-                  Step 3
-                </h2>
-                <p className="leading-relaxed text-purple-300 text-center text-xl">
-                  When the person makes a purchase, you will be eligible for up
-                  to INR 2000.
-                </p>
-              </div>
-
-              <div className="w-1/4 mb-10 px-4">
-                <div className="overflow-hidden flex items-center justify-center">
-                  <img
-                    alt="Get rewarded"
-                    className="w-3/4 h-3/4 rounded-full"
-                    src="/get-rewarded.png"
-                  />
-                </div>
-                <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
-                  Step 4
-                </h2>
-                <p className="leading-relaxed text-purple-300 text-center text-base">
-                  Finally, contact our associates - you will receive the payment
-                  through UPI.
-                </p>
-              </div>
-            </div>
+  style={{ backgroundColor: "transparent" }}
+  className="bg-gray-900 max-w-[85vw] mx-auto"
+>
+  <div className="hero h-20vh"></div>
+  <div className="text-gray-600 body-font">
+    <div className="container px-5 py-2 mx-auto">
+      <div className="flex flex-wrap">
+        {/* Step 1 */}
+        <div className="w-full md:w-1/4 mb-10 px-4">
+          <div className="overflow-hidden flex items-center justify-center">
+            <img
+              alt="Login unique code"
+              className="w-3/4 h-3/4 rounded-full"
+              src="/login-unique-code.png"
+            />
           </div>
+          <h2 className="title-font text-2xl text-center font-medium text-white mt-6 mb-3">
+            Step 1
+          </h2>
+          <p className="leading-relaxed text-purple-300 text-center text-xl">
+            Login/ Sign up and get your unique code and referral link on 'Refer and Earn' page.
+          </p>
         </div>
-      </section>
+
+        {/* Step 2 */}
+        <div className="w-full md:w-1/4 mb-10 px-4">
+          <div className="overflow-hidden flex items-center justify-center">
+            <img
+              alt="Share your code"
+              className="object-cover object-center w-3/4 h-3/4 rounded-full"
+              src="/get-rewarded.png"
+            />
+          </div>
+          <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
+            Step 2
+          </h2>
+          <p className="leading-relaxed text-purple-300 text-center text-xl">
+            Refer a friend/family to our website with the help of a code.
+          </p>
+        </div>
+
+        {/* Step 3 */}
+        <div className="w-full md:w-1/4 mb-10 px-4">
+          <div className="overflow-hidden flex items-center justify-center">
+            <img
+              alt="Referee shops"
+              className="object-cover object-center w-3/4 h-3/4 rounded-full"
+              src="/referee-shops.png"
+            />
+          </div>
+          <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
+            Step 3
+          </h2>
+          <p className="leading-relaxed text-purple-300 text-center text-xl">
+            When the person makes a purchase, you will be eligible for up to INR 2000.
+          </p>
+        </div>
+
+        {/* Step 4 */}
+        <div className="w-full md:w-1/4 mb-10 px-4">
+          <div className="overflow-hidden flex items-center justify-center">
+            <img
+              alt="Get rewarded"
+              className="w-3/4 h-3/4 rounded-full"
+              src="/get-rewarded.png"
+            />
+          </div>
+          <h2 className="title-font text-2xl font-medium text-center text-white mt-6 mb-3">
+            Step 4
+          </h2>
+          <p className="leading-relaxed text-purple-300 text-center text-base">
+            Finally, contact our associates - you will receive the payment through UPI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* --------GENERATE LINK SECTION------- */}
 

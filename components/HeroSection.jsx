@@ -3,6 +3,7 @@
 import React, {useContext} from "react";
 import { FlipWords } from "./ui/textEffect";
 import { GlobalContext } from "@/context/GlobalContext";
+import { useRouter } from "next/navigation";
 const words = [
   "Developer",
   "Innovator",
@@ -11,7 +12,7 @@ const words = [
 ];
 const HeroSection = ({scrollToPrice}) => {
   const {   userDetails } = useContext(GlobalContext);
-
+  const Routers = useRouter();
   return (
     <div className="flex flex-col items-center mt-6 lg:mt-20">
       <div className="flex flex-row" >
@@ -27,22 +28,27 @@ const HeroSection = ({scrollToPrice}) => {
         Join a community of learners, tackle exciting projects, and earn your
         certificate of completion!
       </p>
-      <div className="flex justify-center my-10">
+      <div className="flex justify-center my-10 cursor-pointer">
         <div
-           onClick={() => scrollToPrice.current.scrollIntoView({
+       onClick={() => {
+        if (userDetails && userDetails.OwnedCourses && userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE")) {
+          Routers.push(`/Courses?starter=mycourses`);
+        } else {
+          scrollToPrice.current.scrollIntoView({
             behavior: "smooth",
-          })}
+          });
+        }
+      }}
           className="bg-gradient-to-r from-purple-500 to-purple-800 py-3 px-4 mx-3 rounded-md text-white"
         >
          {userDetails ?   userDetails.OwnedCourses ?
       userDetails.OwnedCourses.includes("SSJWEBDEVCOURSE") && "My Courses" : "Explore Courses" : "Explore Now"}
         </div>
-        <a
-          href="#"
+        <div
           className="py-3 px-4 mx-3 rounded-md border text-neutral-500"
         >
           Documentation
-        </a>
+        </div>
       </div>
     </div>
   );

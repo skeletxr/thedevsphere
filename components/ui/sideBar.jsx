@@ -20,6 +20,7 @@ export const SidebarProvider = ({
   open: openProp,
   setOpen: setOpenProp,
   animate = true,
+  handleMobileMyCourses
 }) => {
   const [openState, setOpenState] = useState(false);
 
@@ -27,15 +28,15 @@ export const SidebarProvider = ({
   const setOpen = setOpenProp !== undefined ? setOpenProp : setOpenState;
 
   return (
-    <SidebarContext.Provider value={{ open, setOpen, animate: animate }}>
+    <SidebarContext.Provider value={{ open, setOpen, animate: animate, handleMobileMyCourses }}>
       {children}
     </SidebarContext.Provider>
   );
 };
 
-export const Sidebar = ({ children, open, setOpen, animate }) => {
+export const Sidebar = ({ children, open, setOpen, animate, handleMobileMyCourses }) => {
   return (
-    <SidebarProvider open={open} setOpen={setOpen} animate={animate}>
+    <SidebarProvider open={open} setOpen={setOpen} animate={animate} handleMobileMyCourses={handleMobileMyCourses}>
       {children}
     </SidebarProvider>
   );
@@ -73,7 +74,7 @@ export const DesktopSidebar = ({ className, children, ...props }) => {
 };
 
 export const MobileSidebar = ({ className, children, ...props }) => {
-  const { open, setOpen } = useSidebar();
+  const { open, setOpen, handleMobileMyCourses } = useSidebar();
   return (
     <>
       <div
@@ -82,7 +83,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
         )}
         {...props}
       >
-        <button className="cursor-pointer px-3 whitespace-nowrap border rounded-md">
+        <button onClick={() => handleMobileMyCourses("mobile")} className="cursor-pointer px-3 whitespace-nowrap border rounded-md">
           My Courses
         </button>
         <div className="flex justify-end z-20 w-full">

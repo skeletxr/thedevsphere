@@ -5,14 +5,15 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PlayerCard from "./playerCard";
 
-const HLSPlayer = ({ showVideo }) => {
+const HLSPlayer = ({ showVideo, courseData,setShowVideo, handleSubCourseField, subCourseData }) => {
+  console.log("subCourseData", subCourseData.data)
   const videoRef = useRef(null);
   const [videoSource, setVideoSource] = useState(""); // Store the video source URL
   const [videoId, setVideoId] = useState(null); // Track the current video ID to avoid redundant requests
 
   useEffect(() => {
     // Skip fetching if the video ID is the same as the previous one
-    if (showVideo === videoId) return;
+    if (showVideo === videoId || showVideo == true) return;
 
     const fetchVideoSource = async () => {
       setVideoId(showVideo); // Set the current video ID
@@ -154,8 +155,8 @@ const HLSPlayer = ({ showVideo }) => {
       </div>
      
         <ToastContainer />
-        <div className="md:hidden :pt-6 sm:block">
-          <PlayerCard />
+        <div className="md:hidden :pt-6 sm:block overflow-y-scroll">
+          <PlayerCard subCourseData={subCourseData} courseData={courseData} handleSubCourseField={handleSubCourseField} setShowVideo={setShowVideo}/>
         </div>
       </div>
     </div>
