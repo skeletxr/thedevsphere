@@ -6,13 +6,13 @@ const PlayerCard = () => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative flex flex-col min-h-[58px] max-w-[298px] w-full border border-gray-300 rounded-lg bg-white overflow-hidden transition-all duration-300">
+    <div className="flex w-[90vw] flex-col mt-10 text-black items-center">
+      <div className="relative w-[90vw] text-black flex flex-col min-h-[58px]  border border-gray-300 rounded-lg bg-white overflow-hidden transition-all duration-300">
         <input hidden checked={isOpen} onChange={toggleDropdown} className="sr-only" name="state-dropdown" id="state-dropdown" type="checkbox" />
         <label
           aria-label="dropdown scrollbar"
           htmlFor="state-dropdown"
-          className="trigger cursor-pointer list-none select-none font-semibold text-inherit w-full flex items-center gap-4 p-4 h-max relative z-10 rounded-lg bg-white"
+          className="trigger text-black cursor-pointer list-none select-none font-semibold text-inherit w-full flex items-center gap-4 p-4 h-max relative z-10 rounded-lg bg-white"
         />
         <ul
           className={`list ${isOpen ? 'opacity-100 translate-y-0 mt-0 max-h-80' : 'opacity-0 translate-y-[3rem] mt-[-100%]'} overflow-hidden auto-scroll gap-4 p-4 transition-all duration-500 ease-out`}

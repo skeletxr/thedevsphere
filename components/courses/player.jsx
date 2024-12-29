@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Hls from "hls.js";
 import CryptoJS from "crypto-js";
 import { toast, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import PlayerCard from "./playerCard";
 
 const HLSPlayer = ({ showVideo }) => {
   const videoRef = useRef(null);
@@ -35,17 +36,31 @@ const HLSPlayer = ({ showVideo }) => {
 
         if (!response.ok) {
           console.error("Failed to fetch video source:", response.status);
-          toast.update(toastId, { render: "Failed to load video.", type: "error", isLoading: false, autoClose: 3000 });
+          toast.update(toastId, {
+            render: "Failed to load video.",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+          });
           return;
         }
 
         const data = await response.text(); // Assuming the .m3u8 content is returned as text
         setVideoSource(data); // Set the video source content (m3u8 content)
-        toast.update(toastId, { render: "Video loaded successfully!", type: "success", isLoading: false, autoClose: 3000 });
-
+        toast.update(toastId, {
+          render: "Video loaded successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
       } catch (error) {
         console.error("Failed to fetch video source:", error);
-        toast.update(toastId, { render: "Error loading video.", type: "error", isLoading: false, autoClose: 3000 });
+        toast.update(toastId, {
+          render: "Error loading video.",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
       }
     };
 
@@ -58,7 +73,9 @@ const HLSPlayer = ({ showVideo }) => {
 
       if (Hls.isSupported() && videoSource) {
         // Create a Blob from the raw .m3u8 manifest data
-        const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
+        const blob = new Blob([videoSource], {
+          type: "application/vnd.apple.mpegurl",
+        });
         const blobUrl = URL.createObjectURL(blob); // Generate the Blob URL
         console.log("Blob URL:", blobUrl); // Debug: log the generated Blob URL
 
@@ -81,9 +98,14 @@ const HLSPlayer = ({ showVideo }) => {
         hls.on(Hls.Events.DESTROYING, () => {
           URL.revokeObjectURL(blobUrl);
         });
-      } else if (videoElement.canPlayType("application/vnd.apple.mpegurl") && videoSource) {
+      } else if (
+        videoElement.canPlayType("application/vnd.apple.mpegurl") &&
+        videoSource
+      ) {
         // Fallback for native HLS support
-        const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
+        const blob = new Blob([videoSource], {
+          type: "application/vnd.apple.mpegurl",
+        });
         const blobUrl = URL.createObjectURL(blob);
 
         videoElement.src = blobUrl;
@@ -113,9 +135,10 @@ const HLSPlayer = ({ showVideo }) => {
 
   return (
     <div
-      className="flex justify-center items-center md:my-auto bg-black"
+      className="flex justify-center  items-center md:my-auto bg-black"
       style={{ fontFamily: "Arial, sans-serif" }}
     >
+       <div className="flex justify-center items-center  flex-col">
       <div
         className="bg-white shadow-lg rounded-lg "
         // style={{ maxWidth: "800px", width: "100%", textAlign: "center" }}
@@ -129,21 +152,17 @@ const HLSPlayer = ({ showVideo }) => {
           className="w-full max-w-[1100px] min-w-[70vw]  rounded-lg"
         ></video>
       </div>
-      <ToastContainer /> {/* Add the ToastContainer here */}
+     
+        <ToastContainer />
+        <div className="md:hidden :pt-6 sm:block">
+          <PlayerCard />
+        </div>
+      </div>
     </div>
   );
 };
 
 export default HLSPlayer;
-
-
-
-
-
-
-
-
-
 
 // import React, { useEffect, useRef, useState } from "react";
 // import Hls from "hls.js";
@@ -177,7 +196,6 @@ export default HLSPlayer;
 //           headers: { "Content-Type": "application/json" },
 //           body: JSON.stringify({ type: "video", id: encryptedId }),
 //         });
-        
 
 //         if (!response.ok) {
 //           console.error("Failed to fetch video source:", response.status);
@@ -186,8 +204,7 @@ export default HLSPlayer;
 //        console.log("response", response)
 
 //         const data = await response.text(); // Assuming the .m3u8 content is returned as text
-       
- 
+
 //         setVideoSource(data); // Set the video source content (m3u8 content)
 
 //       } catch (error) {
@@ -201,28 +218,28 @@ export default HLSPlayer;
 //   }, [showVideo, videoId]); // Dependency array includes videoId to avoid fetching same video repeatedly
 //   const initializeVideoStream = () => {
 //     const videoElement = videoRef.current;
-  
+
 //     if (Hls.isSupported() && videoSource) {
 //       // Create a Blob from the raw .m3u8 manifest data
 //       const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
 //       const blobUrl = URL.createObjectURL(blob); // Generate the Blob URL
 //       console.log("Blob URL:", blobUrl); // Debug: log the generated Blob URL
-  
+
 //       const hls = new Hls({ debug: true });
 //       hls.loadSource(blobUrl); // Use the Blob URL instead of raw videoSource
 //       hls.attachMedia(videoElement);
-  
+
 //       hls.on(Hls.Events.MANIFEST_PARSED, () => {
 //         console.log("Manifest parsed successfully");
 //         setIsLoading(false);
 //       });
-  
+
 //       hls.on(Hls.Events.ERROR, (event, data) => {
 //         // console.error("HLS.js error:", data);
 //       });
-  
+
 //       window.hls = hls;
-  
+
 //       // Clean up Blob URL when the HLS instance is destroyed
 //       hls.on(Hls.Events.DESTROYING, () => {
 //         URL.revokeObjectURL(blobUrl);
@@ -231,9 +248,9 @@ export default HLSPlayer;
 //       // Fallback for native HLS support
 //       const blob = new Blob([videoSource], { type: "application/vnd.apple.mpegurl" });
 //       const blobUrl = URL.createObjectURL(blob);
-  
+
 //       videoElement.src = blobUrl;
-  
+
 //       videoElement.onended = () => {
 //         URL.revokeObjectURL(blobUrl); // Clean up Blob URL after playback
 //       };
@@ -241,7 +258,6 @@ export default HLSPlayer;
 //       console.error("HLS is not supported in this browser.");
 //     }
 //   };
-  
 
 //   // Cleanup HLS.js instance on unmount
 //   useEffect(() => {
@@ -285,9 +301,3 @@ export default HLSPlayer;
 // };
 
 // export default HLSPlayer;
-
-
-
-
-
-

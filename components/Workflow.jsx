@@ -12,7 +12,7 @@ const Workflow = () => {
 
     <section>
     <div className="">
-      <h2 className="text-3xl mb-7  sm:text-5xl lg:text-6xl text-center mt-6 tracking-wide">
+      <h2 className="text-3xl mb-7 lg:mt-14 sm:text-5xl lg:text-6xl text-center mt-6 tracking-wide">
         Get your first{" "}
         <span className="bg-gradient-to-r from-purple-500 to-purple-800 text-transparent bg-clip-text">
           internship.

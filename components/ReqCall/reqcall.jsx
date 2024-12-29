@@ -31,7 +31,7 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
     <div className="min-h-screen border-purple-400 flex flex-col lg:flex-row justify-between items-center md:gap-8" ref={scrollToRequestCallBack}>
       <div className="flex flex-col items-center  md:ml-6 justify-center h-screen dark  md:p-4">
         <div className="w-full min-w-[38vw] max-w-md bg-black p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl text-white flex pb-4 font-bold justify-center mb-6">Request Callback</h2>
+          <h2 className="text-2xl text-white flex pb-4 font-bold justify-center mb-6">Request Callback from Us</h2>
           <form className="flex flex-col" onSubmit={handleSubmit}>
             {/* First Name and Last Name Inputs */}
             <div className="flex space-x-4 mb-4 pb-2">

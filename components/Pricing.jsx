@@ -112,7 +112,7 @@ const Pricing = ({ scrollToPrice }) => {
                 href="/Courses"
                 className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-purple-400 hover:text-black`}
               >
-                {option.title === "Full Stack Web Development" ? "Subscribe" : "Coming soon"}
+                {option.title === "Full Stack Web Development" ? "See Details" : "Coming Soon"}
               </Link>
             </div>
           </div>

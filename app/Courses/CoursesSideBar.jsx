@@ -21,7 +21,7 @@ export function SidebarDemo({
   handleFetchData,
 }) {
   const { user, userDetails, isCoursePurchased } = useContext(GlobalContext);
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
   const [courseData, setCourseData] = useState([]);
   const [open, setOpen] = useState(false);
   const [subCourseData, setSubCourseData] = useState([]);
@@ -130,7 +130,7 @@ export function SidebarDemo({
 
                     {/* Dropdown Content */}
                     {link.label === "My Courses" && coursesOpen && (
-                      <div className="ml-6 mt-2 flex flex-col gap-2">
+                      <div className="ml-6 mt-2  md:flex flex-col hidden gap-2">
                         {link.sections.map((section, secIndex) => (
                           <div key={secIndex}>
                             {/* Sub-dropdown Toggle */}
