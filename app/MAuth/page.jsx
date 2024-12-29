@@ -6,11 +6,11 @@ import "boxicons/css/boxicons.min.css";
 import {  useRouter, useSearchParams } from "next/navigation";
  
  
-import React, { useContext, useState } from "react";
+import React, { Suspense, useContext, useState } from "react";
  
 
 
-const page = () => {
+const PageContent = () => {
    const Routers = useRouter();
    const action = useSearchParams().get("action");
   
@@ -194,5 +194,13 @@ const page = () => {
     </div>
   );
 };
+
+
+
+const page = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <PageContent />
+  </Suspense>
+);
 
 export default page;
