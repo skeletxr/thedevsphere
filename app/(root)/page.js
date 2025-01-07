@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+
 import SignUp from "@/components/Auth/signUp";
 import FeatureSection from "@/components/FeatureSection";
 import Footer from "@/components/Footer";
@@ -13,6 +14,8 @@ import Testimonials from "@/components/Testimonials";
 import Workflow from "@/components/Workflow";
 import React, { useRef, useState, useContext } from "react";
 import Loader from "@/components/ui/loading";
+
+
 
 function page() {
   const { showAuth, setShowAuth } = useContext(GlobalContext);
@@ -31,7 +34,7 @@ function page() {
         scrollToPrice={scrollToPrice}
         scrollToRequestCallBack={scrollToRequestCallBack}
       />
-      <div className="max-w-7xl mx-auto pt-19 px-6">
+      <div className="max-w-7xl mx-auto  pt-19 px-6">
         <HeroSection  
         scrollToPrice={scrollToPrice}
         
@@ -40,7 +43,9 @@ function page() {
         <Pricing scrollToPrice={scrollToPrice} />
         {/* <Loader /> */}
         <Workflow />
+        <div ref={scrollToRequestCallBack}>
         <ReqCall scollToRequestCallBack={scrollToRequestCallBack} />
+        </div>
         <Testimonials scrollToTestimonials={scrollToTestimonials} />
       <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
 

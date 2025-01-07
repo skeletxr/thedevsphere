@@ -3,6 +3,7 @@
 import React, { useState, useContext, useEffect, Suspense } from "react";
 import { GlobalContext } from "@/context/GlobalContext";
 import { useSearchParams } from "next/navigation";
+
 import Navbar from "@/components/Navbar";
 import { SidebarDemo } from "./CoursesSideBar";
 import SignUp from "@/components/Auth/signUp";
@@ -12,9 +13,13 @@ import { FileUpload } from "@/components/ui/fileUpload";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/loading";
 import dynamic from "next/dynamic";
-
 // Define client-side only components with dynamic import
+
+
+
 const ClientSideComponent = () => {
+
+
   const { showAuth, setShowAuth, user,isCoursePurchased, userDetails, checkCoursePurchasedPending } =
     useContext(GlobalContext);
     
