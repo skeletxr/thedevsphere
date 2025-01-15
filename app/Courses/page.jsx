@@ -1,9 +1,14 @@
 "use client"; // Ensure this is present for client-side rendering
 
-import React, { useState, useContext, useEffect, Suspense } from "react";
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  Suspense,
+  useDebugValue,
+} from "react";
 import { GlobalContext } from "@/context/GlobalContext";
 import { useSearchParams } from "next/navigation";
-
 import Navbar from "@/components/Navbar";
 import { SidebarDemo } from "./CoursesSideBar";
 import SignUp from "@/components/Auth/signUp";
@@ -13,17 +18,21 @@ import { FileUpload } from "@/components/ui/fileUpload";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/loading";
 import dynamic from "next/dynamic";
+
 // Define client-side only components with dynamic import
-
-
-
 const ClientSideComponent = () => {
+  const {
+    showAuth,
+    setShowAuth,
+    user,
+    isCoursePurchased,
+    userDetails,
+    getUserInfo,
 
-
-  const { showAuth, setShowAuth, user,isCoursePurchased, userDetails, checkCoursePurchasedPending } =
-    useContext(GlobalContext);
-    
-    const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
+    checkCoursePurchasedPending,
+  } = useContext(GlobalContext);
+  console.log("User", { userDetails, user });
+  const [coursesOpen, setCoursesOpen] = useState(false); // For "My Courses" dropdown
 
   const searchParams = useSearchParams(); // Using useSearchParams in client component
   const [refer, setRefer] = useState(searchParams.get("referral") || null);
@@ -39,7 +48,11 @@ const ClientSideComponent = () => {
   const [open, setOpen] = useState(false);
 
   const updateToRealTimeDateBase = async () => {
-    if (userDetails.referId && userDetails.referId === refer) setRefer(null);
+    if (!userDetails) getUserInfo(user);
+ 
+    if (userDetails.referId && userDetails.referId === refer) {
+      setRefer(null);
+    }
 
     const formData = new FormData();
     formData.append("referCode", userDetails.referId === refer ? null : refer);
@@ -107,11 +120,10 @@ const ClientSideComponent = () => {
     }
   };
 
-
   const handleFetchData = async (type, data) => {
     toast.loading("Getting Things Ready...");
-    console.log("Data", {data, type})
-    try{
+    //console.log("Data", {data, type})
+    try {
       const res = await fetch(`/api/Courses`, {
         // Removed dynamic ID from URL
         method: "POST",
@@ -124,15 +136,12 @@ const ClientSideComponent = () => {
       // setCoursesData(courses);
       toast.dismiss();
       return courses;
-    }catch(err){
+    } catch (err) {
       toast.dismiss();
-      toast.error("Error Fetching Data")
-      console.log(err)
+      toast.error("Error Fetching Data");
+      //console.log(err)
     }
-  }
-
-
-
+  };
 
   const handleMobileMyCourses = (params) => {
     if (isCoursePurchased) {
@@ -146,25 +155,24 @@ const ClientSideComponent = () => {
     ) {
       handleFetchData("CourseData", userDetails.OwnedCourses[0]).then(
         (data) => {
-          console.log("data", data);
+          //console.log("data", data);
           setCourseData(data.data.titles);
           setCoursesOpen(!coursesOpen);
-          if(params && params === "mobile"){
-            setShowVideo(true)
-            setOpen(false)
+          if (params && params === "mobile") {
+            setShowVideo(true);
+            setOpen(false);
           }
         }
       );
     }
   };
 
-useEffect(() => {
- 
-  if (searchParams.get("starter")) {
-    console.log("Starter");
-    handleMobileMyCourses("mobile");
-  }
-}, []);
+  useEffect(() => {
+    if (searchParams.get("starter")) {
+      //console.log("Starter");
+      handleMobileMyCourses("mobile");
+    }
+  }, []);
 
   return (
     <div className="h-screen overflow-hidden">
@@ -174,40 +182,61 @@ useEffect(() => {
           <Navbar />
         </div>
 
-        <SidebarDemo setOpen={setOpen} open={open} setShowVideo={setShowVideo} showVideo={showVideo} setCourseData={setCourseData} courseData={courseData} showScanner={showScanner} setShowScanner={setShowScanner} setRefer={setRefer} setCoursesOpen={setCoursesOpen} coursesOpen={coursesOpen}  handleFetchData={handleFetchData} handleMobileMyCourses={handleMobileMyCourses}/>
-        
+        <SidebarDemo
+          setOpen={setOpen}
+          open={open}
+          setShowVideo={setShowVideo}
+          showVideo={showVideo}
+          setCourseData={setCourseData}
+          courseData={courseData}
+          showScanner={showScanner}
+          setShowScanner={setShowScanner}
+          setRefer={setRefer}
+          setCoursesOpen={setCoursesOpen}
+          coursesOpen={coursesOpen}
+          handleFetchData={handleFetchData}
+          handleMobileMyCourses={handleMobileMyCourses}
+        />
+
         {showAuth && (
           <div className="flex fixed top-0 right-20">
             <SignUp showAuth={showAuth} setShowAuth={setShowAuth} />
           </div>
         )}
 
-        {!showSpinner ? showScanner && showScanner === "not done" ? (
-          <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-            <div className="image-container">
-              <Image src="/payQR.jpg" alt="QR Code" width={400} height={400} />
-            </div>
-            <div className="max-w-[190px]"></div>
-
-            <div
-              className="absolute bottom-16"
-              onClick={() => {
-                notify(
-                  "Payment Successful so you can now upload proof of payment"
-                );
-                setShowScanner("Done");
-              }}
-            >
-              <Button name="Done" />
-            </div>
-          </div>
-        ) : (
-          showScanner === "Done" && (
+        {!showSpinner ? (
+          showScanner && showScanner === "not done" ? (
             <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
               <div className="image-container">
-                <FileUpload onChange={handleFileUpload} />
+                <Image
+                  src="/payQR.jpg"
+                  alt="QR Code"
+                  width={400}
+                  height={400}
+                />
+              </div>
+              <div className="max-w-[190px]"></div>
+
+              <div
+                className="absolute bottom-16"
+                onClick={() => {
+                  notify(
+                    "Payment Successful so you can now upload proof of payment"
+                  );
+                  setShowScanner("Done");
+                }}
+              >
+                <Button name="Done" />
               </div>
             </div>
+          ) : (
+            showScanner === "Done" && (
+              <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+                <div className="image-container">
+                  <FileUpload onChange={handleFileUpload} />
+                </div>
+              </div>
+            )
           )
         ) : (
           <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
@@ -220,4 +249,6 @@ useEffect(() => {
 };
 
 // Dynamically import the ClientSideComponent to ensure it renders on the client
-export default dynamic(() => Promise.resolve(ClientSideComponent), { ssr: false });
+export default dynamic(() => Promise.resolve(ClientSideComponent), {
+  ssr: false,
+});

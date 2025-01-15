@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { signOut } from "firebase/auth";
 import { auth, db } from "@/firebaseConfig";
 import { storeUserReferral } from "./serverLogic";
- 
+
 // import { supabase } from "@/supabase";
 
 // Store the user's referral code in the 'users' table
@@ -23,8 +23,6 @@ const generateReferralCode = () => {
   const referralCode = numericCode.toString().padStart(6, "0");
   return referralCode;
 };
-
- 
 
 // Logic for handling referral
 export const referLogic = async (user) => {
@@ -48,22 +46,22 @@ export const referLogic = async (user) => {
         return referId;
       }
 
-      console.log("Referral code stored successfully:", result);
+      //console.log("Referral code stored successfully:", result);
       // if (!result.success) {
       //   console.error('Error while storing referral code:', result.error);
       // }
     } else {
-      console.log("No referral code found for this user.");
+      //console.log("No referral code found for this user.");
     }
   } else {
-    console.log("User not found in Firestore.");
+    //console.log("User not found in Firestore.");
   }
 };
 
 export const logout = async () => {
   try {
     await signOut(auth);
-    console.log("User signed out successfully");
+    //console.log("User signed out successfully");
   } catch (error) {
     console.error("Error signing out: ", error);
   }

@@ -7,7 +7,7 @@ export async function POST(req) {
 
   if (type === "CourseData") {
     const { type, data: CourseName } = body;
-    console.log("data", { type, CourseName });
+    // //console.log("data", { type, CourseName });
 
     try {
       // Fetch a course by its name
@@ -25,7 +25,7 @@ export async function POST(req) {
       //   success: true,
       //   course: data.length ? data[0] : null, // Return the course or null if not found
       // };
-      console.log("Course data fetched successfully:", data);
+
       return NextResponse.json(
         { message: "Data available", data: data.length ? data[0] : null },
         { status: 200 }
@@ -43,15 +43,14 @@ export async function POST(req) {
     try {
       const { data, error } = await supabase
         .from("playlist")
-        .select('video_id, title, video_type')
+        .select("video_id, title, video_type")
         .eq("user_id", id)
         .eq("video_type", videoType);
 
       if (error) {
         throw error;
       }
-     
-      console.log("Playlists fetched successfully:", data);
+
       return NextResponse.json(
         { message: "Data available", data },
         { status: 200 }

@@ -20,7 +20,7 @@ const path = usePathname();
  
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const { isAuthorized, showAuth, setShowAuth } = useContext(GlobalContext);
- console.log(showAuth)
+ //console.log(showAuth)
   
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
@@ -50,9 +50,11 @@ const path = usePathname();
                         behavior: "smooth",
                       });
                     } else if (item.label === "Contact Us") {
-                      scrollToRequestCallBack.current.scrollIntoView({
-                        behavior: "smooth",
-                      });
+                      if (scrollToRequestCallBack && scrollToRequestCallBack.current) {
+                        scrollToRequestCallBack.current.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }
                     } else if (item.label === "Testimonials") {
                       scrollToTestimonials.current.scrollIntoView({
                         behavior: "smooth",
@@ -64,7 +66,7 @@ const path = usePathname();
                     }
                   }}
                 >
-          {console.log(path)}
+          
 
                {item.label}
                 </li>

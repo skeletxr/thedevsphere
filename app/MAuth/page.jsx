@@ -3,32 +3,35 @@
 import auths from "@/components/Auth/authLogic";
 import { GlobalContext } from "@/context/GlobalContext";
 import "boxicons/css/boxicons.min.css";
-import {  useRouter, useSearchParams } from "next/navigation";
- 
- 
-import React, { Suspense, useContext, useState } from "react";
- 
+import { useRouter, useSearchParams } from "next/navigation";
 
+import React, { Suspense, useContext, useState } from "react";
 
 const PageContent = () => {
-   const Routers = useRouter();
-   const action = useSearchParams().get("action");
-  
-    
- const [AuthState, setAuthState] = useState(action === "signup" ? true : false);
+  const Routers = useRouter();
+  const action = useSearchParams().get("action");
 
-  const {setShowAuth} = useContext(GlobalContext);
-  const SubmitEvent =  async(e) => {
+  const [AuthState, setAuthState] = useState(
+    action === "signup" ? true : false
+  );
+
+  const { setShowAuth } = useContext(GlobalContext);
+  const SubmitEvent = async (e) => {
     e.preventDefault();
 
-    console.log(e);
+    //console.log(e);
     const email = e.target.email.value;
     const password = e.target.password.value;
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("user created successfully");
-    
-    await auths(!AuthState ? "login" : "signup", e, { email, password }, setShowAuth);
+    //console.log("Email:", email);
+    //console.log("Password:", password);
+    //console.log("user created successfully");
+
+    await auths(
+      !AuthState ? "login" : "signup",
+      e,
+      { email, password },
+      setShowAuth
+    );
     Routers.push("/");
   };
 
@@ -36,7 +39,6 @@ const PageContent = () => {
     login: false,
     signup: false,
   });
-
 
   const togglePasswordVisibility = (form) => {
     setShowPassword((prevState) => ({
@@ -53,7 +55,10 @@ const PageContent = () => {
   return (
     <div className=" ">
       <div className="flex justify-center items-center min-h-screen bg-black">
-        <form className="w-full max-w-md bg-black p-6 rounded-lg shadow-lg" onSubmit={SubmitEvent}>
+        <form
+          className="w-full max-w-md bg-black p-6 rounded-lg shadow-lg"
+          onSubmit={SubmitEvent}
+        >
           <div className="flex flex-col mb-6">
             <label htmlFor="email" className="text-white font-semibold">
               Email
@@ -73,23 +78,18 @@ const PageContent = () => {
                   />
                 </g>
               </svg>
-              
-                <input
-                  id="email"
-                  placeholder="Enter your Email"
-                  className="w-full border-none outline-none   p-2 text-white bg-transparent"
-                  type="email"                         
-                />
-                 
-              
+
+              <input
+                id="email"
+                placeholder="Enter your Email"
+                className="w-full border-none outline-none   p-2 text-white bg-transparent"
+                type="email"
+              />
             </div>
           </div>
 
           <div className="flex flex-col mb-6">
-            <label
-              htmlFor="password"
-              className="text-white font-semibold"
-            >
+            <label htmlFor="password" className="text-white font-semibold">
               Password
             </label>
 
@@ -143,20 +143,27 @@ const PageContent = () => {
             type="submit"
             className="w-full bg-purple-600 text-white py-3 rounded-md font-semibold mt-4 hover:bg-purple-700"
           >
-            {!AuthState ? "Sign In" : "Sign Up" }
+            {!AuthState ? "Sign In" : "Sign Up"}
           </button>
 
           <p className="text-center text-sm text-white mt-4">
             Don't have an account?{" "}
-            <span className="text-purple-300 cursor-pointer"> {AuthState ? "Sign In" : "Sign Up" }</span>
+            <span className="text-purple-300 cursor-pointer">
+              {" "}
+              {AuthState ? "Sign In" : "Sign Up"}
+            </span>
           </p>
 
           <p className="text-center text-sm text-white my-4">Or With</p>
 
-          <div className="flex space-x-4 mb-6" >
-            <div onClick={async() => {await auths("provider")
-              Routers.push("/");
-            }}   className="w-full bg-white border border-purple-300 py-3 rounded-md flex items-center justify-center space-x-2 hover:border-purple-500">
+          <div className="flex space-x-4 mb-6">
+            <div
+              onClick={async () => {
+                await auths("provider");
+                Routers.push("/");
+              }}
+              className="w-full bg-white border border-purple-300 py-3 rounded-md flex items-center justify-center space-x-2 hover:border-purple-500"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width={20}
@@ -187,15 +194,12 @@ const PageContent = () => {
               </svg>
               Google
             </div>
-            
           </div>
         </form>
       </div>
     </div>
   );
 };
-
-
 
 const page = () => (
   <Suspense fallback={<div>Loading...</div>}>

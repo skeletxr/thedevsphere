@@ -1,23 +1,26 @@
-import Image from 'next/image';
-import React from 'react';
-import toast from 'react-hot-toast';
+import Image from "next/image";
+import React from "react";
+import toast from "react-hot-toast";
 
-const ReqCall = ({ scrollToRequestCallBack }) => {
+const ReqCall = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     toast.loading("Sending Request...");
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     const formData1 = new FormData();
-    formData1.append('type', 'reqcallback');
-    formData1.append('subject', 'Request Callback');
-    formData1.append('text', "Request Callback");
-    formData1.append('html', `<ul><li>First Name = ${data.firstName} </li><li>Last Name = ${data.lastName}</li><li>Email = ${data.email}</li><li>Phone = ${data.phone}</li> <li>gender = ${data.gender} </li> <li> age = ${data.age} </li> </ul>`);
-    const res = await fetch('/api/sendMail', {
-      method: 'POST',
+    formData1.append("type", "reqcallback");
+    formData1.append("subject", "Request Callback");
+    formData1.append("text", "Request Callback");
+    formData1.append(
+      "html",
+      `<ul><li>First Name = ${data.firstName} </li><li>Last Name = ${data.lastName}</li><li>Email = ${data.email}</li><li>Phone = ${data.phone}</li> <li>gender = ${data.gender} </li> <li> age = ${data.age} </li> </ul>`
+    );
+    const res = await fetch("/api/sendMail", {
+      method: "POST",
       body: formData1,
     });
-    console.log(res);
+    //console.log(res);
     if (res.status === 200) {
       e.target.reset();
       toast.dismiss();
@@ -29,10 +32,12 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
   };
 
   return (
-    <div className="min-h-screen border-purple-400 flex flex-col lg:flex-row justify-between items-center md:gap-8" >
-      <div  className="flex flex-col items-center  md:ml-6 justify-center h-screen dark  md:p-4">
+    <div className="min-h-screen border-purple-400 flex flex-col lg:flex-row justify-between items-center md:gap-8">
+      <div className="flex flex-col items-center  md:ml-6 justify-center h-screen dark  md:p-4">
         <div className="w-full min-w-[38vw] max-w-md bg-black p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl text-white flex pb-4 font-bold justify-center mb-6">Request Callback from Us</h2>
+          <h2 className="text-2xl text-white flex pb-4 font-bold justify-center mb-6">
+            Request Callback from Us
+          </h2>
           <form className="flex flex-col" onSubmit={handleSubmit}>
             {/* First Name and Last Name Inputs */}
             <div className="flex space-x-4 mb-4 pb-2">
@@ -89,14 +94,16 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
                 className="w-full bg-transparent text-white p-2 outline-none"
                 type="number"
                 style={{
-                  WebkitAppearance: 'none',
-                  MozAppearance: 'textfield',
+                  WebkitAppearance: "none",
+                  MozAppearance: "textfield",
                 }}
               />
             </div>
 
             {/* Gender Select */}
-            <label className="text-sm mb-2 text-white cursor-pointer">Gender</label>
+            <label className="text-sm mb-2 text-white cursor-pointer">
+              Gender
+            </label>
             <div className="flex items-center border border-purple-500 rounded-md px-3 py-2 mt-1 mb-4">
               <select
                 name="gender"
@@ -109,7 +116,9 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
             </div>
 
             {/* Age Input */}
-            <label className="text-sm mb-2 text-white cursor-pointer">Age</label>
+            <label className="text-sm mb-2 text-white cursor-pointer">
+              Age
+            </label>
             <div className="flex items-center border border-purple-500 rounded-md px-3 py-2 mt-1 mb-4">
               <input
                 required
@@ -132,7 +141,13 @@ const ReqCall = ({ scrollToRequestCallBack }) => {
 
       {/* Image on the right for larger screens */}
       <div className="flex hidden md:block w-full max-w-[500px] h-auto mr-6 lg:mr-0 lg:ml-6">
-        <Image width={500} height={500} src="/images/contact-us.png" alt="Contact Us" className="w-full h-auto" />
+        <Image
+          width={500}
+          height={500}
+          src="/images/contact-us.png"
+          alt="Contact Us"
+          className="w-full h-auto"
+        />
       </div>
     </div>
   );

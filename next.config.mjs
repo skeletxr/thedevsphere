@@ -1,20 +1,28 @@
-import withImages from 'next-images';
+import withImages from "next-images";
+import withPWA from "next-pwa";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withImages({
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**', // Allows all image domains with https
+        protocol: "https",
+        hostname: "**", // Allows all image domains with https
       },
       {
-        protocol: 'http',
-        hostname: '**', // Allows all image domains with http
+        protocol: "http",
+        hostname: "**", // Allows all image domains with http
       },
     ],
   },
-  // Add other Next.js configurations here if needed
+  // Additional Next.js configurations if needed
 });
 
-export default nextConfig;
+const config =
+  process.env.NODE_ENV === "production"
+    ? withPWA({
+        dest: "public", // Specifies where the service worker and assets will be output
+      })(nextConfig)
+    : nextConfig;
+
+export default config;

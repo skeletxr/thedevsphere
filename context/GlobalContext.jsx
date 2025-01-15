@@ -2,9 +2,8 @@
 
 import { createContext, useEffect, useRef, useState } from "react";
 
- 
-import { doc, getDoc } from "firebase/firestore";
-import { auth,db, realTimeDataBase } from "@/firebaseConfig";
+import { doc, getDoc, getDocs } from "firebase/firestore";
+import { auth, db, realTimeDataBase } from "@/firebaseConfig";
 
 import { ref, get } from "firebase/database";
 
@@ -22,14 +21,16 @@ const GlobalProvider = ({ children }) => {
     setUser(userD);
 
     const userDoc = doc(db, "users", userD.uid);
+    console.log("UserDoc", userDoc);
     const userSnapshot = await getDoc(userDoc);
+    console.log("Usersafsfsd", userSnapshot);
     if (userSnapshot.exists()) {
       const userData = userSnapshot.data();
-      // console.log(userData);
+      // //console.log(userData);
       setUserDetails(userData);
     } else {
       setUserDetails(null);
-      console.log("No such document!");
+      //console.log("No such document!");
     }
   };
 
@@ -38,22 +39,25 @@ const GlobalProvider = ({ children }) => {
       console.error("User ID is undefined");
       return;
     }
-  
+
     const userRef = ref(realTimeDataBase, `users/${id}`);
     const snapshot = await get(userRef);
     if (snapshot.exists()) {
       const userData = snapshot.val();
-      console.log("is course purchased", userData);
+      //console.log("is course purchased", userData);
       setIsCoursePurchased(true);
     } else {
-      console.log("No such document!");
+      //console.log("No such document!");
       setIsCoursePurchased(false);
     }
   };
 
   useEffect(() => {
+    console.log("Global Context");
     const unsubscribeAuth = auth.onAuthStateChanged((userD) => {
       if (userD) {
+        console.log("Global Context2");
+
         getUserInfo(userD); // Call getUserInfo when user is signed in
         setIsAuthorized(true);
         checkCoursePurchasedPending(userD.uid);
@@ -67,26 +71,26 @@ const GlobalProvider = ({ children }) => {
     return () => unsubscribeAuth();
   }, []);
 
-
-
   useEffect(() => {
-      const handleClickOutside = (event) => {
-        if (containerRef.current && !containerRef.current.contains(event.target)) {
-          setShowAuth(false);
-        }
-      };
-  
-      if (showAuth) {
-        document.addEventListener("click", handleClickOutside);
-      } else {
-        document.removeEventListener("click", handleClickOutside);
+    const handleClickOutside = (event) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setShowAuth(false);
       }
-  
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
-    }, [showAuth]);
+    };
 
+    if (showAuth) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [showAuth]);
 
   return (
     <GlobalContext.Provider
@@ -99,8 +103,7 @@ const GlobalProvider = ({ children }) => {
         isCoursePurchased,
         checkCoursePurchasedPending,
         getUserInfo,
-        containerRef
-        
+        containerRef,
       }}
     >
       {children}

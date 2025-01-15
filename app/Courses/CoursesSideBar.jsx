@@ -25,7 +25,7 @@ export function SidebarDemo({
   showVideo,
   setShowVideo,
   setOpen,
-  open,
+  open
 }) {
   const { user, userDetails, isCoursePurchased } = useContext(GlobalContext);
   // const [courseData, setCourseData] = useState([]);
@@ -39,7 +39,7 @@ export function SidebarDemo({
       icon: (
         <IconHomeShare
           stroke={2}
-          className="text-neutral-700 cursor-pointer h-5 w-5 flex-shrink-0"
+          className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0"
         />
       ),
       onClick: () => {
@@ -50,14 +50,14 @@ export function SidebarDemo({
       label: "Courses",
       href: "/Courses",
       icon: (
-        <IconBook className="text-neutral-700 cursor-pointer h-5 w-5 flex-shrink-0" />
+        <IconBook className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
     {
       label: "My Courses",
       href: "",
       icon: (
-        <IconBook className="text-neutral-700 cursor-pointer h-5 w-5 flex-shrink-0" />
+        <IconBook className="text-neutral-700 cursor-pointer dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
       isDropdown: true,
       sections: [
@@ -87,7 +87,7 @@ export function SidebarDemo({
   //   ) {
   //     handleFetchData("CourseData", userDetails.OwnedCourses[0]).then(
   //       (data) => {
-  //         console.log("data", data);
+ 
   //         setCourseData(data.data.titles);
   //         setCoursesOpen(!coursesOpen);
   //         if(params && params === "mobile"){
@@ -99,23 +99,23 @@ export function SidebarDemo({
   //   }
   // };
 
-  const handleSubCourseField = (sub) => {
-    handleFetchData("CourseList", [user.uid, sub]).then((data) => {
+  const handleSubCourseField = (sub) =>{
+    handleFetchData("CourseList", [
+      user.uid,
+      sub,
+    ]).then((data) => {
+     
       setSubCourseData(data);
-    });
-  };
+    
+    })
+  }
 
   return (
     <div
-      //  className={cn(
-      //       "flex flex-col md:flex-row bg-neutral-800 w-screen flex-1 mx-auto border border-neutral-700 overflow-hidden",
-      //       "h-[91vh] overflow-hidden"
-      //     )}
       className={cn(
-        "flex flex-col md:flex-row bg-neutral-800 w-screen flex-1 mx-auto border border-neutral-700 overflow-hidden",
+        "flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-screen flex-1 mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
         "h-[91vh] overflow-hidden"
       )}
-      style={{ backgroundColor: "black", color: "white" }}
     >
       <Sidebar
         open={open}
@@ -123,7 +123,7 @@ export function SidebarDemo({
         handleMobileMyCourses={handleMobileMyCourses}
       >
         <SidebarBody
-          className="justify-between gap-10 bg-black "
+          className="justify-between gap-10 bg-black dark:bg-black"
           style={{ background: "black" }}
         >
           <div
@@ -177,6 +177,7 @@ export function SidebarDemo({
                               <span className="ml-2">{section.label}</span>
                             </div>
 
+                            {/* Sub-dropdown Content */}
                             {subDropdowns[secIndex] && (
                               <div className="ml-6 mt-1 flex flex-col gap-1">
                                 {courseData.map((sub, subIndex) => (
@@ -185,10 +186,10 @@ export function SidebarDemo({
                                     <div
                                       className="flex items-center cursor-pointer"
                                       onClick={() => {
-                                        handleSubCourseField(sub);
-                                        toggleSubDropdown(
-                                          `${secIndex}-${subIndex}`
-                                        );
+                                        handleSubCourseField(sub)
+                                          toggleSubDropdown(
+                                            `${secIndex}-${subIndex}`
+                                          );
                                         // });
                                       }}
                                     >
@@ -209,11 +210,11 @@ export function SidebarDemo({
                                       `${secIndex}-${subIndex}`
                                     ] && (
                                       <div className="ml-6 mt-1 flex flex-col gap-1">
-                                        {subCourseData &&
+                                        {/* {subCourseData &&
                                           console.log(
                                             "subCourseData",
                                             subCourseData.data
-                                          )}
+                                          )} */}
                                         {subCourseData &&
                                           Array.isArray(subCourseData.data) && (
                                             <>
@@ -278,10 +279,10 @@ export function SidebarDemo({
         </SidebarBody>
       </Sidebar>
       <Dashboard
-        setShowVideo={setShowVideo}
-        subCourseData={subCourseData}
-        handleSubCourseField={handleSubCourseField}
-        courseData={courseData}
+      setShowVideo={setShowVideo}
+      subCourseData={subCourseData}
+      handleSubCourseField={handleSubCourseField}
+      courseData={courseData}
         setShowScanner={setShowScanner}
         setRefer={setRefer}
         showVideo={showVideo}
@@ -290,21 +291,13 @@ export function SidebarDemo({
   );
 }
 
-const Dashboard = ({
-  setShowScanner,
-  setRefer,
-  showVideo,
-  courseData,
-  setShowVideo,
-  handleSubCourseField,
-  subCourseData,
-}) => {
+const Dashboard = ({ setShowScanner, setRefer, showVideo,courseData,setShowVideo, handleSubCourseField, subCourseData }) => {
   return (
     <div className="flex flex-1">
       <div
-        className={`bg-black border border-neutral-700    flex flex-col gap-2 flex-1 w-full h-full ${
+        className={` border border-neutral-200 dark:border-neutral-700  dark:bg-black flex flex-col gap-2 flex-1 w-full h-full ${
           !showVideo
-            ? "overflow-y-auto p-2 bg-black md:p-10 "
+            ? "overflow-y-auto p-2 bg-white md:p-10"
             : " bg-black flex overflow-hidden h-[70vh] w-auto "
         }`}
       >
@@ -317,7 +310,7 @@ const Dashboard = ({
                 </h1>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row h-screen overflow-y-auto no-scrollbar ">
+            <div className="flex flex-col md:flex-row h-screen overflow-y-auto no-scrollbar">
               <div className="md:fixed md:top-6 md:right-10">
                 <ThreeDCard
                   setShowScanner={setShowScanner}
@@ -331,13 +324,7 @@ const Dashboard = ({
           </>
         ) : (
           <>
-            <HLSPlayer
-              showVideo={showVideo}
-              courseData={courseData}
-              handleSubCourseField={handleSubCourseField}
-              subCourseData={subCourseData}
-              setShowVideo={setShowVideo}
-            />
+            <HLSPlayer showVideo={showVideo} courseData={courseData} handleSubCourseField={handleSubCourseField} subCourseData={subCourseData} setShowVideo={setShowVideo}/>
           </>
         )}
       </div>

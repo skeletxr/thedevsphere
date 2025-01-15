@@ -32,24 +32,30 @@ function page() {
             "Content-Type": "application/json",
           },
         });
-  
+
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
- 
-        
+
         const text = await res.json();
-        console.log("Text:", {text, tabSwitch});
-       
-        {tabSwitch === 1 ? setData(text) : tabSwitch === 2 ? setData(text.data) : tabSwitch === 3 ? setData(text.data) : setData(text.data)}
+   
+
+        {
+          tabSwitch === 1
+            ? setData(text)
+            : tabSwitch === 2
+            ? setData(text.data)
+            : tabSwitch === 3
+            ? setData(text.data)
+            : setData(text.data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [tabSwitch]);
-
 
   const handleAccept = async (doc, id, typos, videoT) => {
     setDisable(true);
@@ -57,7 +63,9 @@ function page() {
     const videoType = videoT ? videoT : null;
     const type = typos ? typos : "application";
     try {
-      toast.loading("Accepting Application so please don't Refresh The Page and please wait for while...");
+      toast.loading(
+        "Accepting Application so please don't Refresh The Page and please wait for while..."
+      );
       const res = await fetch(`/api/adminRoute`, {
         // Removed dynamic ID from URL
         method: "POST",
@@ -72,17 +80,16 @@ function page() {
       }
 
       const data = await res.json();
-      if(type === "application"){
+      if (type === "application") {
         setData((prevData) =>
           Array.isArray(prevData)
             ? prevData.filter((item) => item.id !== id)
             : []
         );
       }
-        toast.dismiss();
-        toast.success("Application Accepted");
-        setShowLoading(false);
-       
+      toast.dismiss();
+      toast.success("Application Accepted");
+      setShowLoading(false);
     } catch (error) {
       toast.dismiss();
       setShowLoading(false);
@@ -95,8 +102,8 @@ function page() {
 
   const handleReject = async (id) => {
     setDisable(true);
-    console.log("ID:", id);
-    if(!id) return;
+    
+    if (!id) return;
     const deleteRef = ref(realTimeDataBase, `users/${id}`); // Adjust the path based on your database structure
     await remove(deleteRef);
     setData((prevData) =>
@@ -106,14 +113,16 @@ function page() {
     setDisable(false);
   };
 
-
-
   const handlePlaylist = async (videoData) => {
-    const type = await alertInput("Enter Playlist Name", "text", "Create Playlist");
+    const type = await alertInput(
+      "Enter Playlist Name",
+      "text",
+      "Create Playlist"
+    );
     if (type === "cancel") return;
 
     handleAccept(videoData, checkedCount, "playlist", type);
-  }
+  };
 
   return (
     <>
@@ -124,43 +133,42 @@ function page() {
         <div className="flex w-full "></div>
       </div>
 
-      {!showLoading ? tabSwitch === 1 ? (
-        <AcceptApplication
-          disable={disable}
-          data={data}
-          handleAccept={handleAccept}
-          handleReject={handleReject}
-        />
-      ) : tabSwitch === 2 ? (
- 
-            <ReferralData data={data} />
-
-      ) : tabSwitch === 3 ? (
-        <div><CheckboxGroup data={data} tabSwitch={tabSwitch} setTabSwitch={setTabSwitch} checkedCount={checkedCount} setCheckedCount={setCheckedCount}/></div>
-      ) : tabSwitch === 4 && (
-        <div>
-          <CheckboxGroup data={data} checkedCount={checkedCount}  handlePlaylist={handlePlaylist}/>
-        </div>
+      {!showLoading ? (
+        tabSwitch === 1 ? (
+          <AcceptApplication
+            disable={disable}
+            data={data}
+            handleAccept={handleAccept}
+            handleReject={handleReject}
+          />
+        ) : tabSwitch === 2 ? (
+          <ReferralData data={data} />
+        ) : tabSwitch === 3 ? (
+          <div>
+            <CheckboxGroup
+              data={data}
+              tabSwitch={tabSwitch}
+              setTabSwitch={setTabSwitch}
+              checkedCount={checkedCount}
+              setCheckedCount={setCheckedCount}
+            />
+          </div>
+        ) : (
+          tabSwitch === 4 && (
+            <div>
+              <CheckboxGroup
+                data={data}
+                checkedCount={checkedCount}
+                handlePlaylist={handlePlaylist}
+              />
+            </div>
+          )
+        )
       ) : (
-        <Loader/>
+        <Loader />
       )}
     </>
   );
 }
 
 export default page;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
