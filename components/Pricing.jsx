@@ -1,121 +1,109 @@
 "use client";
 
 import { pricingOptions } from "@/constants";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 
 const Pricing = ({ scrollToPrice }) => {
-  const cardContainerRef = useRef(null);
-
-  const scrollCards = (direction) => {
-    const scrollAmount = 300; // Adjust scroll amount based on your preference
-    if (cardContainerRef.current) {
-      cardContainerRef.current.scrollLeft += direction * scrollAmount;
-    }
-  };
-
   return (
-    <div className="mt-20 mx-auto w-full h-auto min-h-[100vh]" ref={scrollToPrice}>
-      <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center my-8 tracking-wide">
-        Internship and Training Programs
-      </h2>
+    <div className="mt-20 px-4 mx-auto max-w-7xl min-h-[100vh]" ref={scrollToPrice}>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="text-3xl sm:text-5xl lg:text-6xl text-center my-8 tracking-wide font-medium">
+          Internship and Training{" "}
+          <span className="bg-gradient-to-r from-purple-400 to-purple-800 text-transparent bg-clip-text">
+            Programs
+          </span>
+        </h2>
+        <p className="text-neutral-400 max-w-2xl mx-auto text-lg mt-4">
+          Choose the perfect plan to accelerate your coding journey.
+        </p>
+      </motion.div>
 
-      {/* Mobile Layout: Horizontal scroll with arrows */}
-      <div className="relative sm:hidden">
-        <div
-          ref={cardContainerRef}
-          className="overflow-x-auto flex space-x-4 pb-4 snap-x snap-mandatory"
-        >
-          {pricingOptions.map((option, index) => (
-            <div key={index} className="flex-shrink-0 w-[320px] p-2 snap-start">
-              <div className="p-6 sm:p-10 border border-neutral-700 rounded-xl flex flex-col justify-between h-full">
-                <p className="text-3xl sm:text-4xl mb-6 sm:mb-8">
-                  {option.title}
-                  {option.title === "Pro" && (
-                    <span className="bg-gradient-to-r from-purple-500 to-purple-400 text-transparent bg-clip-text text-xl mb-4 ml-2">
-                      (Most Popular)
-                    </span>
-                  )}
-                </p>
-                <p className="mb-6 sm:mb-8">
-                  <span className="text-4xl sm:text-5xl mt-6 mr-2">{option.price}</span>
-                  <span className="text-neutral-400 tracking-tight">/Month</span>
-                </p>
-                <ul className="flex-grow">
-                  {option.features.map((feature, index) => (
-                    <li key={index} className="mt-4 flex items-center">
-                      <CheckCircle2 />
-                      <span className="ml-2">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/Courses"
-                  className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-8 sm:mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-purple-400 hover:text-black`}
-                >
-                  {option.title === "Full Stack Web Development" ? "Subscribe" : "Coming soon"}
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Left and Right Arrows for mobile */}
-        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10">
-          <button
-            onClick={() => scrollCards(-1)}
-            className="bg-purple-500 text-white p-2 rounded-full shadow-lg hover:bg-purple-400 transition duration-200"
-          >
-            &#8592;
-          </button>
-        </div>
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10">
-          <button
-            onClick={() => scrollCards(1)}
-            className="bg-purple-500 text-white p-2 rounded-full shadow-lg hover:bg-purple-400 transition duration-200"
-          >
-            &#8594;
-          </button>
-        </div>
-      </div>
-
-      {/* Desktop Layout: Cards side by side */}
-      <div className="hidden sm:flex justify-center w-full gap-6 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-stretch">
         {pricingOptions.map((option, index) => (
-          <div
+          <motion.div
             key={index}
-            className="flex-grow-0 sm:flex-shrink-0 sm:w-[37%] sm:max-w-[480px] w-full p-4"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            viewport={{ once: true }}
+            className={`relative p-8 rounded-2xl border flex flex-col h-full backdrop-blur-sm transition-all duration-300 hover:scale-[1.02]
+              ${
+                option.title === "Full Stack Web Development" || option.title === "Pro"
+                  ? "border-purple-500/30 bg-purple-900/5 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10"
+                  : "border-neutral-800 bg-neutral-900/50 hover:border-neutral-700"
+              }
+            `}
           >
-            <div className="p-10 border border-neutral-700 rounded-xl">
-              <p className="text-4xl mb-8">
+            {(option.title === "Pro" || option.title === "Full Stack Web Development") && (
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-purple-600 to-purple-400 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg uppercase tracking-wide">
+                  Most Popular
+                </span>
+              </div>
+            )}
+
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold mb-2 text-neutral-100">
                 {option.title}
-                {option.title === "Pro" && (
-                  <span className="bg-gradient-to-r from-purple-500 to-purple-400 text-transparent bg-clip-text text-xl mb-4 ml-2">
-                    (Most Popular)
+              </h3>
+              <div className="flex items-end gap-2 my-4">
+                {option.price.includes("INR") ? (
+                  <>
+                    <span className="text-2xl font-medium text-neutral-400 mb-1">
+                      INR
+                    </span>
+                    <span className="text-5xl font-bold text-white tracking-tight">
+                      {option.price.replace("INR", "").trim()}
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-5xl font-bold text-white tracking-tight">
+                    {option.price}
                   </span>
                 )}
-              </p>
-              <p className="mb-8">
-                <span className="text-5xl mt-6 mr-2">{option.price}</span>
-                <span className="text-neutral-400 tracking-tight">/Month</span>
-              </p>
-              <ul>
-                {option.features.map((feature, index) => (
-                  <li key={index} className="mt-8 flex items-center">
-                    <CheckCircle2 />
-                    <span className="ml-2">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/Courses"
-                className={`inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl ${option.title === "Web Development" ? "bg-gradient-to-r from-purple-500 to-purple-400 text-white" : "bg-neutral-800"} border border-purple-900 rounded-lg transition duration-200 hover:bg-purple-400 hover:text-black`}
-              >
-                {option.title === "Full Stack Web Development" ? "See Details" : "Coming Soon"}
-              </Link>
+                <span className="text-neutral-500 mb-1 ml-1 text-lg">/Month</span>
+              </div>
             </div>
-          </div>
+
+            <ul className="flex-grow space-y-4 mb-8">
+              {option.features.map((feature, idx) => (
+                <li key={idx} className="flex items-start gap-3 text-neutral-300">
+                  <CheckCircle2 className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                  <span className="text-sm leading-relaxed">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <Link href="/Courses" className="mt-auto">
+              <button
+                className={`w-full group relative overflow-hidden rounded-xl py-3 px-6 transition-all duration-300
+                  ${
+                    option.title === "Full Stack Web Development" 
+                      ? "bg-white text-black hover:bg-neutral-200"
+                      : "bg-neutral-800 text-white hover:bg-neutral-700"
+                  }
+                `}
+              >
+                <span className="relative z-10 flex items-center justify-center gap-2 font-medium">
+                  {option.title === "Full Stack Web Development"
+                    ? "Subscribe Now"
+                    : "Coming Soon"}
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </span>
+                {option.title === "Full Stack Web Development" && (
+                   <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 to-blue-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                )}
+              </button>
+            </Link>
+          </motion.div>
         ))}
       </div>
     </div>
